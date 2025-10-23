@@ -16,6 +16,22 @@ exiftool "-FileName<FileModifyDate" -d "%Y%m%d_%H%M%S%%-c.%%e" C:\Users\hooch\Do
 * `%%e`：保留原文件扩展名
 
 
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+```powershell
+cd "C:\Users\hooch\Downloads"
+$counter = 1
+Get-ChildItem *.png | ForEach-Object {
+    $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+    $newName = "$timestamp" + "_$counter$($_.Extension)"  # 使用递增的计数器
+    Rename-Item $_.FullName -NewName $newName
+    $counter++  # 递增计数器
+}
+```
+
+
 ---
 
 > [!important]
