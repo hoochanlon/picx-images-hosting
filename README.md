@@ -2,7 +2,7 @@
 
 [PicX](https://github.com/XPoet/picx) 是一款基于 GitHub API 开发的图床工具，提供图片上传托管、生成图片链接和常用图片工具箱服，对于只使用GitHub的图床来说，比picgo方便。
 
-* https://picx.xpoet.cn/#/upload 
+快速使用： https://picx.xpoet.cn/#/upload 
 
 > [!CAUTION]  
 > 图床的repo名称不要与站点项目存放资源的路径相同，以避免因图床repo发布gh-pages造成网页资源路径冲突。
