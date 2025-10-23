@@ -21,5 +21,6 @@ jobs:
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
+          deploy_key: ${{ secrets.DEPLOY_KEY }}  # 这里使用 GitHub Secrets 中的私钥
           publish_branch: gh-pages  # 发布到 gh-pages 分支
           publish_dir: .  # 或者你构建的目录
