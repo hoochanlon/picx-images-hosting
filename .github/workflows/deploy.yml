@@ -1,0 +1,23 @@
+name: Deploy to gh-pages
+
+on:
+  push:
+    branches:
+      - master # 或者 main，取决于你的主分支名称
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 部署到 gh-pages
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages  # 部署目标分支
+          folder: .  # 如果是静态资源，选择当前文件夹，或者更改为具体的构建目录
