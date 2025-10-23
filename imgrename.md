@@ -17,6 +17,8 @@ exiftool "-FileName<FileModifyDate" -d "%Y%m%d_%H%M%S%%-c.%%e" C:\Users\hooch\Do
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
+根据时间戳命名
+
 ```powershell
 cd "C:\Users\hooch\Downloads"
 $counter = 1
@@ -27,6 +29,8 @@ Get-ChildItem *.png | ForEach-Object {
     $counter++  # 递增计数器
 }
 ```
+
+根据guid命名
 
 ```powershell
 cd "C:\Users\hooch\Downloads"
