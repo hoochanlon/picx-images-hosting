@@ -41,4 +41,5 @@
 * [jsdmirror目介绍与使用教程](https://blog.jsdmirror.com/2.html)
 * [Github 图床 PicGo 使用](https://wlcheng.cc/posts/github_picture_bed/)
 * [2025 年，我们还有哪些免费图床可用？（长期更新）](https://sspai.com/post/98911)
+* [【实用工具】使用exiftool批量按拍摄时间重命名照片](https://www.tianlejin.top/blog/exiftool/)
 
