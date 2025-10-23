@@ -32,6 +32,18 @@ Get-ChildItem *.png | ForEach-Object {
 ```
 
 
+```powershell
+cd "C:\Users\hooch\Downloads"
+Get-ChildItem *.png | ForEach-Object {
+    $guid = [guid]::NewGuid().ToString().Substring(0, 13)  # 截取 GUID 的前 13 个字符
+    $newName = "$guid$($_.Extension)"
+    Rename-Item $_.FullName -NewName $newName
+}
+```
+
+
+
+
 ---
 
 > [!important]
