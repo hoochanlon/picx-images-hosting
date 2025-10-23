@@ -3,7 +3,7 @@ name: Deploy to gh-pages
 on:
   push:
     branches:
-      - master  # 或者 main，取决于你的主分支名称
+      - master  # 或者 main
 
 jobs:
   deploy:
@@ -16,10 +16,10 @@ jobs:
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.DEPLOY_KEY }}  # 使用你上传到 Secrets 的私钥
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}  # 引用 GitHub Secrets 中的私钥
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          publish_branch: gh-pages
-          publish_dir: .  # 或者构建目录
+          publish_branch: gh-pages  # 发布到 gh-pages 分支
+          publish_dir: .  # 或者你构建的目录
