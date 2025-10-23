@@ -28,8 +28,7 @@
 2. 一般电脑截图1-2M，Mac差不多翻倍，手机照片甚至十兆几十兆不等，所以需要 squoosh 进行图片压缩
 3. 国内GitHub的链接很慢，所以上传的照片需要用到[jsdelivr cdn](https://www.jsdelivr.com)、[statically.io](https://statically.io/)保证加载速度，单个文件最大限制20M
 4. jsdelivr cdn也被国内污染了，可以考虑使用：[Vercel-Netlify-JsDelivr-Mirror](https://github.com/JanePHPDev/Vercel-Netlify-JsDelivr-Mirror)，网站：https://cdn.mengze.vip
-5. 相关CDN使用说明：https://github.com/XPoet/picx/issues/260
-
+5. https://github.com/XPoet/picx/issues/260#issuecomment-1845003856
 
 
 
