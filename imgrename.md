@@ -1,3 +1,5 @@
+# 图片重命名
+
 picx目前版本不支持完全哈希、完全时间戳将图片重命名。下载图片处理工具[exiftool](https://blog.csdn.net/m0_56182552/article/details/142977362)来进行批量重命名
 
 ```cmd
