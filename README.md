@@ -3,8 +3,8 @@
 > [!important]
 > 该repo做为自用图床存储，[PicX](https://github.com/XPoet/picx) 是一款基于 GitHub API 开发的图床工具，提供图片上传托管、生成图片链接和常用图片工具箱服，对于只使用GitHub的图床来说，比picgo方便。
 
-* 快速使用： https://picx.xpoet.cn/#/upload
-* https://hoochanlon.github.io/picx-images-hosting/20251024/blue-butterfly.73ucjeghpi.webp
+* 快速使用：https://picx.xpoet.cn/#/upload
+* 图例展示: https://hoochanlon.github.io/picx-images-hosting/20251024/blue-butterfly.73ucjeghpi.webp
 
 
 > [!CAUTION]
