@@ -29,5 +29,9 @@
 > 1. jsdelivr cdn也被国内污染了，可以考虑使用：[Vercel-Netlify-JsDelivr-Mirror](https://github.com/JanePHPDev/Vercel-Netlify-JsDelivr-Mirror)，网站：https://cdn.mengze.vip
 > 1. 使用[cloudflare](https://www.cloudflare.com/zh-cn/)代理: https://github.com/XPoet/picx/issues/260#issuecomment-1845003856
 
+---
 
+参考文章：
+
+* [jsdmirror目介绍与使用教程](https://blog.jsdmirror.com/2.html)
 
