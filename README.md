@@ -19,7 +19,7 @@
 > * https://sm.ms （需要注册）
 > * https://meee.com.tw （国外图床）
 > * https://img.scdn.io (单张图片连续60天未访问则自动清理)
-> * [2025 年，我们还有哪些免费图床可用？（长期更新）](https://sspai.com/post/98911)
+
 
 
 > [!note]
@@ -34,4 +34,6 @@
 参考文章：
 
 * [jsdmirror目介绍与使用教程](https://blog.jsdmirror.com/2.html)
+* [Github 图床 PicGo 使用](https://wlcheng.cc/posts/github_picture_bed/)
+* [2025 年，我们还有哪些免费图床可用？（长期更新）](https://sspai.com/post/98911)
 
