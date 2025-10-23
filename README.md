@@ -1,7 +1,22 @@
 # picx-images-hosting 
 
-* [ ] PICX 图片重命名
+* [X] PICX 图片重命名 （目前）
 * [ ] 自动化
+
+picx目前版本不支持完全哈希、完全时间戳将图片重命名。下载图片处理工具[exiftool](https://blog.csdn.net/m0_56182552/article/details/142977362)来进行批量重命名
+
+```cmd
+exiftool "-FileName<FileModifyDate" -d "%Y%m%d_%H%M%S%%-c.%%e" C:\Users\hooch\Downloads\*.png
+```
+
+* `-FileName<FileModifyDate` 以修改时间来生成时间戳
+* `-FileName<CreateDate`：将文件名设置为照片的拍摄时间
+* `-d "%Y%m%d_%H%M%S"`：设置重命名的时间格式（年月日_时分秒）
+* `%%-c`：如果有重名的文件，会自动加上 -1、-2 等后缀
+* `%%e`：保留原文件扩展名
+
+
+---
 
 > [!important]
 > 该repo做为自用图床存储，[PicX](https://github.com/XPoet/picx) 是一款基于 GitHub API 开发的图床工具，提供图片上传托管、生成图片链接和常用图片工具箱服，对于只使用GitHub的图床来说，比picgo方便。
