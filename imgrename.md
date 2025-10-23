@@ -32,6 +32,18 @@ Get-ChildItem *.png | ForEach-Object {
 }
 ```
 
+根据随机数命名
+
+```
+cd "C:\Users\hooch\Downloads"
+Get-ChildItem *.png | ForEach-Object {
+    $timestamp = Get-Date -Format "yyyyMMdd_HHmm"
+    $random = Get-Random -Minimum 100000 -Maximum 999999  # 生成6位随机数，并标记为 random
+    $newName = "$timestamp" + "_rand_$random$($_.Extension)"  # 使用 rand 标记
+    Rename-Item $_.FullName -NewName $newName
+}
+```
+
 根据guid命名
 
 ```powershell
@@ -42,6 +54,8 @@ Get-ChildItem *.png | ForEach-Object {
     Rename-Item $_.FullName -NewName $newName
 }
 ```
+
+
 
 
 
