@@ -26,7 +26,7 @@
 > [!TIP]
 > 图片压缩工具
 > * https://compressor.io （最大文件大小上传10MB，压缩50次数/天，可选有损/无损压缩）
-> * https://tinypng.com （第三方工具，使用API一天可以压缩500张）
+> * https://tinypng.com （由第三方客户端版，API每月前 500 次按压是免费的）
 > * https://docsmall.com/image-compress
 > * https://zh.recompressor.com
 > * https://saerasoft.com/caesium
