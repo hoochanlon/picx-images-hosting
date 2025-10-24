@@ -23,6 +23,11 @@
 
 
 > [!TIP]
+> 图片压缩工具
+> https://compressor.io （最大文件大小上传10MB，压缩50次数/天，可选有损/无损压缩）
+> https://tinypng.com （TinyPNG还不少的第三方的客户端由第三方公司和热心的开发人员创建）
+
+> [!TIP]
 > 以下是我的常用图床：
 > * https://www.picgo.net （picgo自带图床）
 > * https://img.remit.ee （新发现的图床）
@@ -51,4 +56,5 @@
 * [Github 图床 PicGo 使用](https://wlcheng.cc/posts/github_picture_bed/)
 * [2025 年，我们还有哪些免费图床可用？（长期更新）](https://sspai.com/post/98911)
 * [【实用工具】使用exiftool批量按拍摄时间重命名照片](https://www.tianlejin.top/blog/exiftool/)
+* [十五个免费的图片压缩工具整理汇总-免费在线图片压缩工具和图片优化软件](https://wzfou.com/tupia-yasuo-gongju/)
 
