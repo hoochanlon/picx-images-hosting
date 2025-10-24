@@ -15,11 +15,11 @@
 > [!TIP]
 > 我的图床分类规划：
 > * category-covers：分类封面图
-> * media：微信公众号、小红书、B站等自媒体图
-> * photos：照片为主
-> * visuals：视觉艺术
+> * photos：个人照片为主
+> * visuals：视觉艺术收藏图
+> * anime：动漫收藏图
 > * uploads：随性上传不想分类的文件夹
-> * anime：动漫图
+> * special：可以是成就、攻略、或是纪念意义的图
 
 
 > [!TIP]
