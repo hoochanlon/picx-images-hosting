@@ -24,8 +24,10 @@
 
 > [!TIP]
 > 图片压缩工具
-> https://compressor.io （最大文件大小上传10MB，压缩50次数/天，可选有损/无损压缩）
-> https://tinypng.com （TinyPNG还不少的第三方的客户端由第三方公司和热心的开发人员创建）
+> * https://compressor.io （最大文件大小上传10MB，压缩50次数/天，可选有损/无损压缩）
+> * https://tinypng.com （TinyPNG还不少的第三方的客户端由第三方公司和热心的开发人员创建）
+> * https://zh.recompressor.com
+> * https://saerasoft.com/caesium
 
 > [!TIP]
 > 以下是我的常用图床：
