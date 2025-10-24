@@ -26,6 +26,7 @@
 > 图片压缩工具
 > * https://compressor.io （最大文件大小上传10MB，压缩50次数/天，可选有损/无损压缩）
 > * https://tinypng.com （第三方：https://github.com/chenjing1294/TinyGUI ）
+> * https://docsmall.com/image-compress
 > * https://zh.recompressor.com
 > * https://saerasoft.com/caesium
 
