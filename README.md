@@ -2,9 +2,9 @@
 
 
 > [!important]
-> 该repo做为自用图床存储，[PicX](https://github.com/XPoet/picx) 是一款基于 GitHub API 开发的图床工具，提供图片上传托管、生成图片链接和常用图片工具箱服，对于只使用GitHub的图床来说，比picgo方便。
->
+> 该repo做为自用图床存储，[PicX](https://github.com/XPoet/picx) 是一款基于 GitHub API 开发的图床工具，提供图片上传托管、生成图片链接和常用图片工具箱服，对于只使用GitHub的图床来说，比picgo方便。目前版本不支持完全哈希、完全时间戳将图片重命名，可参考方案：[图片重命名](/imgrename.md)。
 > * 快速使用：https://picx.xpoet.cn/#/upload
+> * 批量重命名工具：https://rename.jgrass.xyz （<date.modify:YYYY-MMDD-HHmmss>）
 
 
 > [!CAUTION]
@@ -50,7 +50,7 @@
 > 1. 国内GitHub的链接很慢，所以上传的照片需要用到[jsdelivr cdn](https://www.jsdelivr.com)、[statically.io](https://statically.io/)保证加载速度，单个文件最大限制20M
 > 1. jsdelivr cdn也被国内污染了，可以考虑使用：[Vercel-Netlify-JsDelivr-Mirror](https://github.com/JanePHPDev/Vercel-Netlify-JsDelivr-Mirror)，网站：https://cdn.mengze.vip
 > 1. 使用[cloudflare](https://www.cloudflare.com/zh-cn/)代理: https://github.com/XPoet/picx/issues/260#issuecomment-1845003856
-> 1. picx目前版本不支持完全哈希、完全时间戳将图片重命名，可参考方案：[图片重命名](/imgrename.md)。
+
 
 ---
 
