@@ -40,6 +40,7 @@
 > * https://imgchr.com （需要注册）
 > * https://sm.ms （需要注册）
 > * https://meee.com.tw （国外图床）
+> * https://imgtu.com （访客48小时删除图片）
 > * https://img.scdn.io (单张图片连续60天未访问则自动清理)
 
 
