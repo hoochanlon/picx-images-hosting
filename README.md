@@ -36,7 +36,6 @@
 > * https://www.picgo.net （picgo自带图床）
 > * https://img.remit.ee （新发现的图床）
 > * https://tu.zbhz.org （用了几年了，还算稳定）
-> * https://image.aibochinese.com （有不少上传动漫色图的）
 > * https://imgchr.com （需要注册）
 > * https://sm.ms （需要注册）
 > * https://meee.com.tw （国外图床）
