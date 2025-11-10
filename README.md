@@ -41,6 +41,7 @@
 > * https://111666.best
 > * https://www.picgo.net （picgo自带图床)
 > * https://image.aibochinese.com （不时半夜会停机维护）
+> * https://imgchest.com （建站成本高，目前老外一人维护）
 >   
 > 稳定的图床
 > 
