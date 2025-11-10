@@ -51,9 +51,11 @@
 > 
 > * https://tu.zbhz.org （自用了几年的）
 > * https://postimages.org （很稳，但被墙了）
-> * https://imgbox.com （很稳，看起来没被墙）
+> * https://imgbox.com （很稳，不用注册，看起来没被墙）
 > * https://imgchr.com （很稳，国内，需要注册，以前不用）
 > * https://sm.ms （很稳，香港，需要注册，以前不用）
+> * https://www.flickr.com （很稳，知名国外图床）
+> * https://imgur.com （很稳，知名国外图床）
 >   
 > 适合临时贴图
 > 
