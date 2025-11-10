@@ -35,24 +35,28 @@
 > [!TIP]
 > 以下是我的图床收集：
 > 
-> 新发现的图床，没用过不清楚稳定性
+> 新发现的图床，没用过不清楚稳定性，但知道的，我会备注
 > 
 > * https://img.remit.ee 
 > * https://111666.best
+> * https://freeimage.host
+> * https://urusai.cc （发帖人表示不会删除儿童色情）
 > * https://www.picgo.net （picgo自带图床)
 > * https://image.aibochinese.com （不时半夜会停机维护）
 > * https://imgchest.com （建站成本高，目前老外一人维护）
+> * https://catbox.moe （稳定性极差，经常站点挂了）
 >   
 > 稳定的图床
 > 
 > * https://tu.zbhz.org （自用了几年的）
 > * https://postimages.org （很稳，但被墙了）
+> * https://imgbox.com（很稳，看起来没被墙）
 > * https://imgchr.com （需要注册，以前不用）
 > * https://sm.ms （需要注册，以前不用）
 >   
 > 适合临时贴图
 > 
-> * https://meee.com.tw （网址在国外，会慢一些）
+> * https://meee.com.tw （站点在国外，会慢一些）
 > * https://imgtu.com （访客48小时删除图片）
 > * https://img.scdn.io (单张图片连续60天未访问则自动清理)
 
@@ -82,11 +86,15 @@
   <a href="https://sspai.com/post/98911">2025 年，我们还有哪些免费图床可用？（长期更新）</a>
 </p>
 <p align="center">
+  <a href="https://disp.cc/ptt/C_Chat/1eiUQz35">[閒聊] imgur的替代圖床測試</a>
+</p>
+<p align="center">
   <a href="https://www.tianlejin.top/blog/exiftool/">【实用工具】使用exiftool批量按拍摄时间重命名照片</a>
 </p>
 <p align="center">
   <a href="https://wzfou.com/tupia-yasuo-gongju/">十五个免费的图片压缩工具整理汇总-免费在线图片压缩工具和图片优化软件</a>
 </p>
+
 
 
 
