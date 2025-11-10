@@ -55,11 +55,26 @@
 
 ---
 
-参考文章：
+<p align="center">
+  <strong><span style="font-size: 1.2em;">参考文章</span></strong>
+</p>
 
-* [jsdmirror目介绍与使用教程](https://blog.jsdmirror.com/2.html)
-* [Github 图床 PicGo 使用](https://wlcheng.cc/posts/github_picture_bed/)
-* [2025 年，我们还有哪些免费图床可用？（长期更新）](https://sspai.com/post/98911)
-* [【实用工具】使用exiftool批量按拍摄时间重命名照片](https://www.tianlejin.top/blog/exiftool/)
-* [十五个免费的图片压缩工具整理汇总-免费在线图片压缩工具和图片优化软件](https://wzfou.com/tupia-yasuo-gongju/)
+<p align="center">
+  <a href="https://blog.jsdmirror.com/2.html">jsdmirror目介绍与使用教程</a>
+</p>
+<p align="center">
+  <a href="https://wlcheng.cc/posts/github_picture_bed/">Github 图床 PicGo 使用</a>
+</p>
+<p align="center">
+  <a href="https://sspai.com/post/98911">2025 年，我们还有哪些免费图床可用？（长期更新）</a>
+</p>
+<p align="center">
+  <a href="https://www.tianlejin.top/blog/exiftool/">【实用工具】使用exiftool批量按拍摄时间重命名照片</a>
+</p>
+<p align="center">
+  <a href="https://wzfou.com/tupia-yasuo-gongju/">十五个免费的图片压缩工具整理汇总-免费在线图片压缩工具和图片优化软件</a>
+</p>
+
+
+
 
