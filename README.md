@@ -34,13 +34,20 @@
 
 > [!TIP]
 > 以下是我的常用图床：
-> * https://www.picgo.net （picgo自带图床）
-> * https://img.remit.ee （新发现的图床）
-> * https://tu.zbhz.org （用了几年了，还算稳定）
-> * https://image.aibochinese.com （半夜会停机维护）
+> * https://www.picgo.net （picgo自带图床)
+> 新发现的图床
+> * https://img.remit.ee 
+> * https://111666.best
+> * https://image.aibochinese.com （不时半夜会停机维护）
+> 稳定的图床
+> * https://tu.zbhz.org （自用了几年的）
+> * https://postimages.org （很稳，但被墙了）
 > * https://imgchr.com （需要注册，以前不用）
 > * https://sm.ms （需要注册，以前不用）
-> * https://meee.com.tw （国外图床）
+
+> 国外图床
+> * https://meee.com.tw
+> 临时贴图可用
 > * https://imgtu.com （访客48小时删除图片）
 > * https://img.scdn.io (单张图片连续60天未访问则自动清理)
 
