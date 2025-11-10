@@ -51,7 +51,7 @@
 > 
 > * https://tu.zbhz.org （自用了几年的）
 > * https://postimages.org （很稳，但被墙了）
-> * https://imgbox.com（很稳，看起来没被墙）
+> * https://imgbox.com （很稳，看起来没被墙）
 > * https://imgchr.com （需要注册，以前不用）
 > * https://sm.ms （需要注册，以前不用）
 >   
