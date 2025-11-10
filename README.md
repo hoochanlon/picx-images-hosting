@@ -6,6 +6,7 @@
 > * 快速使用：https://picx.xpoet.cn/#/upload
 > * 其他免费图片托管解决方案：[cf-pages/Telegraph-Image](https://github.com/cf-pages/Telegraph-Image)
 > * 批量重命名工具：https://rename.jgrass.xyz （`<date.modify:YYYY-MMDD-HHmmss>`）
+> * 网站故障检测工具：https://www.websiteplanet.com/zh-hans/webtools/down-or-not
 
 
 > [!CAUTION]
