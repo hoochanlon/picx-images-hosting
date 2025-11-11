@@ -66,11 +66,9 @@
 
 
 > [!note]
-> 1. GitHub存储限制最多可以存5G左右
-> 1. 一般电脑截图1-2M，Mac差不多翻倍，手机照片甚至十兆几十兆不等，所以需要 squoosh 进行图片压缩
-> 1. 国内GitHub的链接很慢，所以上传的照片需要用到[jsdelivr cdn](https://www.jsdelivr.com)、[statically.io](https://statically.io/)保证加载速度，单个文件最大限制20M
-> 1. jsdelivr cdn也被国内污染了，可以考虑使用：[Vercel-Netlify-JsDelivr-Mirror](https://github.com/JanePHPDev/Vercel-Netlify-JsDelivr-Mirror)，网站：https://cdn.mengze.vip
-> 1. 使用[cloudflare](https://www.cloudflare.com/zh-cn/)代理: https://github.com/XPoet/picx/issues/260#issuecomment-1845003856
+> 1. GitHub存储限制最多可以存5G左右；但一般电脑截图1-2M，Mac差不多翻倍，手机照片甚至十兆几十兆不等，即使有5G，也容易榨干存储空间，所以需要图压软件降低图片大小
+> 1. 国内GitHub的链接很慢，所以上传的照片需要用到[jsdelivr cdn](https://www.jsdelivr.com)、[statically.io](https://statically.io/)保证加载速度，但这些cdn也被国内污染了，可以考虑使用：https://www.webcache.cn
+> 1. 可使用[cloudflare](https://www.cloudflare.com/zh-cn/)代理，见: https://github.com/XPoet/picx/issues/260#issuecomment-1845003856
 > 1. 网站有效性链接检测：https://httpstatus.io 、 https://http.app
 
 
