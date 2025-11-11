@@ -79,7 +79,7 @@
 </p>
 
 <p align="center">
-  <a href="https://blog.jsdmirror.com/2.html">jsdmirror目介绍与使用教程</a>
+  <a href="https://xoyozo.net/Blog/Details/picsum-photos">分享一个可以生成随机图片的网址</a>
 </p>
 <p align="center">
   <a href="https://wlcheng.cc/posts/github_picture_bed/">Github 图床 PicGo 使用</a>
