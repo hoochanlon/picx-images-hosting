@@ -1,19 +1,39 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Index of .</title></head><body>
-<h1>Index of .</h1>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<title>Index of .</title>
+<style>
+    body { font-family: Arial, sans-serif; line-height: 1.8; padding: 0 20px; }
+    ul { list-style: none; padding-left: 0; }
+    li { margin: 4px 0; }
+    a { text-decoration: none; color: #0070f3; }
+    a:hover { text-decoration: underline; }
+
+    /* 顶部导航栏 */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      background: #f0f0f0;
+      border-bottom: 1px solid #ccc;
+      padding: 10px 20px;
+      z-index: 100;
+    }
+    .container { margin-top: 70px; }
+
+    /* 图标 */
+    .file::before {
+      content: "📄 ";
+    }
+    .folder::before {
+      content: "📁 ";
+    }
+  </style>
+</head><body>
+<div class="topbar">
+<strong>📂 Index Navigation:</strong> 
+<a href="./index.html">Home</a>
+</div>
+<div class="container">
+<h2>Index of .</h2>
 <ul>
-<li><a href="README.md">README.md</a></li>
-<li><a href="anime/">anime/</a></li>
-<li><a href="category-covers/">category-covers/</a></li>
-<li><a href="fkca/">fkca/</a></li>
-<li><a href="generate_index.sh">generate_index.sh</a></li>
-<li><a href="imgrename.md">imgrename.md</a></li>
-<li><a href="photos/">photos/</a></li>
-<li><a href="special/">special/</a></li>
-<li><a href="test/">test/</a></li>
-<li><a href="uploads/">uploads/</a></li>
-<li><a href="visuals/">visuals/</a></li>
 </ul>
-<hr>
-<div style="margin-top:20px;">
-<a href="index.html">index.html</a><br>
 </div></body></html>
