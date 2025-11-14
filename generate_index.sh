@@ -35,7 +35,7 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   /* 图标 */
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
-  .image::before  { content: "🖼️ "; }
+  .image::before  { content: "🖼 "; }
 
   /* 预览按钮 */
   .preview-btn {
