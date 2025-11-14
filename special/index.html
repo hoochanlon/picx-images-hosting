@@ -10,13 +10,13 @@
     align-items: center;
   }
 
-  /* 文件名区域（固定宽度 650px，使按钮对齐在蓝框区域） */
+  /* 文件名区域（固定宽度 650px，使按钮对齐在“蓝框”区域） */
   .left {
     display: flex;
     align-items: center;
     gap: 6px;
     flex: 0 0 650px;   /* ⭐ 文件名区域固定宽度 */
-    min-width: 0;      /* 允许缩略号 */
+    min-width: 0;      /* 允许内部出现省略号 */
   }
 
   .right {
@@ -56,6 +56,7 @@
   }
   .preview-btn:hover, .copy-btn:hover { background: #ddd; }
 
+  /* Lightbox 整体遮罩层 */
   #lightbox {
     display: none;
     position: fixed;
@@ -67,11 +68,81 @@
     z-index: 2000;
   }
 
-  #lightbox img {
+  .lightbox-content {
     max-width: 90%;
     max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lightbox-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #lightbox-img {
+    max-width: 80vw;
+    max-height: 70vh;
     border-radius: 6px;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    background: #222;
+  }
+
+  .lb-nav {
+    background: rgba(255,255,255,0.85);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .lb-nav:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .lightbox-footer {
+    width: 100%;
+    background: rgba(0,0,0,0.65);
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.85em;
+    box-sizing: border-box;
+  }
+
+  .lightbox-url-text {
+    margin-bottom: 4px;
+    word-break: break-all;
+  }
+
+  .lightbox-url-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  #lightbox-url-input {
+    flex: 1;
+    font-size: 0.85em;
+    padding: 4px 6px;
+    border-radius: 4px;
+    border: 1px solid #444;
+    background: #111;
+    color: #fff;
+  }
+
+  .breadcrumb {
+    font-size: 1em;
+    margin-bottom: 10px;
   }
 
   .file-name {
@@ -81,32 +152,107 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-
-  .breadcrumb {
-    font-size: 1em;
-    margin-bottom: 10px;
-  }
 </style>
 <script>
-function showImage(src) {
+let imageList = [];   // 每个元素: { src, fullUrl }
+let currentIndex = -1;
+
+function openLightbox(index) {
   const lb = document.getElementById("lightbox");
   const img = document.getElementById("lightbox-img");
-  img.src = src;
+  const urlText = document.getElementById("lightbox-url");
+  const urlInput = document.getElementById("lightbox-url-input");
+
+  if (!imageList.length || index < 0 || index >= imageList.length) return;
+
+  currentIndex = index;
+  const item = imageList[index];
+
+  img.src = item.src;
+  if (urlText) urlText.textContent = item.fullUrl;
+  if (urlInput) urlInput.value = item.fullUrl;
+
+  // 更新左右按钮可用状态
+  const prevBtn = document.getElementById("lb-prev");
+  const nextBtn = document.getElementById("lb-next");
+  if (prevBtn) prevBtn.disabled = (index <= 0);
+  if (nextBtn) nextBtn.disabled = (index >= imageList.length - 1);
+
   lb.style.display = "flex";
 }
 
-function hideLightbox() {
-  document.getElementById("lightbox").style.display = "none";
+function closeLightbox() {
+  const lb = document.getElementById("lightbox");
+  if (lb) lb.style.display = "none";
 }
 
+function showPrev() {
+  if (currentIndex > 0) {
+    openLightbox(currentIndex - 1);
+  }
+}
+
+function showNext() {
+  if (currentIndex >= 0 && currentIndex < imageList.length - 1) {
+    openLightbox(currentIndex + 1);
+  }
+}
+
+// 列表里的“复制url”按钮：传入的是相对路径 url_path
 function copyPath(src) {
   const fullUrl = "https://hoochanlon.github.io/picx-images-hosting/" + src.replace(/^\.\//, "");
-  navigator.clipboard.writeText(fullUrl);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(fullUrl);
+  } else {
+    const temp = document.createElement("input");
+    temp.value = fullUrl;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand("copy");
+    document.body.removeChild(temp);
+  }
 }
+
+// Lightbox 底部区域的“复制url”
+function copyCurrentUrl() {
+  const input = document.getElementById("lightbox-url-input");
+  if (!input) return;
+  input.select();
+  input.setSelectionRange(0, 99999);
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(input.value);
+  } else {
+    document.execCommand("copy");
+  }
+}
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") {
+    closeLightbox();
+  } else if (e.key === "ArrowLeft") {
+    showPrev();
+  } else if (e.key === "ArrowRight") {
+    showNext();
+  }
+});
 </script>
 </head><body>
-<div id="lightbox" onclick="hideLightbox()">
-  <img id="lightbox-img" src="">
+<div id="lightbox" onclick="if (event.target === this) closeLightbox()">
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <div class="lightbox-main">
+      <button id="lb-prev" class="lb-nav" onclick="event.stopPropagation(); showPrev()">&#8592;</button>
+      <img id="lightbox-img" src="">
+      <button id="lb-next" class="lb-nav" onclick="event.stopPropagation(); showNext()">&#8594;</button>
+    </div>
+    <div class="lightbox-footer">
+      <div id="lightbox-url" class="lightbox-url-text"></div>
+      <div class="lightbox-url-actions">
+        <input id="lightbox-url-input" readonly>
+        <button class="copy-btn" onclick="copyCurrentUrl()">复制url</button>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="topbar"><strong>📂 Index Navigation:</strong> <a href="https://hoochanlon.github.io/picx-images-hosting">Home</a>
  | <a href="../">⬆ Go Up</a>
@@ -120,116 +266,130 @@ function copyPath(src) {
                 <a href="caffe.png" class="file-name">caffe.png</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('caffe.png')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(0)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/caffe.png')">复制url</span>
               </span>
             </li>
+<script>imageList[0] = {src: "caffe.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/caffe.png"};</script>
 <li>
               <span class="left image">
                 <a href="404.png" class="file-name">404.png</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('404.png')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(1)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/404.png')">复制url</span>
               </span>
             </li>
+<script>imageList[1] = {src: "404.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/404.png"};</script>
 <li>
               <span class="left image">
                 <a href="default.png" class="file-name">default.png</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('default.png')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(2)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/default.png')">复制url</span>
               </span>
             </li>
+<script>imageList[2] = {src: "default.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/default.png"};</script>
 <li>
               <span class="left image">
                 <a href="mastercard-btc.png" class="file-name">mastercard-btc.png</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('mastercard-btc.png')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(3)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/mastercard-btc.png')">复制url</span>
               </span>
             </li>
+<script>imageList[3] = {src: "mastercard-btc.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/mastercard-btc.png"};</script>
 <li>
               <span class="left image">
                 <a href="example.jpg" class="file-name">example.jpg</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('example.jpg')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(4)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/example.jpg')">复制url</span>
               </span>
             </li>
+<script>imageList[4] = {src: "example.jpg", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/example.jpg"};</script>
 <li>
               <span class="left image">
                 <a href="appleid.png" class="file-name">appleid.png</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('appleid.png')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(5)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/appleid.png')">复制url</span>
               </span>
             </li>
+<script>imageList[5] = {src: "appleid.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/appleid.png"};</script>
 <li>
               <span class="left image">
                 <a href="author.png" class="file-name">author.png</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('author.png')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(6)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/author.png')">复制url</span>
               </span>
             </li>
+<script>imageList[6] = {src: "author.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/author.png"};</script>
 <li>
               <span class="left image">
                 <a href="loading.gif" class="file-name">loading.gif</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('loading.gif')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(7)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/loading.gif')">复制url</span>
               </span>
             </li>
+<script>imageList[7] = {src: "loading.gif", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/loading.gif"};</script>
 <li>
               <span class="left image">
                 <a href="404.webp" class="file-name">404.webp</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('404.webp')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(8)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/404.webp')">复制url</span>
               </span>
             </li>
+<script>imageList[8] = {src: "404.webp", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/404.webp"};</script>
 <li>
               <span class="left image">
                 <a href="eromaga-404.png" class="file-name">eromaga-404.png</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('eromaga-404.png')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(9)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/eromaga-404.png')">复制url</span>
               </span>
             </li>
+<script>imageList[9] = {src: "eromaga-404.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/eromaga-404.png"};</script>
 <li>
               <span class="left image">
                 <a href="doge-404.png" class="file-name">doge-404.png</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('doge-404.png')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(10)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/doge-404.png')">复制url</span>
               </span>
             </li>
+<script>imageList[10] = {src: "doge-404.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/doge-404.png"};</script>
 <li>
               <span class="left image">
                 <a href="test.webp" class="file-name">test.webp</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('test.webp')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(11)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/test.webp')">复制url</span>
               </span>
             </li>
+<script>imageList[11] = {src: "test.webp", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/test.webp"};</script>
 <li>
               <span class="left image">
                 <a href="web-development-workflow.png" class="file-name">web-development-workflow.png</a>
               </span>
               <span class="right">
-                <span class="preview-btn" onclick="showImage('web-development-workflow.png')">预览</span>
+                <span class="preview-btn" onclick="openLightbox(12)">预览</span>
                 <span class="copy-btn" onclick="copyPath('special/web-development-workflow.png')">复制url</span>
               </span>
             </li>
-</ul></div></body></html>
+<script>imageList[12] = {src: "web-development-workflow.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/web-development-workflow.png"};</script>
+</ul>
+</div></body></html>
