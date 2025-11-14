@@ -1,31 +1,28 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <title>Index of ./photos</title>
 <style>
-    body { font-family: Arial, sans-serif; line-height: 1.8; padding: 0 20px; }
+    body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
     ul { list-style: none; padding-left: 0; }
-    li { margin: 4px 0; }
-    a { text-decoration: none; color: #0070f3; }
+    li { margin: 5px 0; }
+    a { color: #0366d6; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* 顶部导航栏 */
+    /* 顶部固定导航栏 */
     .topbar {
       position: fixed;
       top: 0; left: 0;
       width: 100%;
-      background: #f0f0f0;
+      background: #f7f7f7;
       border-bottom: 1px solid #ccc;
-      padding: 10px 20px;
-      z-index: 100;
+      padding: 12px 20px;
+      z-index: 1000;
     }
-    .container { margin-top: 70px; }
+
+    .container { margin-top: 75px; }
 
     /* 图标 */
-    .file::before {
-      content: "📄 ";
-    }
-    .folder::before {
-      content: "📁 ";
-    }
+    .file::before   { content: "📄 "; }
+    .folder::before { content: "📁 "; }
   </style>
 </head><body>
 <div class="topbar">
@@ -36,5 +33,6 @@
 <div class="container">
 <h2>Index of ./photos</h2>
 <ul>
+<li class="file"><a href="说明.txt">说明.txt</a></li>
 </ul>
 </div></body></html>
