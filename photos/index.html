@@ -1,70 +1,83 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>Index of photos</title>
+<title>Index of ./photos</title>
 <style>
-    body { font-family: Arial, sans-serif; padding: 10px 20px; line-height: 1.6; }
+  body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
+  ul { list-style: none; padding-left: 0; }
 
-    a { color: #0366d6; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+  li {
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+  }
 
-    ul { list-style: none; padding-left: 0; }
-    .item-row { display: flex; align-items: center; margin-bottom: 4px; }
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 6px;    
+  }
 
-    .filename {
-      display: inline-block;
-      max-width: 240px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      margin-right: 8px;
-    }
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 
-    .btn {
-      margin-left: 6px;
-      padding: 2px 6px;
-      font-size: 12px;
-      cursor: pointer;
-      border: 1px solid #aaa;
-      border-radius: 4px;
-      background: #eee;
-    }
-    .btn:hover { background: #ddd; }
+  a { color: #0366d6; text-decoration: none; }
+  a:hover { text-decoration: underline; }
 
-    /* 预览灯箱 */
-    #lightbox {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-    #lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-      border: 6px solid white;
-      border-radius: 6px;
-    }
+  .topbar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    background: #f7f7f7;
+    border-bottom: 1px solid #ccc;
+    padding: 12px 20px;
+    z-index: 1000;
+  }
 
-  </style>
-</head><body>
-<div style="margin-bottom: 16px;"><strong>📁 Index Navigation:</strong> 
-        <a href="">Home</a>
- | <a href="../">⬆ Go Up</a>
-</div>
-<h2>Index of ./photos</h2>
-<ul>
-<li class="item-row">
-🖼️
-<a class="filename" href="说明.txt">说明.txt</a>
-<button class="btn" onclick="copyPath()">复制url</button>
-</li>
-</ul>
-<div id="lightbox" onclick="hideLightbox()">
-  <img id="lightbox-img">
-</div>
+  .container { margin-top: 80px; }
 
+  .file::before   { content: "📄 "; }
+  .folder::before { content: "📁 "; }
+  .image::before  { content: "🖼 "; }
+
+  .preview-btn, .copy-btn {
+    padding: 2px 6px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+  }
+  .preview-btn:hover, .copy-btn:hover { background: #ddd; }
+
+  #lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.75);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+
+  #lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 6px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  }
+
+  .file-name {
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
 <script>
 function showImage(src) {
   const lb = document.getElementById("lightbox");
@@ -72,13 +85,33 @@ function showImage(src) {
   img.src = src;
   lb.style.display = "flex";
 }
+
 function hideLightbox() {
   document.getElementById("lightbox").style.display = "none";
 }
 
-function copyPath(path) {
-  const fullUrl = "/" + path.replace(/^\//, "");
+function copyPath(src) {
+  const fullUrl = "https://hoochanlon.github.io/picx-images-hosting/" + src.replace(/^\.\//, "");
   navigator.clipboard.writeText(fullUrl);
 }
 </script>
-</body></html>
+</head><body>
+<div id="lightbox" onclick="hideLightbox()">
+  <img id="lightbox-img" src="">
+</div>
+<div class="topbar">
+<strong>📂 Index Navigation:</strong> 
+<a href="https://hoochanlon.github.io/picx-images-hosting">Home</a>
+ | <a href="../">⬆ Go Up</a>
+</div>
+<div class="container">
+<h2>Index of ./photos</h2>
+<ul>
+<li>
+              <span class="left file"><a href="说明.txt" class="file-name">说明.txt</a></span>
+              <span class="right">
+                <span class="copy-btn" onclick="copyPath('photos/说明.txt')">复制url</span>
+              </span>
+            </li>
+</ul>
+</div></body></html>
