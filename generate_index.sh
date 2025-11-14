@@ -4,7 +4,12 @@ echo "Generating index.html..."
 
 BASE_URL="https://hoochanlon.github.io/picx-images-hosting"
 
-find . -type d -not -path '*/.git/*' | while read -r DIR; do
+# 排除 .git/ .github/ .deploy 文件夹和文件 .settings 文件
+find . -type d \
+  -not -path '*/.git/*' \
+  -not -path '*/.github/*' \
+  -not -path '*/.deploy' \
+  -not -path '*/.settings' | while read -r DIR; do
   INDEX="$DIR/index.html"
 
   echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">" > "$INDEX"
