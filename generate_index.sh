@@ -8,11 +8,15 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">" > "$INDEX"
   echo "<title>Index of $DIR</title>" >> "$INDEX"
 
+  ###############################
+  # CSS（紧凑列表 + 预览按钮 + Lightbox + 复制路径）
+  ###############################
   cat >> "$INDEX" <<'EOF'
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
   ul { list-style: none; padding-left: 0; }
-  li { margin: 6px 0; display: flex; align-items: center; }
+  li { margin: 6px 0; display: flex; align-items: center; justify-content: space-between; }
+
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
@@ -30,7 +34,7 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
 
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
-  .image::before  { content: "🖼 "; }
+  .image::before  { content: "🖼️ "; }
 
   .preview-btn, .copy-btn {
     margin-left: 10px;
@@ -61,7 +65,7 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   }
 
   .file-name {
-    max-width: 240px;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -69,6 +73,9 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
 </style>
 EOF
 
+  ###############################
+  # JS（Lightbox + 复制路径功能）
+  ###############################
   cat >> "$INDEX" <<'EOF'
 <script>
 function showImage(src) {
@@ -81,8 +88,9 @@ function hideLightbox() {
   document.getElementById("lightbox").style.display = "none";
 }
 function copyPath(path) {
-  navigator.clipboard.writeText(path).then(() => {
-    alert("复制成功: " + path);
+  const fullUrl = "https://hoochanlon.github.io" + path;
+  navigator.clipboard.writeText(fullUrl).then(() => {
+    alert("已复制路径: " + fullUrl);
   });
 }
 </script>
@@ -90,12 +98,18 @@ EOF
 
   echo "</head><body>" >> "$INDEX"
 
+  ###############################
+  # Lightbox HTML 容器
+  ###############################
   cat >> "$INDEX" <<'EOF'
 <div id="lightbox" onclick="hideLightbox()">
   <img id="lightbox-img" src="">
 </div>
 EOF
 
+  ###############################
+  # 顶部导航
+  ###############################
   echo "<div class=\"topbar\">" >> "$INDEX"
   echo "<strong>📂 Index Navigation:</strong> " >> "$INDEX"
   echo "<a href=\"./index.html\">Home</a>" >> "$INDEX"
@@ -104,6 +118,9 @@ EOF
   fi
   echo "</div>" >> "$INDEX"
 
+  ###############################
+  # 文件列表
+  ###############################
   echo "<div class=\"container\">" >> "$INDEX"
   echo "<h2>Index of $DIR</h2>" >> "$INDEX"
   echo "<ul>" >> "$INDEX"
@@ -118,11 +135,11 @@ EOF
       echo "<li class=\"folder\"><a href=\"$base/\" class=\"file-name\">$base/</a></li>" >> "$INDEX"
     elif [[ "$ext" =~ ^(jpg|jpeg|png|gif|webp|svg)$ ]]; then
       echo "<li class=\"image\"><a href=\"$base\" class=\"file-name\">$base</a>
-        <span class=\"preview-btn\" onclick=\"showImage('$base')\">预览</span>
-        <span class=\"copy-btn\" onclick=\"copyPath('$base')\">复制url</span></li>" >> "$INDEX"
+            <span class=\"preview-btn\" onclick=\"showImage('$base')\">预览</span>
+            <span class=\"copy-btn\" onclick=\"copyPath('$base')\">复制url</span></li>" >> "$INDEX"
     else
       echo "<li class=\"file\"><a href=\"$base\" class=\"file-name\">$base</a>
-        <span class=\"copy-btn\" onclick=\"copyPath('$base')\">复制url</span></li>" >> "$INDEX"
+            <span class=\"copy-btn\" onclick=\"copyPath('$base')\">复制url</span></li>" >> "$INDEX"
     fi
   done
 
@@ -132,3 +149,4 @@ EOF
 done
 
 echo "index.html generation complete."
+

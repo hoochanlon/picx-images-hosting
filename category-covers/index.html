@@ -3,7 +3,8 @@
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
   ul { list-style: none; padding-left: 0; }
-  li { margin: 6px 0; display: flex; align-items: center; }
+  li { margin: 6px 0; display: flex; align-items: center; justify-content: space-between; }
+
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
@@ -21,7 +22,7 @@
 
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
-  .image::before  { content: "🖼 "; }
+  .image::before  { content: "🖼️ "; }
 
   .preview-btn, .copy-btn {
     margin-left: 10px;
@@ -52,7 +53,7 @@
   }
 
   .file-name {
-    max-width: 240px;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -69,8 +70,9 @@ function hideLightbox() {
   document.getElementById("lightbox").style.display = "none";
 }
 function copyPath(path) {
-  navigator.clipboard.writeText(path).then(() => {
-    alert("复制成功: " + path);
+  const fullUrl = "https://hoochanlon.github.io" + path;
+  navigator.clipboard.writeText(fullUrl).then(() => {
+    alert("已复制路径: " + fullUrl);
   });
 }
 </script>
@@ -87,40 +89,40 @@ function copyPath(path) {
 <h2>Index of ./category-covers</h2>
 <ul>
 <li class="image"><a href="yogioh.webp" class="file-name">yogioh.webp</a>
-        <span class="preview-btn" onclick="showImage('yogioh.webp')">预览</span>
-        <span class="copy-btn" onclick="copyPath('yogioh.webp')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('yogioh.webp')">预览</span>
+            <span class="copy-btn" onclick="copyPath('yogioh.webp')">复制url</span></li>
 <li class="image"><a href="coding.webp" class="file-name">coding.webp</a>
-        <span class="preview-btn" onclick="showImage('coding.webp')">预览</span>
-        <span class="copy-btn" onclick="copyPath('coding.webp')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('coding.webp')">预览</span>
+            <span class="copy-btn" onclick="copyPath('coding.webp')">复制url</span></li>
 <li class="image"><a href="blue-butterfly.webp" class="file-name">blue-butterfly.webp</a>
-        <span class="preview-btn" onclick="showImage('blue-butterfly.webp')">预览</span>
-        <span class="copy-btn" onclick="copyPath('blue-butterfly.webp')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('blue-butterfly.webp')">预览</span>
+            <span class="copy-btn" onclick="copyPath('blue-butterfly.webp')">复制url</span></li>
 <li class="image"><a href="yogioh-1.webp" class="file-name">yogioh-1.webp</a>
-        <span class="preview-btn" onclick="showImage('yogioh-1.webp')">预览</span>
-        <span class="copy-btn" onclick="copyPath('yogioh-1.webp')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('yogioh-1.webp')">预览</span>
+            <span class="copy-btn" onclick="copyPath('yogioh-1.webp')">复制url</span></li>
 <li class="image"><a href="renshenga.webp" class="file-name">renshenga.webp</a>
-        <span class="preview-btn" onclick="showImage('renshenga.webp')">预览</span>
-        <span class="copy-btn" onclick="copyPath('renshenga.webp')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('renshenga.webp')">预览</span>
+            <span class="copy-btn" onclick="copyPath('renshenga.webp')">复制url</span></li>
 <li class="image"><a href="author.webp" class="file-name">author.webp</a>
-        <span class="preview-btn" onclick="showImage('author.webp')">预览</span>
-        <span class="copy-btn" onclick="copyPath('author.webp')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('author.webp')">预览</span>
+            <span class="copy-btn" onclick="copyPath('author.webp')">复制url</span></li>
 <li class="image"><a href="woniu.webp" class="file-name">woniu.webp</a>
-        <span class="preview-btn" onclick="showImage('woniu.webp')">预览</span>
-        <span class="copy-btn" onclick="copyPath('woniu.webp')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('woniu.webp')">预览</span>
+            <span class="copy-btn" onclick="copyPath('woniu.webp')">复制url</span></li>
 <li class="image"><a href="kaoshi.webp" class="file-name">kaoshi.webp</a>
-        <span class="preview-btn" onclick="showImage('kaoshi.webp')">预览</span>
-        <span class="copy-btn" onclick="copyPath('kaoshi.webp')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('kaoshi.webp')">预览</span>
+            <span class="copy-btn" onclick="copyPath('kaoshi.webp')">复制url</span></li>
 <li class="image"><a href="blog-post.webp" class="file-name">blog-post.webp</a>
-        <span class="preview-btn" onclick="showImage('blog-post.webp')">预览</span>
-        <span class="copy-btn" onclick="copyPath('blog-post.webp')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('blog-post.webp')">预览</span>
+            <span class="copy-btn" onclick="copyPath('blog-post.webp')">复制url</span></li>
 <li class="image"><a href="archived.webp" class="file-name">archived.webp</a>
-        <span class="preview-btn" onclick="showImage('archived.webp')">预览</span>
-        <span class="copy-btn" onclick="copyPath('archived.webp')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('archived.webp')">预览</span>
+            <span class="copy-btn" onclick="copyPath('archived.webp')">复制url</span></li>
 <li class="image"><a href="cloud.jpeg" class="file-name">cloud.jpeg</a>
-        <span class="preview-btn" onclick="showImage('cloud.jpeg')">预览</span>
-        <span class="copy-btn" onclick="copyPath('cloud.jpeg')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('cloud.jpeg')">预览</span>
+            <span class="copy-btn" onclick="copyPath('cloud.jpeg')">复制url</span></li>
 <li class="image"><a href="macos-wallpaper.webp" class="file-name">macos-wallpaper.webp</a>
-        <span class="preview-btn" onclick="showImage('macos-wallpaper.webp')">预览</span>
-        <span class="copy-btn" onclick="copyPath('macos-wallpaper.webp')">复制url</span></li>
+            <span class="preview-btn" onclick="showImage('macos-wallpaper.webp')">预览</span>
+            <span class="copy-btn" onclick="copyPath('macos-wallpaper.webp')">复制url</span></li>
 </ul>
 </div></body></html>

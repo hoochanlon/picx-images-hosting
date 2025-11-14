@@ -3,7 +3,8 @@
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
   ul { list-style: none; padding-left: 0; }
-  li { margin: 6px 0; display: flex; align-items: center; }
+  li { margin: 6px 0; display: flex; align-items: center; justify-content: space-between; }
+
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
@@ -21,7 +22,7 @@
 
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
-  .image::before  { content: "🖼 "; }
+  .image::before  { content: "🖼️ "; }
 
   .preview-btn, .copy-btn {
     margin-left: 10px;
@@ -52,7 +53,7 @@
   }
 
   .file-name {
-    max-width: 240px;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -69,8 +70,9 @@ function hideLightbox() {
   document.getElementById("lightbox").style.display = "none";
 }
 function copyPath(path) {
-  navigator.clipboard.writeText(path).then(() => {
-    alert("复制成功: " + path);
+  const fullUrl = "https://hoochanlon.github.io" + path;
+  navigator.clipboard.writeText(fullUrl).then(() => {
+    alert("已复制路径: " + fullUrl);
   });
 }
 </script>
@@ -87,6 +89,6 @@ function copyPath(path) {
 <h2>Index of ./test</h2>
 <ul>
 <li class="file"><a href="1.txt" class="file-name">1.txt</a>
-        <span class="copy-btn" onclick="copyPath('1.txt')">复制url</span></li>
+            <span class="copy-btn" onclick="copyPath('1.txt')">复制url</span></li>
 </ul>
 </div></body></html>

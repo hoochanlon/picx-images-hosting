@@ -3,7 +3,8 @@
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
   ul { list-style: none; padding-left: 0; }
-  li { margin: 6px 0; display: flex; align-items: center; }
+  li { margin: 6px 0; display: flex; align-items: center; justify-content: space-between; }
+
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
@@ -21,7 +22,7 @@
 
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
-  .image::before  { content: "🖼 "; }
+  .image::before  { content: "🖼️ "; }
 
   .preview-btn, .copy-btn {
     margin-left: 10px;
@@ -52,7 +53,7 @@
   }
 
   .file-name {
-    max-width: 240px;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -69,8 +70,9 @@ function hideLightbox() {
   document.getElementById("lightbox").style.display = "none";
 }
 function copyPath(path) {
-  navigator.clipboard.writeText(path).then(() => {
-    alert("复制成功: " + path);
+  const fullUrl = "https://hoochanlon.github.io" + path;
+  navigator.clipboard.writeText(fullUrl).then(() => {
+    alert("已复制路径: " + fullUrl);
   });
 }
 </script>
@@ -89,23 +91,23 @@ function copyPath(path) {
 <li class="folder"><a href=".git/" class="file-name">.git/</a></li>
 <li class="folder"><a href="visuals/" class="file-name">visuals/</a></li>
 <li class="file"><a href="imgrename.md" class="file-name">imgrename.md</a>
-        <span class="copy-btn" onclick="copyPath('imgrename.md')">复制url</span></li>
+            <span class="copy-btn" onclick="copyPath('imgrename.md')">复制url</span></li>
 <li class="folder"><a href=".github/" class="file-name">.github/</a></li>
 <li class="folder"><a href="anime/" class="file-name">anime/</a></li>
 <li class="file"><a href="README.md" class="file-name">README.md</a>
-        <span class="copy-btn" onclick="copyPath('README.md')">复制url</span></li>
+            <span class="copy-btn" onclick="copyPath('README.md')">复制url</span></li>
 <li class="folder"><a href="fkca/" class="file-name">fkca/</a></li>
 <li class="folder"><a href="category-covers/" class="file-name">category-covers/</a></li>
 <li class="file"><a href="generate_index.sh" class="file-name">generate_index.sh</a>
-        <span class="copy-btn" onclick="copyPath('generate_index.sh')">复制url</span></li>
+            <span class="copy-btn" onclick="copyPath('generate_index.sh')">复制url</span></li>
 <li class="folder"><a href="uploads/" class="file-name">uploads/</a></li>
 <li class="folder"><a href="photos/" class="file-name">photos/</a></li>
 <li class="file"><a href=".deploy" class="file-name">.deploy</a>
-        <span class="copy-btn" onclick="copyPath('.deploy')">复制url</span></li>
+            <span class="copy-btn" onclick="copyPath('.deploy')">复制url</span></li>
 <li class="file"><a href=".settings" class="file-name">.settings</a>
-        <span class="copy-btn" onclick="copyPath('.settings')">复制url</span></li>
+            <span class="copy-btn" onclick="copyPath('.settings')">复制url</span></li>
 <li class="folder"><a href="test/" class="file-name">test/</a></li>
 <li class="file"><a href="generate_index.sh.bak" class="file-name">generate_index.sh.bak</a>
-        <span class="copy-btn" onclick="copyPath('generate_index.sh.bak')">复制url</span></li>
+            <span class="copy-btn" onclick="copyPath('generate_index.sh.bak')">复制url</span></li>
 </ul>
 </div></body></html>
