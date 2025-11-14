@@ -176,6 +176,7 @@ let currentIndex = -1;
 function openLightbox(index) {
   const lb = document.getElementById("lightbox");
   const img = document.getElementById("lightbox-img");
+  const urlInput = document.getElementById("lightbox-url-input");
 
   if (!imageList.length || index < 0 || index >= imageList.length) return;
 
@@ -183,6 +184,9 @@ function openLightbox(index) {
   const item = imageList[index];
 
   img.src = item.src;
+
+  // 正确赋值完整 URL 到输入框
+  if (urlInput) urlInput.value = item.fullUrl;
 
   // 更新左右按钮可用状态
   const prevBtn = document.getElementById("lb-prev");
@@ -232,6 +236,7 @@ function copyCurrentUrl() {
   input.select();
   input.setSelectionRange(0, 99999);
 
+  // 复制 URL
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(input.value);
   } else {
