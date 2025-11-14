@@ -56,7 +56,7 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
 
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
-  .image::before  { content: "🖼 "; }
+  .image::before  { content: "🖼️ "; }
 
   .preview-btn, .copy-btn {
     padding: 2px 6px;
@@ -315,7 +315,7 @@ EOF
 
     # 超长文件名 → 缩略
     name_len=${#base}
-    if (( name_len > 30 )); then
+    if (( name_len > 60 )); then
       short_name="${base:0:27}..."
     else
       short_name="$base"
