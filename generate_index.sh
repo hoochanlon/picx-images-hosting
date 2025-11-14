@@ -22,13 +22,13 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
     align-items: center;
   }
 
-  /* 文件名区域（固定宽度 650px，使按钮对齐在蓝框区域） */
+  /* 文件名区域（固定宽度 650px，使按钮对齐在“蓝框”区域） */
   .left {
     display: flex;
     align-items: center;
     gap: 6px;
     flex: 0 0 650px;   /* ⭐ 文件名区域固定宽度 */
-    min-width: 0;      /* 允许缩略号 */
+    min-width: 0;      /* 允许内部出现省略号 */
   }
 
   .right {
@@ -68,6 +68,7 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   }
   .preview-btn:hover, .copy-btn:hover { background: #ddd; }
 
+  /* Lightbox 整体遮罩层 */
   #lightbox {
     display: none;
     position: fixed;
@@ -79,11 +80,81 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
     z-index: 2000;
   }
 
-  #lightbox img {
+  .lightbox-content {
     max-width: 90%;
     max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lightbox-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #lightbox-img {
+    max-width: 80vw;
+    max-height: 70vh;
     border-radius: 6px;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    background: #222;
+  }
+
+  .lb-nav {
+    background: rgba(255,255,255,0.85);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .lb-nav:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .lightbox-footer {
+    width: 100%;
+    background: rgba(0,0,0,0.65);
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.85em;
+    box-sizing: border-box;
+  }
+
+  .lightbox-url-text {
+    margin-bottom: 4px;
+    word-break: break-all;
+  }
+
+  .lightbox-url-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  #lightbox-url-input {
+    flex: 1;
+    font-size: 0.85em;
+    padding: 4px 6px;
+    border-radius: 4px;
+    border: 1px solid #444;
+    background: #111;
+    color: #fff;
+  }
+
+  .breadcrumb {
+    font-size: 1em;
+    margin-bottom: 10px;
   }
 
   .file-name {
@@ -93,41 +164,116 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-
-  .breadcrumb {
-    font-size: 1em;
-    margin-bottom: 10px;
-  }
 </style>
 EOF
 
   # ------------------------ JavaScript ------------------------
   cat >> "$INDEX" <<EOF
 <script>
-function showImage(src) {
+let imageList = [];   // 每个元素: { src, fullUrl }
+let currentIndex = -1;
+
+function openLightbox(index) {
   const lb = document.getElementById("lightbox");
   const img = document.getElementById("lightbox-img");
-  img.src = src;
+  const urlText = document.getElementById("lightbox-url");
+  const urlInput = document.getElementById("lightbox-url-input");
+
+  if (!imageList.length || index < 0 || index >= imageList.length) return;
+
+  currentIndex = index;
+  const item = imageList[index];
+
+  img.src = item.src;
+  if (urlText) urlText.textContent = item.fullUrl;
+  if (urlInput) urlInput.value = item.fullUrl;
+
+  // 更新左右按钮可用状态
+  const prevBtn = document.getElementById("lb-prev");
+  const nextBtn = document.getElementById("lb-next");
+  if (prevBtn) prevBtn.disabled = (index <= 0);
+  if (nextBtn) nextBtn.disabled = (index >= imageList.length - 1);
+
   lb.style.display = "flex";
 }
 
-function hideLightbox() {
-  document.getElementById("lightbox").style.display = "none";
+function closeLightbox() {
+  const lb = document.getElementById("lightbox");
+  if (lb) lb.style.display = "none";
 }
 
+function showPrev() {
+  if (currentIndex > 0) {
+    openLightbox(currentIndex - 1);
+  }
+}
+
+function showNext() {
+  if (currentIndex >= 0 && currentIndex < imageList.length - 1) {
+    openLightbox(currentIndex + 1);
+  }
+}
+
+// 列表里的“复制url”按钮：传入的是相对路径 url_path
 function copyPath(src) {
   const fullUrl = "$BASE_URL/" + src.replace(/^\\.\//, "");
-  navigator.clipboard.writeText(fullUrl);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(fullUrl);
+  } else {
+    const temp = document.createElement("input");
+    temp.value = fullUrl;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand("copy");
+    document.body.removeChild(temp);
+  }
 }
+
+// Lightbox 底部区域的“复制url”
+function copyCurrentUrl() {
+  const input = document.getElementById("lightbox-url-input");
+  if (!input) return;
+  input.select();
+  input.setSelectionRange(0, 99999);
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(input.value);
+  } else {
+    document.execCommand("copy");
+  }
+}
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") {
+    closeLightbox();
+  } else if (e.key === "ArrowLeft") {
+    showPrev();
+  } else if (e.key === "ArrowRight") {
+    showNext();
+  }
+});
 </script>
 EOF
 
   echo "</head><body>" >> "$INDEX"
 
-  # Lightbox
+  # ------------------------ Lightbox HTML ------------------------
   cat >> "$INDEX" <<'EOF'
-<div id="lightbox" onclick="hideLightbox()">
-  <img id="lightbox-img" src="">
+<div id="lightbox" onclick="if (event.target === this) closeLightbox()">
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <div class="lightbox-main">
+      <button id="lb-prev" class="lb-nav" onclick="event.stopPropagation(); showPrev()">&#8592;</button>
+      <img id="lightbox-img" src="">
+      <button id="lb-next" class="lb-nav" onclick="event.stopPropagation(); showNext()">&#8594;</button>
+    </div>
+    <div class="lightbox-footer">
+      <div id="lightbox-url" class="lightbox-url-text"></div>
+      <div class="lightbox-url-actions">
+        <input id="lightbox-url-input" readonly>
+        <button class="copy-btn" onclick="copyCurrentUrl()">复制url</button>
+      </div>
+    </div>
+  </div>
 </div>
 EOF
 
@@ -159,6 +305,7 @@ EOF
   echo "<ul>" >> "$INDEX"
 
   # ------------------------ 文件列表 ------------------------
+  img_index=0
   find "$DIR" -maxdepth 1 -mindepth 1 | while read -r file; do
     base=$(basename "$file")
     [ "$base" = "index.html" ] && continue
@@ -185,17 +332,24 @@ EOF
             </li>" >> "$INDEX"
 
     elif [[ "$ext" =~ ^(jpg|jpeg|png|gif|webp|svg)$ ]]; then
+      # ⭐ 图片：有预览 + 列表复制url，并注册到 imageList 中
       echo "<li>
               <span class=\"left image\">
                 <a href=\"$base\" class=\"file-name\">$short_name</a>
               </span>
               <span class=\"right\">
-                <span class=\"preview-btn\" onclick=\"showImage('$base')\">预览</span>
+                <span class=\"preview-btn\" onclick=\"openLightbox($img_index)\">预览</span>
                 <span class=\"copy-btn\" onclick=\"copyPath('$url_path')\">复制url</span>
               </span>
             </li>" >> "$INDEX"
 
+      # 为当前图片写入 imageList[$img_index]
+      echo "<script>imageList[$img_index] = {src: \"$base\", fullUrl: \"$BASE_URL/$url_path\"};</script>" >> "$INDEX"
+
+      img_index=$((img_index + 1))
+
     else
+      # 非图片文件：只显示文件名，无复制按钮
       echo "<li>
               <span class=\"left file\">
                 <a href=\"$base\" class=\"file-name\">$short_name</a>
@@ -205,7 +359,8 @@ EOF
     fi
   done
 
-  echo "</ul></div></body></html>" >> "$INDEX"
+  echo "</ul>" >> "$INDEX"
+  echo "</div></body></html>" >> "$INDEX"
 
 done
 
