@@ -4,8 +4,8 @@ echo "Generating index.html..."
 
 BASE_URL="https://hoochanlon.github.io/picx-images-hosting"
 
-# 排除 .git/ .github/ .deploy 文件夹和文件 .settings 文件
-find . \( -type d -not -path './.git/*' -not -path './.github/*' -not -path './.deploy' -not -path './.settings' \) | while read -r DIR; do
+# 遍历所有目录（没有排除任何目录）
+find . | while read -r DIR; do
   INDEX="$DIR/index.html"
 
   echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">" > "$INDEX"
@@ -190,6 +190,19 @@ function copyCurrentUrl(){
   let input = document.getElementById("lightbox-url-input");
   navigator.clipboard.writeText(input.value);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const excludedItems = ['.git', '.github', '.deploy', '.settings'];
+
+  const listItems = document.querySelectorAll("li");
+
+  listItems.forEach(item => {
+    const folderName = item.querySelector("a").textContent.trim();
+    if (excludedItems.some(excluded => folderName.includes(excluded))) {
+      item.remove();
+    }
+  });
+});
 
 document.addEventListener("keydown", e=>{
   if(e.key==="Escape") closeLightbox();
