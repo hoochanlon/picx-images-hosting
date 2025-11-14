@@ -9,7 +9,7 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   echo "<title>Index of $DIR</title>" >> "$INDEX"
 
   ###############################
-  # CSS（紧凑列表 + 预览按钮 + Lightbox）
+  # CSS（紧凑列表 + 预览按钮 + Lightbox + 复制路径）
   ###############################
   cat >> "$INDEX" <<'EOF'
 <style>
@@ -35,7 +35,7 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   /* 图标 */
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
-  .image::before  { content: "🖼️ "; }
+  .image::before  { content: "🖼 "; }
 
   /* 预览按钮 */
   .preview-btn {
@@ -48,6 +48,18 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
     font-size: 0.8em;
   }
   .preview-btn:hover { background: #ddd; }
+
+  /* 复制路径按钮 */
+  .copy-btn {
+    margin-left: 10px;
+    padding: 2px 6px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+  }
+  .copy-btn:hover { background: #ddd; }
 
   /* Lightbox */
   #lightbox {
@@ -66,11 +78,19 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
     border-radius: 6px;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
+
+  /* 防止文件名溢出 */
+  .file-name {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 </style>
 EOF
 
   ###############################
-  # JS（Lightbox）
+  # JS（Lightbox + 复制路径功能）
   ###############################
   cat >> "$INDEX" <<'EOF'
 <script>
@@ -80,8 +100,15 @@ function showImage(src) {
   img.src = src;
   lb.style.display = "flex";
 }
+
 function hideLightbox() {
   document.getElementById("lightbox").style.display = "none";
+}
+
+function copyPath(path) {
+  navigator.clipboard.writeText(path).then(() => {
+    alert("路径已复制: " + path);
+  });
 }
 </script>
 EOF
@@ -128,10 +155,13 @@ EOF
       echo "<li class=\"folder\"><a href=\"$base/\">$base/</a></li>" >> "$INDEX"
 
     elif [[ "$ext" =~ ^(jpg|jpeg|png|gif|webp|svg)$ ]]; then
-      echo "<li class=\"image\"><a href=\"$base\">$base</a> <span class=\"preview-btn\" onclick=\"showImage('$base')\">预览</span></li>" >> "$INDEX"
+      echo "<li class=\"image\"><a href=\"$base\" class=\"file-name\">$base</a> 
+            <span class=\"preview-btn\" onclick=\"showImage('$base')\">预览</span> 
+            <span class=\"copy-btn\" onclick=\"copyPath('$base')\">复制url</span></li>" >> "$INDEX"
 
     else
-      echo "<li class=\"file\"><a href=\"$base\">$base</a></li>" >> "$INDEX"
+      echo "<li class=\"file\"><a href=\"$base\" class=\"file-name\">$base</a> 
+            <span class=\"copy-btn\" onclick=\"copyPath('$base')\">复制url</span></li>" >> "$INDEX"
     fi
   done
 
@@ -141,3 +171,5 @@ EOF
 done
 
 echo "index.html generation complete."
+EOF
+
