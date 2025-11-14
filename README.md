@@ -15,6 +15,7 @@
 > [!note]
 > * [几乎不受审查的图床标记](https://hoochanlon.github.io/posts/20250821144721.html)
 > * [壁纸资源及图床整合笔记](https://hoochanlon.github.io/posts/20250821071908.html)
+> * [gh-pages 图床索引](/docs/img-preview.md)
 
 > [!TIP]
 > 我的图床分类规划：
