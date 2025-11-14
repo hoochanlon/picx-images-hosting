@@ -2,7 +2,7 @@
 
 
 > [!important]
-> 该repo做为自用图床存储，[PicX](https://github.com/XPoet/picx) 是一款基于 GitHub API 开发的图床工具，提供图片上传托管、生成图片链接和常用图片工具箱服，对于只使用GitHub的图床来说，比picgo方便。目前版本不支持完全哈希、完全时间戳将图片重命名，可参考方案：[图片重命名](/docs/imgrename.md)。
+> 该repo做为自用图床存储，[PicX](https://github.com/XPoet/picx) 是一款基于 GitHub API 开发的图床工具，提供图片上传托管、生成图片链接和常用图片工具箱服，对于只使用GitHub的图床来说，比picgo方便。
 > * 快速使用：https://picx.xpoet.cn/#/upload
 > * 其他免费图片托管解决方案：[cf-pages/Telegraph-Image](https://github.com/cf-pages/Telegraph-Image)
 > * 批量重命名工具：https://rename.jgrass.xyz （`<date.modify:YYYY-MMDD-HHmmss>`）
