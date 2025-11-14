@@ -3,7 +3,7 @@ name: Deploy to gh-pages
 on:
   push:
     branches:
-      - master  # 或 main
+      - master   # 或 main
 
 jobs:
   deploy:
@@ -13,16 +13,76 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up SSH for deploy
+      # 生成带有分页和固定顶部的 index.html 文件
+      - name: Generate index.html files with pagination and fixed navbar
+        run: |
+          echo "Generating index.html files for directories"
+          find . -type d -not -path '*/.git/*' -exec bash -c '
+            DIR="{}"
+            INDEX="$DIR/index.html"
+
+            # 设置每页显示文件数
+            FILES_PER_PAGE=10
+            FILES=("$DIR"/*)
+
+            # 如果目录不为空
+            if [ "$(ls -A "$DIR")" ]; then
+              echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Index of $DIR</title>" > "$INDEX"
+              echo "<style>body { font-family: Arial, sans-serif; }</style>" >> "$INDEX"
+              echo "</head><body>" >> "$INDEX"
+
+              # 固定导航栏
+              echo "<div style=\"position: fixed; top: 0; left: 0; width: 100%; background-color: #f4f4f4; padding: 10px; border-bottom: 1px solid #ccc; z-index: 100;\">" >> "$INDEX"
+              echo "<a href=\"../\">.. (Go Up)</a>" >> "$INDEX"
+              echo "</div>" >> "$INDEX"
+
+              # 页面内容
+              echo "<div style=\"margin-top: 60px;\">" >> "$INDEX"
+              echo "<h1>Index of $DIR</h1>" >> "$INDEX"
+              echo "<ul>" >> "$INDEX"
+
+              # 分页功能
+              start=0
+              end=$FILES_PER_PAGE
+
+              for ((i=$start; i<$end && i<${#FILES[@]}; i++)); do
+                base=$(basename "${FILES[$i]}")
+                if [ -f "${FILES[$i]}" ] && [ "$base" != "index.html" ]; then
+                  echo "<li><a href=\"$base\">$base</a></li>" >> "$INDEX"
+                elif [ -d "${FILES[$i]}" ]; then
+                  echo "<li><a href=\"$base/\">$base/</a></li>" >> "$INDEX"
+                fi
+              done
+
+              echo "</ul>" >> "$INDEX"
+
+              # 添加分页链接（如果有更多文件）
+              total_files=${#FILES[@]}
+              if [ $total_files -gt $FILES_PER_PAGE ]; then
+                next_page=$((start + FILES_PER_PAGE))
+                echo "<div><a href=\"index.html?page=$next_page\">Next</a></div>" >> "$INDEX"
+              fi
+
+              echo "</div>" >> "$INDEX"
+
+              # 底部显示 index.html 和 Go Up
+              echo "<hr>" >> "$INDEX"
+              echo "<div style=\"margin-top:20px;\">" >> "$INDEX"
+              echo "<a href=\"index.html\">index.html</a><br>" >> "$INDEX"
+              if [ "$DIR" != "." ]; then
+                echo "<a href=\"../\">.. (Go Up)</a>" >> "$INDEX"
+              fi
+              echo "</div></body></html>" >> "$INDEX"
+            fi
+          ' \;
+
+      # 设置 SSH 以部署
+      - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Generate index.html files
-        run: |
-          chmod +x generate_index.sh
-          ./generate_index.sh  # 运行生成 index.html 的脚本
-
+      # 部署到 gh-pages
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
