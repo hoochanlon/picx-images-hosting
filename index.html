@@ -2,7 +2,6 @@
 <title>Index of .</title>
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
-
   ul { list-style: none; padding-left: 0; }
 
   li {
@@ -27,7 +26,6 @@
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
-  /* ---- TOPBAR 区域：picx-images-hosting + 当前定位 ---- */
   .topbar {
     position: fixed;
     top: 0; left: 0;
@@ -103,6 +101,8 @@
   }
 
   .lightbox-footer {
+    display: flex;
+    justify-content: space-between;  /* 两端对齐 */
     background: rgba(0,0,0,0.65);
     padding: 8px;
     border-radius: 6px;
@@ -110,12 +110,39 @@
   }
 
   #lightbox-url-input {
-    width: 100%;
+    width: 80%;  /* 输入框占80%宽度 */
     padding: 5px;
     background: #111;
     color: #fff;
     border: 1px solid #333;
     border-radius: 4px;
+  }
+
+  .copy-btn {
+    padding: 5px 10px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-left: 10px; /* 左边间距 */
+  }
+
+  .copy-btn:hover {
+    background: #ddd;
+  }
+
+  .breadcrumb {
+    font-size: 1em;
+    margin-bottom: 10px;
+  }
+
+  .file-name {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
 <script>

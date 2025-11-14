@@ -2,7 +2,6 @@
 <title>Index of ./special</title>
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
-
   ul { list-style: none; padding-left: 0; }
 
   li {
@@ -27,7 +26,6 @@
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
-  /* ---- TOPBAR 区域：picx-images-hosting + 当前定位 ---- */
   .topbar {
     position: fixed;
     top: 0; left: 0;
@@ -103,6 +101,8 @@
   }
 
   .lightbox-footer {
+    display: flex;
+    justify-content: space-between;  /* 两端对齐 */
     background: rgba(0,0,0,0.65);
     padding: 8px;
     border-radius: 6px;
@@ -110,12 +110,39 @@
   }
 
   #lightbox-url-input {
-    width: 100%;
+    width: 80%;  /* 输入框占80%宽度 */
     padding: 5px;
     background: #111;
     color: #fff;
     border: 1px solid #333;
     border-radius: 4px;
+  }
+
+  .copy-btn {
+    padding: 5px 10px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-left: 10px; /* 左边间距 */
+  }
+
+  .copy-btn:hover {
+    background: #ddd;
+  }
+
+  .breadcrumb {
+    font-size: 1em;
+    margin-bottom: 10px;
+  }
+
+  .file-name {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
 <script>
@@ -183,7 +210,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/caffe.png')">复制url</span>
         </span>
       </li>
-<script>imageList[0]={src:'caffe.png',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/caffe.png'};</script>
+<script>imageList[0] = {src: "caffe.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/caffe.png"};</script>
 <li>
         <span class="left image"><a href="404.png">404.png</a></span>
         <span class="right">
@@ -191,7 +218,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/404.png')">复制url</span>
         </span>
       </li>
-<script>imageList[1]={src:'404.png',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/404.png'};</script>
+<script>imageList[1] = {src: "404.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/404.png"};</script>
 <li>
         <span class="left image"><a href="default.png">default.png</a></span>
         <span class="right">
@@ -199,7 +226,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/default.png')">复制url</span>
         </span>
       </li>
-<script>imageList[2]={src:'default.png',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/default.png'};</script>
+<script>imageList[2] = {src: "default.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/default.png"};</script>
 <li>
         <span class="left image"><a href="mastercard-btc.png">mastercard-btc.png</a></span>
         <span class="right">
@@ -207,7 +234,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/mastercard-btc.png')">复制url</span>
         </span>
       </li>
-<script>imageList[3]={src:'mastercard-btc.png',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/mastercard-btc.png'};</script>
+<script>imageList[3] = {src: "mastercard-btc.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/mastercard-btc.png"};</script>
 <li>
         <span class="left image"><a href="example.jpg">example.jpg</a></span>
         <span class="right">
@@ -215,7 +242,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/example.jpg')">复制url</span>
         </span>
       </li>
-<script>imageList[4]={src:'example.jpg',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/example.jpg'};</script>
+<script>imageList[4] = {src: "example.jpg", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/example.jpg"};</script>
 <li>
         <span class="left image"><a href="appleid.png">appleid.png</a></span>
         <span class="right">
@@ -223,7 +250,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/appleid.png')">复制url</span>
         </span>
       </li>
-<script>imageList[5]={src:'appleid.png',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/appleid.png'};</script>
+<script>imageList[5] = {src: "appleid.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/appleid.png"};</script>
 <li>
         <span class="left image"><a href="author.png">author.png</a></span>
         <span class="right">
@@ -231,7 +258,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/author.png')">复制url</span>
         </span>
       </li>
-<script>imageList[6]={src:'author.png',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/author.png'};</script>
+<script>imageList[6] = {src: "author.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/author.png"};</script>
 <li>
         <span class="left image"><a href="loading.gif">loading.gif</a></span>
         <span class="right">
@@ -239,7 +266,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/loading.gif')">复制url</span>
         </span>
       </li>
-<script>imageList[7]={src:'loading.gif',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/loading.gif'};</script>
+<script>imageList[7] = {src: "loading.gif", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/loading.gif"};</script>
 <li>
         <span class="left image"><a href="404.webp">404.webp</a></span>
         <span class="right">
@@ -247,7 +274,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/404.webp')">复制url</span>
         </span>
       </li>
-<script>imageList[8]={src:'404.webp',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/404.webp'};</script>
+<script>imageList[8] = {src: "404.webp", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/404.webp"};</script>
 <li>
         <span class="left image"><a href="eromaga-404.png">eromaga-404.png</a></span>
         <span class="right">
@@ -255,7 +282,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/eromaga-404.png')">复制url</span>
         </span>
       </li>
-<script>imageList[9]={src:'eromaga-404.png',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/eromaga-404.png'};</script>
+<script>imageList[9] = {src: "eromaga-404.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/eromaga-404.png"};</script>
 <li>
         <span class="left image"><a href="doge-404.png">doge-404.png</a></span>
         <span class="right">
@@ -263,7 +290,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/doge-404.png')">复制url</span>
         </span>
       </li>
-<script>imageList[10]={src:'doge-404.png',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/doge-404.png'};</script>
+<script>imageList[10] = {src: "doge-404.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/doge-404.png"};</script>
 <li>
         <span class="left image"><a href="test.webp">test.webp</a></span>
         <span class="right">
@@ -271,7 +298,7 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/test.webp')">复制url</span>
         </span>
       </li>
-<script>imageList[11]={src:'test.webp',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/test.webp'};</script>
+<script>imageList[11] = {src: "test.webp", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/test.webp"};</script>
 <li>
         <span class="left image"><a href="web-development-workflow.png">web-development-workflow.png</a></span>
         <span class="right">
@@ -279,5 +306,5 @@ document.addEventListener("keydown", e=>{
           <span class="copy-btn" onclick="copyPath('special/web-development-workflow.png')">复制url</span>
         </span>
       </li>
-<script>imageList[12]={src:'web-development-workflow.png',fullUrl:'https://hoochanlon.github.io/picx-images-hosting/special/web-development-workflow.png'};</script>
+<script>imageList[12] = {src: "web-development-workflow.png", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/special/web-development-workflow.png"};</script>
 </ul></div></body></html>

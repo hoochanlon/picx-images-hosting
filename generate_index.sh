@@ -14,7 +14,6 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   cat >> "$INDEX" <<'EOF'
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
-
   ul { list-style: none; padding-left: 0; }
 
   li {
@@ -39,7 +38,6 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
-  /* ---- TOPBAR 区域：picx-images-hosting + 当前定位 ---- */
   .topbar {
     position: fixed;
     top: 0; left: 0;
@@ -115,6 +113,8 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   }
 
   .lightbox-footer {
+    display: flex;
+    justify-content: space-between;  /* 两端对齐 */
     background: rgba(0,0,0,0.65);
     padding: 8px;
     border-radius: 6px;
@@ -122,12 +122,39 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   }
 
   #lightbox-url-input {
-    width: 100%;
+    width: 80%;  /* 输入框占80%宽度 */
     padding: 5px;
     background: #111;
     color: #fff;
     border: 1px solid #333;
     border-radius: 4px;
+  }
+
+  .copy-btn {
+    padding: 5px 10px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-left: 10px; /* 左边间距 */
+  }
+
+  .copy-btn:hover {
+    background: #ddd;
+  }
+
+  .breadcrumb {
+    font-size: 1em;
+    margin-bottom: 10px;
+  }
+
+  .file-name {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
 EOF
@@ -245,7 +272,7 @@ EOF
         </span>
       </li>" >> "$INDEX"
 
-      echo "<script>imageList[$img_index]={src:'$base',fullUrl:'$BASE_URL/$url_path'};</script>" >> "$INDEX"
+      echo "<script>imageList[$img_index] = {src: \"$base\", fullUrl: \"$BASE_URL/$url_path\"};</script>" >> "$INDEX"
       img_index=$((img_index+1))
 
     else
