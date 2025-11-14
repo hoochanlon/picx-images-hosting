@@ -25,9 +25,9 @@ find . -type d -not -path '*/.git/*' -exec bash -c '
     for file in "$DIR"/*; do
       base=$(basename "$file")
       if [ -f "$file" ] && [ "$base" != "index.html" ]; then
-        echo "<li><a href=\"/$DIR/$base\">$base</a></li>" >> "$INDEX"  # 绝对路径
+        echo "<li><a href=\"/$DIR/$base\">$base</a></li>" >> "$INDEX"  # 使用绝对路径
       elif [ -d "$file" ]; then
-        echo "<li><a href=\"/$DIR/$base/\">$base/</a></li>" >> "$INDEX"  # 绝对路径
+        echo "<li><a href=\"/$DIR/$base/\">$base/</a></li>" >> "$INDEX"  # 使用绝对路径
       fi
     done
 
@@ -36,8 +36,10 @@ find . -type d -not -path '*/.git/*' -exec bash -c '
     # 底部显示 index.html 和 Go Up
     echo "<hr>" >> "$INDEX"
     echo "<div style=\"margin-top:20px;\">" >> "$INDEX"
-    echo "<a href=\"index.html\">index.html</a><br>" >> "$INDEX"
-    echo "<a href=\"../\">.. (Go Up)</a>" >> "$INDEX"
+    echo "<a href=\"index.html\">index.html</a><br>" >> "$INDEX"  # 使用绝对路径
+    if [ "$DIR" != "." ]; then
+      echo "<a href=\"../\">.. (Go Up)</a>" >> "$INDEX"  # 使用绝对路径
+    fi
     echo "</div></body></html>" >> "$INDEX"
   fi
 ' \;
