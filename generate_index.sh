@@ -149,13 +149,4 @@ EOF
 done
 
 echo "index.html generation complete."
-EOF
-
----
-
-### 🧪 **验证新功能：**
-- 点击 **预览** 按钮弹出大图（Lightbox）。  
-- 点击 **复制 URL** 按钮，复制文件完整路径到剪贴板，如：`https://blog.hoochanlon.space/picx-images-hosting/uploads/2025/2025-1025-205537.webp`。
-
-### 📝 **效果展示：**
 
