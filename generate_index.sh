@@ -83,15 +83,18 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   }
 
   .file-name {
-    max-width: 260px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    max-width: 300px;            /* 最大宽度 */
+    overflow: hidden;            /* 超过宽度的部分隐藏 */
+    text-overflow: ellipsis;     /* 显示省略号 */
+    white-space: nowrap;         /* 禁止换行 */
   }
 </style>
 EOF
 
-  cat >> "$INDEX" <<EOF
+  ###############################
+  # JS（Lightbox + 复制路径功能）
+  ###############################
+  cat >> "$INDEX" <<'EOF'
 <script>
 function showImage(src) {
   const lb = document.getElementById("lightbox");
@@ -113,12 +116,18 @@ EOF
 
   echo "</head><body>" >> "$INDEX"
 
+  ###############################
+  # Lightbox HTML 容器
+  ###############################
   cat >> "$INDEX" <<'EOF'
 <div id="lightbox" onclick="hideLightbox()">
   <img id="lightbox-img" src="">
 </div>
 EOF
 
+  ###############################
+  # 顶部导航
+  ###############################
   echo "<div class=\"topbar\">" >> "$INDEX"
   echo "<strong>📂 Index Navigation:</strong> " >> "$INDEX"
   echo "<a href=\"https://hoochanlon.github.io/picx-images-hosting\">Home</a>" >> "$INDEX"
@@ -127,6 +136,9 @@ EOF
   fi
   echo "</div>" >> "$INDEX"
 
+  ###############################
+  # 文件列表
+  ###############################
   echo "<div class=\"container\">" >> "$INDEX"
   echo "<h2>Index of $DIR</h2>" >> "$INDEX"
   echo "<ul>" >> "$INDEX"
