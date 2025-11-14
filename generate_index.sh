@@ -173,3 +173,12 @@ done
 echo "index.html generation complete."
 EOF
 
+---
+
+# 📋 **如何运行：**
+
+1. 确保你的 `generate_index.sh` 文件在仓库根目录下的 `scripts/` 文件夹里。
+2. 在 GitHub Actions 上运行：
+
+```bash
+bash scripts/generate_index.sh
