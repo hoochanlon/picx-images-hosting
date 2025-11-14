@@ -3,7 +3,7 @@ name: Deploy to gh-pages
 on:
   push:
     branches:
-      - master
+      - master  # 或者 main
 
 jobs:
   deploy:
@@ -13,72 +13,45 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Generate index.html files (with image preview)
+      # 生成带有“当前文件夹”和“上一层目录”链接的 index.html 文件，并递归处理子目录
+      - name: Generate index.html files
         run: |
-          echo "Generating index.html with image previews"
-
+          echo "Generating index.html files for directories"
           find . -type d -not -path '*/.git/*' -exec bash -c '
             DIR="{}"
-
-            # 创建 index.html
-            cat > "$DIR/index.html" <<EOF
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>Index of $DIR</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.css">
-<style>
-body { font-family: sans-serif; padding: 20px; }
-ul { line-height: 1.8; }
-.gallery img { height: 120px; margin: 5px; border-radius: 6px; }
-</style>
-</head>
-<body>
-
-EOF
-
-            # 返回上层
-            if [ "$DIR" != "." ]; then
-              echo "<a href=\"../\">⬆ 返回上一层</a><br><br>" >> "$DIR/index.html"
-            fi
-
-            echo "<h2>Index of $DIR</h2>" >> "$DIR/index.html"
-            echo "<ul>" >> "$DIR/index.html"
-
-            # 遍历文件夹
-            for f in "$DIR"/*; do
-              fname=$(basename "$f")
-              # 子目录
-              if [ -d "$f" ]; then
-                echo "<li><a href=\"$fname/\">📁 $fname/</a></li>" >> "$DIR/index.html"
-              # 图片文件
-              elif [[ "$fname" =~ \.(png|jpg|jpeg|gif|webp)$ ]]; then
-                echo "<a class=\"gallery\" href=\"$fname\"><img src=\"$fname\"></a>" >> "$DIR/index.html"
-              # 普通文件
-              else
-                echo "<li><a href=\"$fname\">📄 $fname</a></li>" >> "$DIR/index.html"
+            if [ "$(ls -A "$DIR")" ]; then
+              # 创建目录的 index.html 文件
+              echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Index of $DIR</title></head><body>" > $DIR/index.html
+              # 添加返回上一层目录的链接
+              if [ "$DIR" != "." ]; then
+                echo "<a href=\"../\">.. (Go Up)</a><br>" >> $DIR/index.html
               fi
-            done
-
-            echo "</ul>" >> "$DIR/index.html"
-
-            cat >> "$DIR/index.html" <<EOF
-<script src="https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.js"></script>
-<script>baguetteBox.run('.gallery');</script>
-</body></html>
-EOF
-
+              # 当前目录链接
+              echo "<h1>Index of $DIR</h1>" >> $DIR/index.html
+              echo "<ul>" >> $DIR/index.html
+              # 列出目录下的文件和子目录
+              for file in $DIR/*; do
+                if [ -f "$file" ]; then
+                  echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>" >> $DIR/index.html
+                elif [ -d "$file" ]; then
+                  echo "<li><a href=\"$(basename "$file")/\">$(basename "$file")/</a></li>" >> $DIR/index.html
+                fi
+              done
+              echo "</ul>" >> $DIR/index.html
+              echo "</body></html>" >> $DIR/index.html
+            fi
           ' \;
 
+      # 设置 SSH 密钥以便部署到 gh-pages
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}  # 引用 GitHub Secrets 中的私钥
 
+      # 部署到 gh-pages 分支
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.DEPLOY_KEY }}
-          publish_branch: gh-pages
-          publish_dir: ./
+          deploy_key: ${{ secrets.DEPLOY_KEY }}  # 这里使用 GitHub Secrets 中的私钥
+          publish_branch: gh-pages  # 发布到 gh-pages 分支
+          publish_dir: ./  # 部署根目录下的所有内容，或你构建的目录
