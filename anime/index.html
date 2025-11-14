@@ -12,17 +12,8 @@
     gap: 12px;
   }
 
-  .left {
-    display: flex;
-    align-items: center;
-    gap: 6px;    
-  }
-
-  .right {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .left { display: flex; align-items: center; gap: 6px; }
+  .right { display: flex; align-items: center; gap: 6px; }
 
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
@@ -43,7 +34,8 @@
   .folder::before { content: "📁 "; }
   .image::before  { content: "🖼 "; }
 
-  .preview-btn, .copy-btn {
+  .preview-btn,
+  .copy-btn {
     padding: 2px 6px;
     background: #eee;
     border: 1px solid #ccc;
@@ -51,8 +43,10 @@
     cursor: pointer;
     font-size: 0.8em;
   }
-  .preview-btn:hover, .copy-btn:hover { background: #ddd; }
+  .preview-btn:hover,
+  .copy-btn:hover { background: #ddd; }
 
+  /* Lightbox */
   #lightbox {
     display: none;
     position: fixed;
@@ -71,11 +65,12 @@
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
 
+  /* 文件名自动省略 */
   .file-name {
-    max-width: 300px;            /* 最大宽度 */
-    overflow: hidden;            /* 超过宽度的部分隐藏 */
-    text-overflow: ellipsis;     /* 显示省略号 */
-    white-space: nowrap;         /* 禁止换行 */
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
 <script>
@@ -91,7 +86,7 @@ function hideLightbox() {
 }
 
 function copyPath(src) {
-  const fullUrl = "$BASE_URL/" + src.replace(/^\\.\//, "");
+  const fullUrl = "https://hoochanlon.github.io/picx-images-hosting/" + src.replace(/^\.\//, "");
   navigator.clipboard.writeText(fullUrl);
 }
 </script>
@@ -104,14 +99,11 @@ function copyPath(src) {
 <a href="https://hoochanlon.github.io/picx-images-hosting">Home</a>
  | <a href="../">⬆ Go Up</a>
 </div>
-<div class="container">
-<h2>Index of ./anime</h2>
-<ul>
+<div class="container"><h2>Index of ./anime</h2><ul>
 <li>
-              <span class="left file"><a href="动漫收藏图.txt" class="file-name">动漫收藏图.txt</a></span>
-              <span class="right">
-                <span class="copy-btn" onclick="copyPath('anime/动漫收藏图.txt')">复制url</span>
-              </span>
-            </li>
-</ul>
-</div></body></html>
+            <span class="left file"><a href="动漫收藏图.txt" class="file-name">动漫收藏图.txt</a></span>
+            <span class="right">
+              <span class="copy-btn" onclick="copyPath('anime/动漫收藏图.txt')">复制url</span>
+            </span>
+          </li>
+</ul></div></body></html>

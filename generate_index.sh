@@ -2,15 +2,20 @@
 
 echo "Generating index.html..."
 
+# ✔ 复制URL使用 GitHub Pages 作为主域名
 BASE_URL="https://hoochanlon.github.io/picx-images-hosting"
 
 find . -type d -not -path '*/.git/*' | while read -r DIR; do
   INDEX="$DIR/index.html"
 
-  echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">" > "$INDEX"
-  echo "<title>Index of $DIR</title>" >> "$INDEX"
+  # HTML HEADER
+  {
+  echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">"
+  echo "<title>Index of $DIR</title>"
+  } > "$INDEX"
 
-  cat >> "$INDEX" <<'EOF'
+# ----------------------------- CSS -----------------------------
+cat >> "$INDEX" <<'EOF'
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
   ul { list-style: none; padding-left: 0; }
@@ -23,17 +28,8 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
     gap: 12px;
   }
 
-  .left {
-    display: flex;
-    align-items: center;
-    gap: 6px;    
-  }
-
-  .right {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .left { display: flex; align-items: center; gap: 6px; }
+  .right { display: flex; align-items: center; gap: 6px; }
 
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
@@ -54,7 +50,8 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   .folder::before { content: "📁 "; }
   .image::before  { content: "🖼 "; }
 
-  .preview-btn, .copy-btn {
+  .preview-btn,
+  .copy-btn {
     padding: 2px 6px;
     background: #eee;
     border: 1px solid #ccc;
@@ -62,8 +59,10 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
     cursor: pointer;
     font-size: 0.8em;
   }
-  .preview-btn:hover, .copy-btn:hover { background: #ddd; }
+  .preview-btn:hover,
+  .copy-btn:hover { background: #ddd; }
 
+  /* Lightbox */
   #lightbox {
     display: none;
     position: fixed;
@@ -82,19 +81,19 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
 
+  /* 文件名自动省略 */
   .file-name {
-    max-width: 300px;            /* 最大宽度 */
-    overflow: hidden;            /* 超过宽度的部分隐藏 */
-    text-overflow: ellipsis;     /* 显示省略号 */
-    white-space: nowrap;         /* 禁止换行 */
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
 EOF
+# --------------------------- END CSS -----------------------------
 
-  ###############################
-  # JS（Lightbox + 复制路径功能）
-  ###############################
-  cat >> "$INDEX" <<'EOF'
+# ----------------------------- JS（变量可展开） -----------------------------
+cat >> "$INDEX" <<EOF
 <script>
 function showImage(src) {
   const lb = document.getElementById("lightbox");
@@ -113,74 +112,69 @@ function copyPath(src) {
 }
 </script>
 EOF
+# ---------------------------- END JS ------------------------------
 
-  echo "</head><body>" >> "$INDEX"
-
-  ###############################
-  # Lightbox HTML 容器
-  ###############################
-  cat >> "$INDEX" <<'EOF'
+# Lightbox HTML
+cat >> "$INDEX" <<'EOF'
+</head><body>
 <div id="lightbox" onclick="hideLightbox()">
   <img id="lightbox-img" src="">
 </div>
 EOF
 
-  ###############################
-  # 顶部导航
-  ###############################
-  echo "<div class=\"topbar\">" >> "$INDEX"
-  echo "<strong>📂 Index Navigation:</strong> " >> "$INDEX"
-  echo "<a href=\"https://hoochanlon.github.io/picx-images-hosting\">Home</a>" >> "$INDEX"
-  if [ "$DIR" != "." ]; then
-    echo " | <a href=\"../\">⬆ Go Up</a>" >> "$INDEX"
+# ----------------------------- NAVIGATION -----------------------------
+{
+echo "<div class=\"topbar\">"
+echo "<strong>📂 Index Navigation:</strong> "
+echo "<a href=\"https://hoochanlon.github.io/picx-images-hosting\">Home</a>"
+if [ "$DIR" != "." ]; then
+  echo " | <a href=\"../\">⬆ Go Up</a>"
+fi
+echo "</div>"
+} >> "$INDEX"
+
+# ----------------------------- BODY -----------------------------
+echo "<div class=\"container\"><h2>Index of $DIR</h2><ul>" >> "$INDEX"
+
+# 当前目录路径
+REL_PATH="${DIR#./}"
+
+# 枚举文件与目录
+find "$DIR" -maxdepth 1 -mindepth 1 | while read -r file; do
+  base=$(basename "$file")
+  [ "$base" = "index.html" ] && continue
+
+  url_path="$REL_PATH/$base"
+  url_path="${url_path#/}"  # 去掉首斜杠
+
+  ext=$(echo "${base##*.}" | tr 'A-Z' 'a-z')
+
+  if [ -d "$file" ]; then
+    echo "<li>
+            <span class=\"left folder\"><a href=\"$base/\" class=\"file-name\">$base/</a></span>
+            <span class=\"right\"></span>
+          </li>" >> "$INDEX"
+
+  elif [[ "$ext" =~ ^(jpg|jpeg|png|gif|webp|svg)$ ]]; then
+    echo "<li>
+            <span class=\"left image\"><a href=\"$base\" class=\"file-name\">$base</a></span>
+            <span class=\"right\">
+              <span class=\"preview-btn\" onclick=\"showImage('$base')\">预览</span>
+              <span class=\"copy-btn\" onclick=\"copyPath('$url_path')\">复制url</span>
+            </span>
+          </li>" >> "$INDEX"
+
+  else
+    echo "<li>
+            <span class=\"left file\"><a href=\"$base\" class=\"file-name\">$base</a></span>
+            <span class=\"right\">
+              <span class=\"copy-btn\" onclick=\"copyPath('$url_path')\">复制url</span>
+            </span>
+          </li>" >> "$INDEX"
   fi
-  echo "</div>" >> "$INDEX"
+done
 
-  ###############################
-  # 文件列表
-  ###############################
-  echo "<div class=\"container\">" >> "$INDEX"
-  echo "<h2>Index of $DIR</h2>" >> "$INDEX"
-  echo "<ul>" >> "$INDEX"
-
-  REL_PATH="${DIR#./}"
-
-  find "$DIR" -maxdepth 1 -mindepth 1 | while read -r file; do
-    base=$(basename "$file")
-    [ "$base" = "index.html" ] && continue
-
-    url_path="$REL_PATH/$base"
-    url_path="${url_path#/}"
-
-    ext=$(echo "${base##*.}" | tr 'A-Z' 'a-z')
-
-    if [ -d "$file" ]; then
-      echo "<li>
-              <span class=\"left folder\"><a href=\"$base/\" class=\"file-name\">$base/</a></span>
-              <span class=\"right\"></span>
-            </li>" >> "$INDEX"
-
-    elif [[ "$ext" =~ ^(jpg|jpeg|png|gif|webp|svg)$ ]]; then
-      echo "<li>
-              <span class=\"left image\"><a href=\"$base\" class=\"file-name\">$base</a></span>
-              <span class=\"right\">
-                <span class=\"preview-btn\" onclick=\"showImage('$base')\">预览</span>
-                <span class=\"copy-btn\" onclick=\"copyPath('$url_path')\">复制url</span>
-              </span>
-            </li>" >> "$INDEX"
-
-    else
-      echo "<li>
-              <span class=\"left file\"><a href=\"$base\" class=\"file-name\">$base</a></span>
-              <span class=\"right\">
-                <span class=\"copy-btn\" onclick=\"copyPath('$url_path')\">复制url</span>
-              </span>
-            </li>" >> "$INDEX"
-    fi
-  done
-
-  echo "</ul>" >> "$INDEX"
-  echo "</div></body></html>" >> "$INDEX"
+echo "</ul></div></body></html>" >> "$INDEX"
 
 done
 

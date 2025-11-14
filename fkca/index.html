@@ -12,17 +12,8 @@
     gap: 12px;
   }
 
-  .left {
-    display: flex;
-    align-items: center;
-    gap: 6px;    
-  }
-
-  .right {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .left { display: flex; align-items: center; gap: 6px; }
+  .right { display: flex; align-items: center; gap: 6px; }
 
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
@@ -43,7 +34,8 @@
   .folder::before { content: "📁 "; }
   .image::before  { content: "🖼 "; }
 
-  .preview-btn, .copy-btn {
+  .preview-btn,
+  .copy-btn {
     padding: 2px 6px;
     background: #eee;
     border: 1px solid #ccc;
@@ -51,8 +43,10 @@
     cursor: pointer;
     font-size: 0.8em;
   }
-  .preview-btn:hover, .copy-btn:hover { background: #ddd; }
+  .preview-btn:hover,
+  .copy-btn:hover { background: #ddd; }
 
+  /* Lightbox */
   #lightbox {
     display: none;
     position: fixed;
@@ -71,11 +65,12 @@
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
 
+  /* 文件名自动省略 */
   .file-name {
-    max-width: 300px;            /* 最大宽度 */
-    overflow: hidden;            /* 超过宽度的部分隐藏 */
-    text-overflow: ellipsis;     /* 显示省略号 */
-    white-space: nowrap;         /* 禁止换行 */
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
 <script>
@@ -91,7 +86,7 @@ function hideLightbox() {
 }
 
 function copyPath(src) {
-  const fullUrl = "$BASE_URL/" + src.replace(/^\\.\//, "");
+  const fullUrl = "https://hoochanlon.github.io/picx-images-hosting/" + src.replace(/^\.\//, "");
   navigator.clipboard.writeText(fullUrl);
 }
 </script>
@@ -104,133 +99,130 @@ function copyPath(src) {
 <a href="https://hoochanlon.github.io/picx-images-hosting">Home</a>
  | <a href="../">⬆ Go Up</a>
 </div>
-<div class="container">
-<h2>Index of ./fkca</h2>
-<ul>
+<div class="container"><h2>Index of ./fkca</h2><ul>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-12_22-24-31.png" class="file-name">PixPin_2025-11-12_22-24-31.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-24-31.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-24-31.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-12_22-24-31.png" class="file-name">PixPin_2025-11-12_22-24-31.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-24-31.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-24-31.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-13_12-52-53.png" class="file-name">PixPin_2025-11-13_12-52-53.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_12-52-53.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_12-52-53.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-13_12-52-53.png" class="file-name">PixPin_2025-11-13_12-52-53.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_12-52-53.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_12-52-53.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-12_22-45-24.png" class="file-name">PixPin_2025-11-12_22-45-24.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-45-24.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-45-24.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-12_22-45-24.png" class="file-name">PixPin_2025-11-12_22-45-24.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-45-24.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-45-24.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-13_20-14-20.png" class="file-name">PixPin_2025-11-13_20-14-20.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_20-14-20.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_20-14-20.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-13_20-14-20.png" class="file-name">PixPin_2025-11-13_20-14-20.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_20-14-20.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_20-14-20.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-13_20-10-33.png" class="file-name">PixPin_2025-11-13_20-10-33.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_20-10-33.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_20-10-33.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-13_20-10-33.png" class="file-name">PixPin_2025-11-13_20-10-33.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_20-10-33.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_20-10-33.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-13_21-12-40.png" class="file-name">PixPin_2025-11-13_21-12-40.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_21-12-40.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_21-12-40.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-13_21-12-40.png" class="file-name">PixPin_2025-11-13_21-12-40.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_21-12-40.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_21-12-40.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-14_00-32-26.png" class="file-name">PixPin_2025-11-14_00-32-26.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-14_00-32-26.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-14_00-32-26.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-14_00-32-26.png" class="file-name">PixPin_2025-11-14_00-32-26.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-14_00-32-26.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-14_00-32-26.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-13_20-28-35.png" class="file-name">PixPin_2025-11-13_20-28-35.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_20-28-35.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_20-28-35.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-13_20-28-35.png" class="file-name">PixPin_2025-11-13_20-28-35.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_20-28-35.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_20-28-35.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-12_22-27-54.png" class="file-name">PixPin_2025-11-12_22-27-54.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-27-54.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-27-54.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-12_22-27-54.png" class="file-name">PixPin_2025-11-12_22-27-54.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-27-54.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-27-54.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-12_22-30-58.png" class="file-name">PixPin_2025-11-12_22-30-58.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-30-58.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-30-58.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-12_22-30-58.png" class="file-name">PixPin_2025-11-12_22-30-58.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-30-58.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-30-58.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-13_20-16-03.png" class="file-name">PixPin_2025-11-13_20-16-03.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_20-16-03.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_20-16-03.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-13_20-16-03.png" class="file-name">PixPin_2025-11-13_20-16-03.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_20-16-03.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_20-16-03.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-12_22-38-44.png" class="file-name">PixPin_2025-11-12_22-38-44.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-38-44.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-38-44.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-12_22-38-44.png" class="file-name">PixPin_2025-11-12_22-38-44.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-38-44.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-38-44.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left file"><a href="1.txt" class="file-name">1.txt</a></span>
-              <span class="right">
-                <span class="copy-btn" onclick="copyPath('fkca/1.txt')">复制url</span>
-              </span>
-            </li>
+            <span class="left file"><a href="1.txt" class="file-name">1.txt</a></span>
+            <span class="right">
+              <span class="copy-btn" onclick="copyPath('fkca/1.txt')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-12_22-26-55.png" class="file-name">PixPin_2025-11-12_22-26-55.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-26-55.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-26-55.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-12_22-26-55.png" class="file-name">PixPin_2025-11-12_22-26-55.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-26-55.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-26-55.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-12_21-49-26.png" class="file-name">PixPin_2025-11-12_21-49-26.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_21-49-26.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_21-49-26.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-12_21-49-26.png" class="file-name">PixPin_2025-11-12_21-49-26.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_21-49-26.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_21-49-26.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-12_22-29-06.png" class="file-name">PixPin_2025-11-12_22-29-06.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-29-06.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-29-06.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-12_22-29-06.png" class="file-name">PixPin_2025-11-12_22-29-06.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_22-29-06.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_22-29-06.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-13_20-26-55.png" class="file-name">PixPin_2025-11-13_20-26-55.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_20-26-55.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_20-26-55.png')">复制url</span>
-              </span>
-            </li>
+            <span class="left image"><a href="PixPin_2025-11-13_20-26-55.png" class="file-name">PixPin_2025-11-13_20-26-55.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-13_20-26-55.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-13_20-26-55.png')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left image"><a href="PixPin_2025-11-12_21-54-02.png" class="file-name">PixPin_2025-11-12_21-54-02.png</a></span>
-              <span class="right">
-                <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_21-54-02.png')">预览</span>
-                <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_21-54-02.png')">复制url</span>
-              </span>
-            </li>
-</ul>
-</div></body></html>
+            <span class="left image"><a href="PixPin_2025-11-12_21-54-02.png" class="file-name">PixPin_2025-11-12_21-54-02.png</a></span>
+            <span class="right">
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-12_21-54-02.png')">预览</span>
+              <span class="copy-btn" onclick="copyPath('fkca/PixPin_2025-11-12_21-54-02.png')">复制url</span>
+            </span>
+          </li>
+</ul></div></body></html>

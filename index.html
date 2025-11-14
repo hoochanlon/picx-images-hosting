@@ -12,17 +12,8 @@
     gap: 12px;
   }
 
-  .left {
-    display: flex;
-    align-items: center;
-    gap: 6px;    
-  }
-
-  .right {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .left { display: flex; align-items: center; gap: 6px; }
+  .right { display: flex; align-items: center; gap: 6px; }
 
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
@@ -43,7 +34,8 @@
   .folder::before { content: "📁 "; }
   .image::before  { content: "🖼 "; }
 
-  .preview-btn, .copy-btn {
+  .preview-btn,
+  .copy-btn {
     padding: 2px 6px;
     background: #eee;
     border: 1px solid #ccc;
@@ -51,8 +43,10 @@
     cursor: pointer;
     font-size: 0.8em;
   }
-  .preview-btn:hover, .copy-btn:hover { background: #ddd; }
+  .preview-btn:hover,
+  .copy-btn:hover { background: #ddd; }
 
+  /* Lightbox */
   #lightbox {
     display: none;
     position: fixed;
@@ -71,11 +65,12 @@
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
 
+  /* 文件名自动省略 */
   .file-name {
-    max-width: 300px;            /* 最大宽度 */
-    overflow: hidden;            /* 超过宽度的部分隐藏 */
-    text-overflow: ellipsis;     /* 显示省略号 */
-    white-space: nowrap;         /* 禁止换行 */
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
 <script>
@@ -91,7 +86,7 @@ function hideLightbox() {
 }
 
 function copyPath(src) {
-  const fullUrl = "$BASE_URL/" + src.replace(/^\\.\//, "");
+  const fullUrl = "https://hoochanlon.github.io/picx-images-hosting/" + src.replace(/^\.\//, "");
   navigator.clipboard.writeText(fullUrl);
 }
 </script>
@@ -103,84 +98,81 @@ function copyPath(src) {
 <strong>📂 Index Navigation:</strong> 
 <a href="https://hoochanlon.github.io/picx-images-hosting">Home</a>
 </div>
-<div class="container">
-<h2>Index of .</h2>
-<ul>
+<div class="container"><h2>Index of .</h2><ul>
 <li>
-              <span class="left folder"><a href="special/" class="file-name">special/</a></span>
-              <span class="right"></span>
-            </li>
+            <span class="left folder"><a href="special/" class="file-name">special/</a></span>
+            <span class="right"></span>
+          </li>
 <li>
-              <span class="left folder"><a href=".git/" class="file-name">.git/</a></span>
-              <span class="right"></span>
-            </li>
+            <span class="left folder"><a href=".git/" class="file-name">.git/</a></span>
+            <span class="right"></span>
+          </li>
 <li>
-              <span class="left folder"><a href="visuals/" class="file-name">visuals/</a></span>
-              <span class="right"></span>
-            </li>
+            <span class="left folder"><a href="visuals/" class="file-name">visuals/</a></span>
+            <span class="right"></span>
+          </li>
 <li>
-              <span class="left file"><a href="imgrename.md" class="file-name">imgrename.md</a></span>
-              <span class="right">
-                <span class="copy-btn" onclick="copyPath('./imgrename.md')">复制url</span>
-              </span>
-            </li>
+            <span class="left file"><a href="imgrename.md" class="file-name">imgrename.md</a></span>
+            <span class="right">
+              <span class="copy-btn" onclick="copyPath('./imgrename.md')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left folder"><a href=".github/" class="file-name">.github/</a></span>
-              <span class="right"></span>
-            </li>
+            <span class="left folder"><a href=".github/" class="file-name">.github/</a></span>
+            <span class="right"></span>
+          </li>
 <li>
-              <span class="left folder"><a href="anime/" class="file-name">anime/</a></span>
-              <span class="right"></span>
-            </li>
+            <span class="left folder"><a href="anime/" class="file-name">anime/</a></span>
+            <span class="right"></span>
+          </li>
 <li>
-              <span class="left file"><a href="README.md" class="file-name">README.md</a></span>
-              <span class="right">
-                <span class="copy-btn" onclick="copyPath('./README.md')">复制url</span>
-              </span>
-            </li>
+            <span class="left file"><a href="README.md" class="file-name">README.md</a></span>
+            <span class="right">
+              <span class="copy-btn" onclick="copyPath('./README.md')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left folder"><a href="fkca/" class="file-name">fkca/</a></span>
-              <span class="right"></span>
-            </li>
+            <span class="left folder"><a href="fkca/" class="file-name">fkca/</a></span>
+            <span class="right"></span>
+          </li>
 <li>
-              <span class="left folder"><a href="category-covers/" class="file-name">category-covers/</a></span>
-              <span class="right"></span>
-            </li>
+            <span class="left folder"><a href="category-covers/" class="file-name">category-covers/</a></span>
+            <span class="right"></span>
+          </li>
 <li>
-              <span class="left file"><a href="generate_index.sh" class="file-name">generate_index.sh</a></span>
-              <span class="right">
-                <span class="copy-btn" onclick="copyPath('./generate_index.sh')">复制url</span>
-              </span>
-            </li>
+            <span class="left file"><a href="generate_index.sh" class="file-name">generate_index.sh</a></span>
+            <span class="right">
+              <span class="copy-btn" onclick="copyPath('./generate_index.sh')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left folder"><a href="uploads/" class="file-name">uploads/</a></span>
-              <span class="right"></span>
-            </li>
+            <span class="left folder"><a href="uploads/" class="file-name">uploads/</a></span>
+            <span class="right"></span>
+          </li>
 <li>
-              <span class="left folder"><a href="photos/" class="file-name">photos/</a></span>
-              <span class="right"></span>
-            </li>
+            <span class="left folder"><a href="photos/" class="file-name">photos/</a></span>
+            <span class="right"></span>
+          </li>
 <li>
-              <span class="left file"><a href=".deploy" class="file-name">.deploy</a></span>
-              <span class="right">
-                <span class="copy-btn" onclick="copyPath('./.deploy')">复制url</span>
-              </span>
-            </li>
+            <span class="left file"><a href=".deploy" class="file-name">.deploy</a></span>
+            <span class="right">
+              <span class="copy-btn" onclick="copyPath('./.deploy')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left file"><a href=".settings" class="file-name">.settings</a></span>
-              <span class="right">
-                <span class="copy-btn" onclick="copyPath('./.settings')">复制url</span>
-              </span>
-            </li>
+            <span class="left file"><a href=".settings" class="file-name">.settings</a></span>
+            <span class="right">
+              <span class="copy-btn" onclick="copyPath('./.settings')">复制url</span>
+            </span>
+          </li>
 <li>
-              <span class="left folder"><a href="test/" class="file-name">test/</a></span>
-              <span class="right"></span>
-            </li>
+            <span class="left folder"><a href="test/" class="file-name">test/</a></span>
+            <span class="right"></span>
+          </li>
 <li>
-              <span class="left file"><a href="generate_index.sh.bak" class="file-name">generate_index.sh.bak</a></span>
-              <span class="right">
-                <span class="copy-btn" onclick="copyPath('./generate_index.sh.bak')">复制url</span>
-              </span>
-            </li>
-</ul>
-</div></body></html>
+            <span class="left file"><a href="generate_index.sh.bak" class="file-name">generate_index.sh.bak</a></span>
+            <span class="right">
+              <span class="copy-btn" onclick="copyPath('./generate_index.sh.bak')">复制url</span>
+            </span>
+          </li>
+</ul></div></body></html>
