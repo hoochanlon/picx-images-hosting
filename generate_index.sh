@@ -176,8 +176,6 @@ let currentIndex = -1;
 function openLightbox(index) {
   const lb = document.getElementById("lightbox");
   const img = document.getElementById("lightbox-img");
-  const urlText = document.getElementById("lightbox-url");
-  const urlInput = document.getElementById("lightbox-url-input");
 
   if (!imageList.length || index < 0 || index >= imageList.length) return;
 
@@ -185,8 +183,6 @@ function openLightbox(index) {
   const item = imageList[index];
 
   img.src = item.src;
-  if (urlText) urlText.textContent = item.fullUrl;
-  if (urlInput) urlInput.value = item.fullUrl;
 
   // 更新左右按钮可用状态
   const prevBtn = document.getElementById("lb-prev");
@@ -267,7 +263,6 @@ EOF
       <button id="lb-next" class="lb-nav" onclick="event.stopPropagation(); showNext()">&#8594;</button>
     </div>
     <div class="lightbox-footer">
-      <div id="lightbox-url" class="lightbox-url-text"></div>
       <div class="lightbox-url-actions">
         <input id="lightbox-url-input" readonly>
         <button class="copy-btn" onclick="copyCurrentUrl()">复制url</button>
@@ -332,7 +327,6 @@ EOF
             </li>" >> "$INDEX"
 
     elif [[ "$ext" =~ ^(jpg|jpeg|png|gif|webp|svg)$ ]]; then
-      # ⭐ 图片：有预览 + 列表复制url，并注册到 imageList 中
       echo "<li>
               <span class=\"left image\">
                 <a href=\"$base\" class=\"file-name\">$short_name</a>
@@ -349,7 +343,6 @@ EOF
       img_index=$((img_index + 1))
 
     else
-      # 非图片文件：只显示文件名，无复制按钮
       echo "<li>
               <span class=\"left file\">
                 <a href=\"$base\" class=\"file-name\">$short_name</a>
@@ -359,8 +352,7 @@ EOF
     fi
   done
 
-  echo "</ul>" >> "$INDEX"
-  echo "</div></body></html>" >> "$INDEX"
+  echo "</ul></div></body></html>" >> "$INDEX"
 
 done
 

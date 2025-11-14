@@ -160,8 +160,6 @@ let currentIndex = -1;
 function openLightbox(index) {
   const lb = document.getElementById("lightbox");
   const img = document.getElementById("lightbox-img");
-  const urlText = document.getElementById("lightbox-url");
-  const urlInput = document.getElementById("lightbox-url-input");
 
   if (!imageList.length || index < 0 || index >= imageList.length) return;
 
@@ -169,8 +167,6 @@ function openLightbox(index) {
   const item = imageList[index];
 
   img.src = item.src;
-  if (urlText) urlText.textContent = item.fullUrl;
-  if (urlInput) urlInput.value = item.fullUrl;
 
   // 更新左右按钮可用状态
   const prevBtn = document.getElementById("lb-prev");
@@ -246,7 +242,6 @@ document.addEventListener("keydown", function(e) {
       <button id="lb-next" class="lb-nav" onclick="event.stopPropagation(); showNext()">&#8594;</button>
     </div>
     <div class="lightbox-footer">
-      <div id="lightbox-url" class="lightbox-url-text"></div>
       <div class="lightbox-url-actions">
         <input id="lightbox-url-input" readonly>
         <button class="copy-btn" onclick="copyCurrentUrl()">复制url</button>
@@ -381,5 +376,4 @@ document.addEventListener("keydown", function(e) {
               </span>
             </li>
 <script>imageList[11] = {src: "macos-wallpaper.webp", fullUrl: "https://hoochanlon.github.io/picx-images-hosting/category-covers/macos-wallpaper.webp"};</script>
-</ul>
-</div></body></html>
+</ul></div></body></html>
