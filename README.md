@@ -10,7 +10,10 @@
 > * 其他免费图片托管解决方案：[cf-pages/Telegraph-Image](https://github.com/cf-pages/Telegraph-Image)、兰空图床（需服务器）等
 
 
-快速使用：https://picx.xpoet.cn/#/upload
+快速使用：
+
+* https://picx.xpoet.cn/#/upload
+* http://hoochanlon.github.io/picx-images-hosting
 
 > [!note]
 > * [几乎不受审查的图床标记](https://hoochanlon.github.io/posts/20250821144721.html)
