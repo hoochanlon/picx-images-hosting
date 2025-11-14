@@ -3,19 +3,40 @@
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
   ul { list-style: none; padding-left: 0; }
-  li { margin: 6px 0; display: flex; align-items: center; gap: 12px; }
 
-  .left { display: flex; align-items: center; gap: 6px; }
-  .right { display: flex; align-items: center; gap: 6px; }
+  li {
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;          /* 占满剩余宽度，把按钮顶到右侧 */
+    min-width: 0;     /* 允许内部元素缩到省略号 */
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;   /* 不被压缩，保持按钮在右侧一列 */
+    margin-left: 12px;
+  }
 
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
   .topbar {
-    position: fixed; top: 0; left: 0;
-    width: 100%; background: #f7f7f7;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    background: #f7f7f7;
     border-bottom: 1px solid #ccc;
-    padding: 12px 20px; z-index: 1000;
+    padding: 12px 20px;
+    z-index: 1000;
   }
 
   .container { margin-top: 90px; }
@@ -25,38 +46,44 @@
   .image::before  { content: "🖼 "; }
 
   .preview-btn, .copy-btn {
-    padding: 2px 6px; background: #eee;
-    border: 1px solid #ccc; border-radius: 4px;
-    cursor: pointer; font-size: 0.8em;
+    padding: 2px 6px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
   }
-
   .preview-btn:hover, .copy-btn:hover { background: #ddd; }
 
   #lightbox {
-    display: none; position: fixed; top: 0; left: 0;
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
     width: 100%; height: 100%;
     background: rgba(0,0,0,0.75);
-    justify-content: center; align-items: center;
+    justify-content: center;
+    align-items: center;
     z-index: 2000;
   }
 
   #lightbox img {
-    max-width: 90%; max-height: 90%;
-    border-radius: 6px; box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 6px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
 
   .file-name {
-    max-width: 260px; overflow: hidden;
-    text-overflow: ellipsis; white-space: nowrap;
+    display: inline-block;
+    max-width: 100%;           /* 跟随 left 宽度 */
+    overflow: hidden;
+    text-overflow: ellipsis;   /* 省略号 */
+    white-space: nowrap;
   }
 
   .breadcrumb {
     font-size: 1em;
     margin-bottom: 10px;
-  }
-
-  .breadcrumb span {
-    opacity: 0.7;
   }
 </style>
 <script>
@@ -84,78 +111,116 @@ function copyPath(src) {
  | <a href="../">⬆ Go Up</a>
 </div>
 <div class="container">
-<div class="breadcrumb"><strong>📂 当前位置：</strong> <a href="https://hoochanlon.github.io/picx-images-hosting">Home</a> &gt; <a href="https://hoochanlon.github.io/picx-images-hosting/category-covers/">category-covers</a></div>
-<h2>Index of ./category-covers</h2><ul>
-<li><span class="left image">
-            <a href="yogioh.webp" class="file-name">yogioh.webp</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('yogioh.webp')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/yogioh.webp')">复制url</span>
-            </span></li>
-<li><span class="left image">
-            <a href="coding.webp" class="file-name">coding.webp</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('coding.webp')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/coding.webp')">复制url</span>
-            </span></li>
-<li><span class="left image">
-            <a href="blue-butterfly.webp" class="file-name">blue-butterfly.webp</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('blue-butterfly.webp')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/blue-butterfly.webp')">复制url</span>
-            </span></li>
-<li><span class="left image">
-            <a href="yogioh-1.webp" class="file-name">yogioh-1.webp</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('yogioh-1.webp')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/yogioh-1.webp')">复制url</span>
-            </span></li>
-<li><span class="left image">
-            <a href="renshenga.webp" class="file-name">renshenga.webp</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('renshenga.webp')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/renshenga.webp')">复制url</span>
-            </span></li>
-<li><span class="left image">
-            <a href="author.webp" class="file-name">author.webp</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('author.webp')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/author.webp')">复制url</span>
-            </span></li>
-<li><span class="left image">
-            <a href="woniu.webp" class="file-name">woniu.webp</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('woniu.webp')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/woniu.webp')">复制url</span>
-            </span></li>
-<li><span class="left image">
-            <a href="kaoshi.webp" class="file-name">kaoshi.webp</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('kaoshi.webp')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/kaoshi.webp')">复制url</span>
-            </span></li>
-<li><span class="left image">
-            <a href="blog-post.webp" class="file-name">blog-post.webp</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('blog-post.webp')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/blog-post.webp')">复制url</span>
-            </span></li>
-<li><span class="left image">
-            <a href="archived.webp" class="file-name">archived.webp</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('archived.webp')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/archived.webp')">复制url</span>
-            </span></li>
-<li><span class="left image">
-            <a href="cloud.jpeg" class="file-name">cloud.jpeg</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('cloud.jpeg')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/cloud.jpeg')">复制url</span>
-            </span></li>
-<li><span class="left image">
-            <a href="macos-wallpaper.webp" class="file-name">macos-wallpaper.webp</a>
-            </span><span class="right">
-              <span class="preview-btn" onclick="showImage('macos-wallpaper.webp')">预览</span>
-              <span class="copy-btn" onclick="copyPath('category-covers/macos-wallpaper.webp')">复制url</span>
-            </span></li>
-</ul></div></body></html>
+<div class="breadcrumb"><strong>📂 当前定位：</strong> <a href="https://hoochanlon.github.io/picx-images-hosting">Home</a> &gt; <a href="https://hoochanlon.github.io/picx-images-hosting/category-covers/">category-covers</a></div>
+<h2>Index of ./category-covers</h2>
+<ul>
+<li>
+              <span class="left image">
+                <a href="yogioh.webp" class="file-name">yogioh.webp</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('yogioh.webp')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/yogioh.webp')">复制url</span>
+              </span>
+            </li>
+<li>
+              <span class="left image">
+                <a href="coding.webp" class="file-name">coding.webp</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('coding.webp')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/coding.webp')">复制url</span>
+              </span>
+            </li>
+<li>
+              <span class="left image">
+                <a href="blue-butterfly.webp" class="file-name">blue-butterfly.webp</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('blue-butterfly.webp')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/blue-butterfly.webp')">复制url</span>
+              </span>
+            </li>
+<li>
+              <span class="left image">
+                <a href="yogioh-1.webp" class="file-name">yogioh-1.webp</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('yogioh-1.webp')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/yogioh-1.webp')">复制url</span>
+              </span>
+            </li>
+<li>
+              <span class="left image">
+                <a href="renshenga.webp" class="file-name">renshenga.webp</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('renshenga.webp')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/renshenga.webp')">复制url</span>
+              </span>
+            </li>
+<li>
+              <span class="left image">
+                <a href="author.webp" class="file-name">author.webp</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('author.webp')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/author.webp')">复制url</span>
+              </span>
+            </li>
+<li>
+              <span class="left image">
+                <a href="woniu.webp" class="file-name">woniu.webp</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('woniu.webp')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/woniu.webp')">复制url</span>
+              </span>
+            </li>
+<li>
+              <span class="left image">
+                <a href="kaoshi.webp" class="file-name">kaoshi.webp</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('kaoshi.webp')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/kaoshi.webp')">复制url</span>
+              </span>
+            </li>
+<li>
+              <span class="left image">
+                <a href="blog-post.webp" class="file-name">blog-post.webp</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('blog-post.webp')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/blog-post.webp')">复制url</span>
+              </span>
+            </li>
+<li>
+              <span class="left image">
+                <a href="archived.webp" class="file-name">archived.webp</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('archived.webp')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/archived.webp')">复制url</span>
+              </span>
+            </li>
+<li>
+              <span class="left image">
+                <a href="cloud.jpeg" class="file-name">cloud.jpeg</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('cloud.jpeg')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/cloud.jpeg')">复制url</span>
+              </span>
+            </li>
+<li>
+              <span class="left image">
+                <a href="macos-wallpaper.webp" class="file-name">macos-wallpaper.webp</a>
+              </span>
+              <span class="right">
+                <span class="preview-btn" onclick="showImage('macos-wallpaper.webp')">预览</span>
+                <span class="copy-btn" onclick="copyPath('category-covers/macos-wallpaper.webp')">复制url</span>
+              </span>
+            </li>
+</ul>
+</div></body></html>
