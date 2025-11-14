@@ -1,36 +1,71 @@
-- name: Generate index.html files
-  run: |
-    echo "Generating index.html files for directories"
-    find . -type d -not -path '*/.git/*' -exec bash -c '
-      DIR="{}"
-      if [ "$(ls -A "$DIR")" ]; then
-        INDEX="$DIR/index.html"
-        echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Index of $DIR</title></head><body>" > "$INDEX"
+name: Deploy to gh-pages
 
-        echo "<h1>Index of $DIR</h1>" >> "$INDEX"
-        echo "<ul>" >> "$INDEX"
+on:
+  push:
+    branches:
+      - master   # 或 main
 
-        # 列出文件和目录（不显示 index.html 自己）
-        for file in "$DIR"/*; do
-          base=$(basename "$file")
-          if [ -f "$file" ] && [ "$base" != "index.html" ]; then
-            echo "<li><a href=\"$base\">$base</a></li>" >> "$INDEX"
-          elif [ -d "$file" ]; then
-            echo "<li><a href=\"$base/\">$base/</a></li>" >> "$INDEX"
-          fi
-        done
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-        echo "</ul>" >> "$INDEX"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-        # 底部追加 index.html + go up
-        echo "<hr>" >> "$INDEX"
-        echo "<div style=\"margin-top:20px;\">" >> "$INDEX"
-        echo "<a href=\"index.html\">index.html</a><br>" >> "$INDEX"
+      # 递归生成 index.html，并将 Go Up + index 放在底部
+      - name: Generate index.html files
+        run: |
+          echo "Generating index.html files for directories"
+          find . -type d -not -path '*/.git/*' -exec bash -c '
+            DIR="{}"
+            INDEX="$DIR/index.html"
 
-        if [ "$DIR" != "." ]; then
-          echo "<a href=\"../\">.. (Go Up)</a>" >> "$INDEX"
-        fi
+            # 如果目录不为空
+            if [ "$(ls -A "$DIR")" ]; then
+              echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Index of $DIR</title></head><body>" > "$INDEX"
 
-        echo "</div></body></html>" >> "$INDEX"
-      fi
-    ' \;
+              echo "<h1>Index of $DIR</h1>" >> "$INDEX"
+              echo "<ul>" >> "$INDEX"
+
+              # 列出文件（排除 index.html 本身）
+              for file in "$DIR"/*; do
+                base=$(basename "$file")
+
+                if [ -f "$file" ] && [ "$base" != "index.html" ]; then
+                  echo "<li><a href=\"$base\">$base</a></li>" >> "$INDEX"
+                elif [ -d "$file" ]; then
+                  echo "<li><a href=\"$base/\">$base/</a></li>" >> "$INDEX"
+                fi
+              done
+
+              echo "</ul>" >> "$INDEX"
+
+              # 底部显示 index.html 和 Go Up
+              echo "<hr>" >> "$INDEX"
+              echo "<div style=\"margin-top:20px;\">" >> "$INDEX"
+
+              echo "<a href=\"index.html\">index.html</a><br>" >> "$INDEX"
+
+              # 根目录不显示 Go Up
+              if [ "$DIR" != "." ]; then
+                echo "<a href=\"../\">.. (Go Up)</a>" >> "$INDEX"
+              fi
+
+              echo "</div></body></html>" >> "$INDEX"
+            fi
+          ' \;
+
+      # 设置 SSH 以部署
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+
+      # 部署到 gh-pages
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.DEPLOY_KEY }}
+          publish_branch: gh-pages
+          publish_dir: ./
