@@ -13,14 +13,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 生成目录索引文件
+      - name: Generate index.html files
+        run: |
+          echo "Generating index.html files for directories"
+          find . -type d -not -path '*/.git/*' -exec bash -c '
+            DIR="{}"
+            if [ "$(ls -A "$DIR")" ]; then
+              echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Index of $DIR</title></head><body><h1>Index of $DIR</h1><ul>" > $DIR/index.html
+              for file in $DIR/*; do
+                if [ -f "$file" ]; then
+                  echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>" >> $DIR/index.html
+                fi
+              done
+              echo "</ul></body></html>" >> $DIR/index.html
+            fi
+          ' \;
+
+      # 设置 SSH 密钥以便部署到 gh-pages
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.DEPLOY_KEY }}  # 引用 GitHub Secrets 中的私钥
 
+      # 部署到 gh-pages 分支
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.DEPLOY_KEY }}  # 这里使用 GitHub Secrets 中的私钥
           publish_branch: gh-pages  # 发布到 gh-pages 分支
-          publish_dir: .  # 或者你构建的目录
+          publish_dir: ./  # 部署根目录下的所有内容，或你构建的目录
