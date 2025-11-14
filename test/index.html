@@ -2,14 +2,24 @@
 <title>Index of ./test</title>
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
-
   ul { list-style: none; padding-left: 0; }
-
   li {
     margin: 6px 0;
     display: flex;
+    justify-content: space-between;  /* 左右分布但不拉伸中间 */
     align-items: center;
-    gap: 10px;
+  }
+
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 6px;       /* 图标与文件名之间的距离 */
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 6px;       /* 按钮之间的距离 */
   }
 
   a { color: #0366d6; text-decoration: none; }
@@ -79,12 +89,10 @@ function hideLightbox() {
 }
 
 function copyPath(src) {
-  const fullUrl = "https://blog.hoochanlon.space/picx-images-hosting/" + src.replace(/^\.\//, "");
+  const fullUrl = "$BASE_URL/" + src.replace(/^\\.\//, "");
   navigator.clipboard.writeText(fullUrl);
 }
 </script>
-</head><body>
-
 <div id="lightbox" onclick="hideLightbox()">
   <img id="lightbox-img" src="">
 </div>
@@ -96,9 +104,11 @@ function copyPath(src) {
 <div class="container">
 <h2>Index of ./test</h2>
 <ul>
-<li class="file">
-              <a href="1.txt" class="file-name">1.txt</a>
-              <span class="copy-btn" onclick="copyPath('test/1.txt')">复制url</span>
-           </li>
+<li>
+              <span class="left file"><a href="1.txt" class="file-name">1.txt</a></span>
+              <span class="right">
+                <span class="copy-btn" onclick="copyPath('test/1.txt')">复制url</span>
+              </span>
+            </li>
 </ul>
 </div></body></html>
