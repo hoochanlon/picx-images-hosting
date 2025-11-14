@@ -2,8 +2,15 @@
 <title>Index of ./uploads/2025</title>
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
+
   ul { list-style: none; padding-left: 0; }
-  li { margin: 6px 0; display: flex; align-items: center; justify-content: space-between; }
+
+  li {
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
@@ -18,14 +25,13 @@
     z-index: 1000;
   }
 
-  .container { margin-top: 75px; }
+  .container { margin-top: 80px; }
 
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
-  .image::before  { content: "🖼️ "; }
+  .image::before  { content: "🖼 "; }
 
   .preview-btn, .copy-btn {
-    margin-left: 10px;
     padding: 2px 6px;
     background: #eee;
     border: 1px solid #ccc;
@@ -45,6 +51,7 @@
     align-items: center;
     z-index: 2000;
   }
+
   #lightbox img {
     max-width: 90%;
     max-height: 90%;
@@ -53,7 +60,7 @@
   }
 
   .file-name {
-    max-width: 200px;
+    max-width: 260px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -66,17 +73,18 @@ function showImage(src) {
   img.src = src;
   lb.style.display = "flex";
 }
+
 function hideLightbox() {
   document.getElementById("lightbox").style.display = "none";
 }
-function copyPath(path) {
-  const fullUrl = "https://hoochanlon.github.io" + path;
-  navigator.clipboard.writeText(fullUrl).then(() => {
-    alert("已复制路径: " + fullUrl);
-  });
+
+function copyPath(src) {
+  const fullUrl = "https://blog.hoochanlon.space/picx-images-hosting/" + src.replace(/^\.\//, "");
+  navigator.clipboard.writeText(fullUrl);
 }
 </script>
 </head><body>
+
 <div id="lightbox" onclick="hideLightbox()">
   <img id="lightbox-img" src="">
 </div>
@@ -88,70 +96,114 @@ function copyPath(path) {
 <div class="container">
 <h2>Index of ./uploads/2025</h2>
 <ul>
-<li class="image"><a href="2025-11-01_18-18-22.webp" class="file-name">2025-11-01_18-18-22.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-01_18-18-22.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-01_18-18-22.webp')">复制url</span></li>
-<li class="image"><a href="2025-11-03_01-29-12.webp" class="file-name">2025-11-03_01-29-12.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-03_01-29-12.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-03_01-29-12.webp')">复制url</span></li>
-<li class="image"><a href="2025-11-01_17-35-04.webp" class="file-name">2025-11-01_17-35-04.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-01_17-35-04.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-01_17-35-04.webp')">复制url</span></li>
-<li class="image"><a href="2025-11-01_15-54-18.webp" class="file-name">2025-11-01_15-54-18.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-01_15-54-18.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-01_15-54-18.webp')">复制url</span></li>
-<li class="image"><a href="PixPin_2025-11-09_00-45-15.webp" class="file-name">PixPin_2025-11-09_00-45-15.webp</a>
-            <span class="preview-btn" onclick="showImage('PixPin_2025-11-09_00-45-15.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('PixPin_2025-11-09_00-45-15.webp')">复制url</span></li>
-<li class="image"><a href="2025-1027-160610.webp" class="file-name">2025-1027-160610.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-1027-160610.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-1027-160610.webp')">复制url</span></li>
-<li class="image"><a href="2025-11-01_20-09-33.webp" class="file-name">2025-11-01_20-09-33.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-01_20-09-33.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-01_20-09-33.webp')">复制url</span></li>
-<li class="image"><a href="2025-11-03_19-19-51.webp" class="file-name">2025-11-03_19-19-51.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-03_19-19-51.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-03_19-19-51.webp')">复制url</span></li>
-<li class="image"><a href="2025-1025-205537.webp" class="file-name">2025-1025-205537.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-1025-205537.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-1025-205537.webp')">复制url</span></li>
-<li class="file"><a href="1.txt" class="file-name">1.txt</a>
-            <span class="copy-btn" onclick="copyPath('1.txt')">复制url</span></li>
-<li class="image"><a href="2025-11-03_00-48-23-321.webp" class="file-name">2025-11-03_00-48-23-321.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-03_00-48-23-321.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-03_00-48-23-321.webp')">复制url</span></li>
-<li class="image"><a href="2025-10-31_17-24-09.webp" class="file-name">2025-10-31_17-24-09.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-10-31_17-24-09.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-10-31_17-24-09.webp')">复制url</span></li>
-<li class="image"><a href="20251024_222605_1.webp" class="file-name">20251024_222605_1.webp</a>
-            <span class="preview-btn" onclick="showImage('20251024_222605_1.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('20251024_222605_1.webp')">复制url</span></li>
-<li class="image"><a href="2025-11-01_20-06-37.webp" class="file-name">2025-11-01_20-06-37.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-01_20-06-37.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-01_20-06-37.webp')">复制url</span></li>
-<li class="image"><a href="2025-11-01_18-19-55.webp" class="file-name">2025-11-01_18-19-55.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-01_18-19-55.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-01_18-19-55.webp')">复制url</span></li>
-<li class="image"><a href="2025-11-03_19-40-29.webp" class="file-name">2025-11-03_19-40-29.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-03_19-40-29.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-03_19-40-29.webp')">复制url</span></li>
-<li class="image"><a href="PixPin_2025-11-06_20-48-17.webp" class="file-name">PixPin_2025-11-06_20-48-17.webp</a>
-            <span class="preview-btn" onclick="showImage('PixPin_2025-11-06_20-48-17.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('PixPin_2025-11-06_20-48-17.webp')">复制url</span></li>
-<li class="image"><a href="2025-11-03_00-48-23.webp" class="file-name">2025-11-03_00-48-23.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-03_00-48-23.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-03_00-48-23.webp')">复制url</span></li>
-<li class="image"><a href="2025-10-24_22-29-39.webp" class="file-name">2025-10-24_22-29-39.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-10-24_22-29-39.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-10-24_22-29-39.webp')">复制url</span></li>
-<li class="image"><a href="PixPin_2025-11-05_18-11-00.webp" class="file-name">PixPin_2025-11-05_18-11-00.webp</a>
-            <span class="preview-btn" onclick="showImage('PixPin_2025-11-05_18-11-00.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('PixPin_2025-11-05_18-11-00.webp')">复制url</span></li>
-<li class="image"><a href="2025-10-28_09-57-20.webp" class="file-name">2025-10-28_09-57-20.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-10-28_09-57-20.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-10-28_09-57-20.webp')">复制url</span></li>
-<li class="image"><a href="2025-11-01_15-05-41.webp" class="file-name">2025-11-01_15-05-41.webp</a>
-            <span class="preview-btn" onclick="showImage('2025-11-01_15-05-41.webp')">预览</span>
-            <span class="copy-btn" onclick="copyPath('2025-11-01_15-05-41.webp')">复制url</span></li>
+<li class="image">
+              <a href="2025-11-01_18-18-22.webp" class="file-name">2025-11-01_18-18-22.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-01_18-18-22.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-01_18-18-22.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-11-03_01-29-12.webp" class="file-name">2025-11-03_01-29-12.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-03_01-29-12.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-03_01-29-12.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-11-01_17-35-04.webp" class="file-name">2025-11-01_17-35-04.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-01_17-35-04.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-01_17-35-04.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-11-01_15-54-18.webp" class="file-name">2025-11-01_15-54-18.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-01_15-54-18.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-01_15-54-18.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="PixPin_2025-11-09_00-45-15.webp" class="file-name">PixPin_2025-11-09_00-45-15.webp</a>
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-09_00-45-15.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/PixPin_2025-11-09_00-45-15.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-1027-160610.webp" class="file-name">2025-1027-160610.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-1027-160610.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-1027-160610.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-11-01_20-09-33.webp" class="file-name">2025-11-01_20-09-33.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-01_20-09-33.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-01_20-09-33.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-11-03_19-19-51.webp" class="file-name">2025-11-03_19-19-51.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-03_19-19-51.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-03_19-19-51.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-1025-205537.webp" class="file-name">2025-1025-205537.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-1025-205537.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-1025-205537.webp')">复制url</span>
+           </li>
+<li class="file">
+              <a href="1.txt" class="file-name">1.txt</a>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/1.txt')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-11-03_00-48-23-321.webp" class="file-name">2025-11-03_00-48-23-321.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-03_00-48-23-321.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-03_00-48-23-321.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-10-31_17-24-09.webp" class="file-name">2025-10-31_17-24-09.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-10-31_17-24-09.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-10-31_17-24-09.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="20251024_222605_1.webp" class="file-name">20251024_222605_1.webp</a>
+              <span class="preview-btn" onclick="showImage('20251024_222605_1.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/20251024_222605_1.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-11-01_20-06-37.webp" class="file-name">2025-11-01_20-06-37.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-01_20-06-37.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-01_20-06-37.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-11-01_18-19-55.webp" class="file-name">2025-11-01_18-19-55.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-01_18-19-55.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-01_18-19-55.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-11-03_19-40-29.webp" class="file-name">2025-11-03_19-40-29.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-03_19-40-29.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-03_19-40-29.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="PixPin_2025-11-06_20-48-17.webp" class="file-name">PixPin_2025-11-06_20-48-17.webp</a>
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-06_20-48-17.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/PixPin_2025-11-06_20-48-17.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-11-03_00-48-23.webp" class="file-name">2025-11-03_00-48-23.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-03_00-48-23.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-03_00-48-23.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-10-24_22-29-39.webp" class="file-name">2025-10-24_22-29-39.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-10-24_22-29-39.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-10-24_22-29-39.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="PixPin_2025-11-05_18-11-00.webp" class="file-name">PixPin_2025-11-05_18-11-00.webp</a>
+              <span class="preview-btn" onclick="showImage('PixPin_2025-11-05_18-11-00.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/PixPin_2025-11-05_18-11-00.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-10-28_09-57-20.webp" class="file-name">2025-10-28_09-57-20.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-10-28_09-57-20.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-10-28_09-57-20.webp')">复制url</span>
+           </li>
+<li class="image">
+              <a href="2025-11-01_15-05-41.webp" class="file-name">2025-11-01_15-05-41.webp</a>
+              <span class="preview-btn" onclick="showImage('2025-11-01_15-05-41.webp')">预览</span>
+              <span class="copy-btn" onclick="copyPath('uploads/2025/2025-11-01_15-05-41.webp')">复制url</span>
+           </li>
 </ul>
 </div></body></html>

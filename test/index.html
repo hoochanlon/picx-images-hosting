@@ -2,8 +2,15 @@
 <title>Index of ./test</title>
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
+
   ul { list-style: none; padding-left: 0; }
-  li { margin: 6px 0; display: flex; align-items: center; justify-content: space-between; }
+
+  li {
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
@@ -18,14 +25,13 @@
     z-index: 1000;
   }
 
-  .container { margin-top: 75px; }
+  .container { margin-top: 80px; }
 
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
-  .image::before  { content: "🖼️ "; }
+  .image::before  { content: "🖼 "; }
 
   .preview-btn, .copy-btn {
-    margin-left: 10px;
     padding: 2px 6px;
     background: #eee;
     border: 1px solid #ccc;
@@ -45,6 +51,7 @@
     align-items: center;
     z-index: 2000;
   }
+
   #lightbox img {
     max-width: 90%;
     max-height: 90%;
@@ -53,7 +60,7 @@
   }
 
   .file-name {
-    max-width: 200px;
+    max-width: 260px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -66,17 +73,18 @@ function showImage(src) {
   img.src = src;
   lb.style.display = "flex";
 }
+
 function hideLightbox() {
   document.getElementById("lightbox").style.display = "none";
 }
-function copyPath(path) {
-  const fullUrl = "https://hoochanlon.github.io" + path;
-  navigator.clipboard.writeText(fullUrl).then(() => {
-    alert("已复制路径: " + fullUrl);
-  });
+
+function copyPath(src) {
+  const fullUrl = "https://blog.hoochanlon.space/picx-images-hosting/" + src.replace(/^\.\//, "");
+  navigator.clipboard.writeText(fullUrl);
 }
 </script>
 </head><body>
+
 <div id="lightbox" onclick="hideLightbox()">
   <img id="lightbox-img" src="">
 </div>
@@ -88,7 +96,9 @@ function copyPath(path) {
 <div class="container">
 <h2>Index of ./test</h2>
 <ul>
-<li class="file"><a href="1.txt" class="file-name">1.txt</a>
-            <span class="copy-btn" onclick="copyPath('1.txt')">复制url</span></li>
+<li class="file">
+              <a href="1.txt" class="file-name">1.txt</a>
+              <span class="copy-btn" onclick="copyPath('test/1.txt')">复制url</span>
+           </li>
 </ul>
 </div></body></html>
