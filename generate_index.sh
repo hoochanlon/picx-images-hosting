@@ -293,7 +293,7 @@ EOF
   breadcrumb_html="$breadcrumb_html</div>"
 
   # 顶部导航
-  echo "<div class=\"topbar\"><strong>📂 Index Navigation:</strong> <a href=\"$BASE_URL\">Home</a>" >> "$INDEX"
+  echo "<div class=\"topbar\"><strong>🗂️ picx-images-hosting:</strong> <a href=\"$BASE_URL\">Home</a>" >> "$INDEX"
   if [ "$DIR" != "." ]; then
     echo " | <a href=\"../\">⬆ Go Up</a>" >> "$INDEX"
   fi
