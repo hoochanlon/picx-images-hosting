@@ -4,7 +4,6 @@
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
   ul { list-style: none; padding-left: 0; }
   li { margin: 6px 0; display: flex; align-items: center; }
-
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
@@ -20,13 +19,11 @@
 
   .container { margin-top: 75px; }
 
-  /* 图标 */
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
   .image::before  { content: "🖼 "; }
 
-  /* 预览按钮 */
-  .preview-btn {
+  .preview-btn, .copy-btn {
     margin-left: 10px;
     padding: 2px 6px;
     background: #eee;
@@ -35,9 +32,8 @@
     cursor: pointer;
     font-size: 0.8em;
   }
-  .preview-btn:hover { background: #ddd; }
+  .preview-btn:hover, .copy-btn:hover { background: #ddd; }
 
-  /* Lightbox */
   #lightbox {
     display: none;
     position: fixed;
@@ -54,6 +50,13 @@
     border-radius: 6px;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
+
+  .file-name {
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 </style>
 <script>
 function showImage(src) {
@@ -64,6 +67,11 @@ function showImage(src) {
 }
 function hideLightbox() {
   document.getElementById("lightbox").style.display = "none";
+}
+function copyPath(path) {
+  navigator.clipboard.writeText(path).then(() => {
+    alert("复制成功: " + path);
+  });
 }
 </script>
 </head><body>
@@ -78,18 +86,44 @@ function hideLightbox() {
 <div class="container">
 <h2>Index of ./special</h2>
 <ul>
-<li class="image"><a href="caffe.png">caffe.png</a> <span class="preview-btn" onclick="showImage('caffe.png')">预览</span></li>
-<li class="image"><a href="404.png">404.png</a> <span class="preview-btn" onclick="showImage('404.png')">预览</span></li>
-<li class="image"><a href="default.png">default.png</a> <span class="preview-btn" onclick="showImage('default.png')">预览</span></li>
-<li class="image"><a href="mastercard-btc.png">mastercard-btc.png</a> <span class="preview-btn" onclick="showImage('mastercard-btc.png')">预览</span></li>
-<li class="image"><a href="example.jpg">example.jpg</a> <span class="preview-btn" onclick="showImage('example.jpg')">预览</span></li>
-<li class="image"><a href="appleid.png">appleid.png</a> <span class="preview-btn" onclick="showImage('appleid.png')">预览</span></li>
-<li class="image"><a href="author.png">author.png</a> <span class="preview-btn" onclick="showImage('author.png')">预览</span></li>
-<li class="image"><a href="loading.gif">loading.gif</a> <span class="preview-btn" onclick="showImage('loading.gif')">预览</span></li>
-<li class="image"><a href="404.webp">404.webp</a> <span class="preview-btn" onclick="showImage('404.webp')">预览</span></li>
-<li class="image"><a href="eromaga-404.png">eromaga-404.png</a> <span class="preview-btn" onclick="showImage('eromaga-404.png')">预览</span></li>
-<li class="image"><a href="doge-404.png">doge-404.png</a> <span class="preview-btn" onclick="showImage('doge-404.png')">预览</span></li>
-<li class="image"><a href="test.webp">test.webp</a> <span class="preview-btn" onclick="showImage('test.webp')">预览</span></li>
-<li class="image"><a href="web-development-workflow.png">web-development-workflow.png</a> <span class="preview-btn" onclick="showImage('web-development-workflow.png')">预览</span></li>
+<li class="image"><a href="caffe.png" class="file-name">caffe.png</a>
+        <span class="preview-btn" onclick="showImage('caffe.png')">预览</span>
+        <span class="copy-btn" onclick="copyPath('caffe.png')">复制url</span></li>
+<li class="image"><a href="404.png" class="file-name">404.png</a>
+        <span class="preview-btn" onclick="showImage('404.png')">预览</span>
+        <span class="copy-btn" onclick="copyPath('404.png')">复制url</span></li>
+<li class="image"><a href="default.png" class="file-name">default.png</a>
+        <span class="preview-btn" onclick="showImage('default.png')">预览</span>
+        <span class="copy-btn" onclick="copyPath('default.png')">复制url</span></li>
+<li class="image"><a href="mastercard-btc.png" class="file-name">mastercard-btc.png</a>
+        <span class="preview-btn" onclick="showImage('mastercard-btc.png')">预览</span>
+        <span class="copy-btn" onclick="copyPath('mastercard-btc.png')">复制url</span></li>
+<li class="image"><a href="example.jpg" class="file-name">example.jpg</a>
+        <span class="preview-btn" onclick="showImage('example.jpg')">预览</span>
+        <span class="copy-btn" onclick="copyPath('example.jpg')">复制url</span></li>
+<li class="image"><a href="appleid.png" class="file-name">appleid.png</a>
+        <span class="preview-btn" onclick="showImage('appleid.png')">预览</span>
+        <span class="copy-btn" onclick="copyPath('appleid.png')">复制url</span></li>
+<li class="image"><a href="author.png" class="file-name">author.png</a>
+        <span class="preview-btn" onclick="showImage('author.png')">预览</span>
+        <span class="copy-btn" onclick="copyPath('author.png')">复制url</span></li>
+<li class="image"><a href="loading.gif" class="file-name">loading.gif</a>
+        <span class="preview-btn" onclick="showImage('loading.gif')">预览</span>
+        <span class="copy-btn" onclick="copyPath('loading.gif')">复制url</span></li>
+<li class="image"><a href="404.webp" class="file-name">404.webp</a>
+        <span class="preview-btn" onclick="showImage('404.webp')">预览</span>
+        <span class="copy-btn" onclick="copyPath('404.webp')">复制url</span></li>
+<li class="image"><a href="eromaga-404.png" class="file-name">eromaga-404.png</a>
+        <span class="preview-btn" onclick="showImage('eromaga-404.png')">预览</span>
+        <span class="copy-btn" onclick="copyPath('eromaga-404.png')">复制url</span></li>
+<li class="image"><a href="doge-404.png" class="file-name">doge-404.png</a>
+        <span class="preview-btn" onclick="showImage('doge-404.png')">预览</span>
+        <span class="copy-btn" onclick="copyPath('doge-404.png')">复制url</span></li>
+<li class="image"><a href="test.webp" class="file-name">test.webp</a>
+        <span class="preview-btn" onclick="showImage('test.webp')">预览</span>
+        <span class="copy-btn" onclick="copyPath('test.webp')">复制url</span></li>
+<li class="image"><a href="web-development-workflow.png" class="file-name">web-development-workflow.png</a>
+        <span class="preview-btn" onclick="showImage('web-development-workflow.png')">预览</span>
+        <span class="copy-btn" onclick="copyPath('web-development-workflow.png')">复制url</span></li>
 </ul>
 </div></body></html>

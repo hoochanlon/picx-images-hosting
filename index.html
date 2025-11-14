@@ -4,7 +4,6 @@
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
   ul { list-style: none; padding-left: 0; }
   li { margin: 6px 0; display: flex; align-items: center; }
-
   a { color: #0366d6; text-decoration: none; }
   a:hover { text-decoration: underline; }
 
@@ -20,13 +19,11 @@
 
   .container { margin-top: 75px; }
 
-  /* 图标 */
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
   .image::before  { content: "🖼 "; }
 
-  /* 预览按钮 */
-  .preview-btn {
+  .preview-btn, .copy-btn {
     margin-left: 10px;
     padding: 2px 6px;
     background: #eee;
@@ -35,9 +32,8 @@
     cursor: pointer;
     font-size: 0.8em;
   }
-  .preview-btn:hover { background: #ddd; }
+  .preview-btn:hover, .copy-btn:hover { background: #ddd; }
 
-  /* Lightbox */
   #lightbox {
     display: none;
     position: fixed;
@@ -54,6 +50,13 @@
     border-radius: 6px;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
+
+  .file-name {
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 </style>
 <script>
 function showImage(src) {
@@ -64,6 +67,11 @@ function showImage(src) {
 }
 function hideLightbox() {
   document.getElementById("lightbox").style.display = "none";
+}
+function copyPath(path) {
+  navigator.clipboard.writeText(path).then(() => {
+    alert("复制成功: " + path);
+  });
 }
 </script>
 </head><body>
@@ -77,20 +85,27 @@ function hideLightbox() {
 <div class="container">
 <h2>Index of .</h2>
 <ul>
-<li class="folder"><a href="special/">special/</a></li>
-<li class="folder"><a href=".git/">.git/</a></li>
-<li class="folder"><a href="visuals/">visuals/</a></li>
-<li class="file"><a href="imgrename.md">imgrename.md</a></li>
-<li class="folder"><a href=".github/">.github/</a></li>
-<li class="folder"><a href="anime/">anime/</a></li>
-<li class="file"><a href="README.md">README.md</a></li>
-<li class="folder"><a href="fkca/">fkca/</a></li>
-<li class="folder"><a href="category-covers/">category-covers/</a></li>
-<li class="file"><a href="generate_index.sh">generate_index.sh</a></li>
-<li class="folder"><a href="uploads/">uploads/</a></li>
-<li class="folder"><a href="photos/">photos/</a></li>
-<li class="file"><a href=".deploy">.deploy</a></li>
-<li class="file"><a href=".settings">.settings</a></li>
-<li class="folder"><a href="test/">test/</a></li>
+<li class="folder"><a href="special/" class="file-name">special/</a></li>
+<li class="folder"><a href=".git/" class="file-name">.git/</a></li>
+<li class="folder"><a href="visuals/" class="file-name">visuals/</a></li>
+<li class="file"><a href="imgrename.md" class="file-name">imgrename.md</a>
+        <span class="copy-btn" onclick="copyPath('imgrename.md')">复制url</span></li>
+<li class="folder"><a href=".github/" class="file-name">.github/</a></li>
+<li class="folder"><a href="anime/" class="file-name">anime/</a></li>
+<li class="file"><a href="README.md" class="file-name">README.md</a>
+        <span class="copy-btn" onclick="copyPath('README.md')">复制url</span></li>
+<li class="folder"><a href="fkca/" class="file-name">fkca/</a></li>
+<li class="folder"><a href="category-covers/" class="file-name">category-covers/</a></li>
+<li class="file"><a href="generate_index.sh" class="file-name">generate_index.sh</a>
+        <span class="copy-btn" onclick="copyPath('generate_index.sh')">复制url</span></li>
+<li class="folder"><a href="uploads/" class="file-name">uploads/</a></li>
+<li class="folder"><a href="photos/" class="file-name">photos/</a></li>
+<li class="file"><a href=".deploy" class="file-name">.deploy</a>
+        <span class="copy-btn" onclick="copyPath('.deploy')">复制url</span></li>
+<li class="file"><a href=".settings" class="file-name">.settings</a>
+        <span class="copy-btn" onclick="copyPath('.settings')">复制url</span></li>
+<li class="folder"><a href="test/" class="file-name">test/</a></li>
+<li class="file"><a href="generate_index.sh.bak" class="file-name">generate_index.sh.bak</a>
+        <span class="copy-btn" onclick="copyPath('generate_index.sh.bak')">复制url</span></li>
 </ul>
 </div></body></html>
