@@ -1,43 +1,75 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <title>Index of ./uploads</title>
 <style>
-    body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
-    ul { list-style: none; padding-left: 0; }
-    li { margin: 10px 0; }
+  body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
+  ul { list-style: none; padding-left: 0; }
+  li { margin: 6px 0; display: flex; align-items: center; }
 
-    a { color: #0366d6; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+  a { color: #0366d6; text-decoration: none; }
+  a:hover { text-decoration: underline; }
 
-    .topbar {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      background: #f7f7f7;
-      border-bottom: 1px solid #ccc;
-      padding: 12px 20px;
-      z-index: 1000;
-    }
+  .topbar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    background: #f7f7f7;
+    border-bottom: 1px solid #ccc;
+    padding: 12px 20px;
+    z-index: 1000;
+  }
 
-    .container { margin-top: 75px; }
+  .container { margin-top: 75px; }
 
-    /* 图标 */
-    .file::before   { content: "📄 "; }
-    .folder::before { content: "📁 "; }
-    .image::before  { content: "🖼 "; }
+  /* 图标 */
+  .file::before   { content: "📄 "; }
+  .folder::before { content: "📁 "; }
+  .image::before  { content: "🖼️ "; }
 
-    /* 图片预览 */
-    .preview {
-      margin-left: 10px;
-      vertical-align: middle;
-    }
-    .preview img {
-      width: 120px;
-      height: auto;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-  </style>
+  /* 预览按钮 */
+  .preview-btn {
+    margin-left: 10px;
+    padding: 2px 6px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+  }
+  .preview-btn:hover { background: #ddd; }
+
+  /* Lightbox */
+  #lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.75);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+  #lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 6px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  }
+</style>
+<script>
+function showImage(src) {
+  const lb = document.getElementById("lightbox");
+  const img = document.getElementById("lightbox-img");
+  img.src = src;
+  lb.style.display = "flex";
+}
+function hideLightbox() {
+  document.getElementById("lightbox").style.display = "none";
+}
+</script>
 </head><body>
+<div id="lightbox" onclick="hideLightbox()">
+  <img id="lightbox-img" src="">
+</div>
 <div class="topbar">
 <strong>📂 Index Navigation:</strong> 
 <a href="./index.html">Home</a>
@@ -46,7 +78,7 @@
 <div class="container">
 <h2>Index of ./uploads</h2>
 <ul>
-<li class="folder"><a href="2025/">2025/</a></li>
 <li class="file"><a href="随心所欲不想太多，只管上传就好了.txt">随心所欲不想太多，只管上传就好了.txt</a></li>
+<li class="folder"><a href="2025/">2025/</a></li>
 </ul>
 </div></body></html>
