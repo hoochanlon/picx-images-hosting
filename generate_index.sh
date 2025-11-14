@@ -22,20 +22,21 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
     align-items: center;
   }
 
+  /* 文件名区域（固定宽度 650px，使按钮对齐在蓝框区域） */
   .left {
     display: flex;
     align-items: center;
     gap: 6px;
-    flex: 1;          /* 占满剩余宽度，把按钮顶到右侧 */
-    min-width: 0;     /* 允许内部元素缩到省略号 */
+    flex: 0 0 650px;   /* ⭐ 文件名区域固定宽度 */
+    min-width: 0;      /* 允许缩略号 */
   }
 
   .right {
     display: flex;
     align-items: center;
     gap: 6px;
-    flex-shrink: 0;   /* 不被压缩，保持按钮在右侧一列 */
-    margin-left: 12px;
+    flex-shrink: 0;    /* 按钮区不被压缩 */
+    margin-left: 12px; /* 文件名与按钮间距 */
   }
 
   a { color: #0366d6; text-decoration: none; }
@@ -87,9 +88,9 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
 
   .file-name {
     display: inline-block;
-    max-width: 100%;           /* 跟随 left 宽度 */
+    max-width: 100%;
     overflow: hidden;
-    text-overflow: ellipsis;   /* 省略号 */
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
@@ -100,7 +101,7 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
 </style>
 EOF
 
-  # ------------------------ JS ------------------------
+  # ------------------------ JavaScript ------------------------
   cat >> "$INDEX" <<EOF
 <script>
 function showImage(src) {
@@ -123,7 +124,7 @@ EOF
 
   echo "</head><body>" >> "$INDEX"
 
-  # lightbox
+  # Lightbox
   cat >> "$INDEX" <<'EOF'
 <div id="lightbox" onclick="hideLightbox()">
   <img id="lightbox-img" src="">
@@ -165,7 +166,7 @@ EOF
     url_path="$REL_PATH/$base"
     url_path="${url_path#/}"
 
-    # 计算显示名：超过 30 字符则缩略 + "..."
+    # 超长文件名 → 缩略
     name_len=${#base}
     if (( name_len > 30 )); then
       short_name="${base:0:27}..."
@@ -176,7 +177,6 @@ EOF
     ext=$(echo "${base##*.}" | tr 'A-Z' 'a-z')
 
     if [ -d "$file" ]; then
-      # 目录显示加 /
       echo "<li>
               <span class=\"left folder\">
                 <a href=\"$base/\" class=\"file-name\">${short_name}/</a>
@@ -185,7 +185,6 @@ EOF
             </li>" >> "$INDEX"
 
     elif [[ "$ext" =~ ^(jpg|jpeg|png|gif|webp|svg)$ ]]; then
-      # 图片：预览 + 复制url（按钮统一在右侧）
       echo "<li>
               <span class=\"left image\">
                 <a href=\"$base\" class=\"file-name\">$short_name</a>
@@ -197,7 +196,6 @@ EOF
             </li>" >> "$INDEX"
 
     else
-      # 其他文件：只显示文件名，不显示复制按钮
       echo "<li>
               <span class=\"left file\">
                 <a href=\"$base\" class=\"file-name\">$short_name</a>
@@ -207,8 +205,7 @@ EOF
     fi
   done
 
-  echo "</ul>" >> "$INDEX"
-  echo "</div></body></html>" >> "$INDEX"
+  echo "</ul></div></body></html>" >> "$INDEX"
 
 done
 

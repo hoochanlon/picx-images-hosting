@@ -10,20 +10,21 @@
     align-items: center;
   }
 
+  /* 文件名区域（固定宽度 650px，使按钮对齐在蓝框区域） */
   .left {
     display: flex;
     align-items: center;
     gap: 6px;
-    flex: 1;          /* 占满剩余宽度，把按钮顶到右侧 */
-    min-width: 0;     /* 允许内部元素缩到省略号 */
+    flex: 0 0 650px;   /* ⭐ 文件名区域固定宽度 */
+    min-width: 0;      /* 允许缩略号 */
   }
 
   .right {
     display: flex;
     align-items: center;
     gap: 6px;
-    flex-shrink: 0;   /* 不被压缩，保持按钮在右侧一列 */
-    margin-left: 12px;
+    flex-shrink: 0;    /* 按钮区不被压缩 */
+    margin-left: 12px; /* 文件名与按钮间距 */
   }
 
   a { color: #0366d6; text-decoration: none; }
@@ -75,9 +76,9 @@
 
   .file-name {
     display: inline-block;
-    max-width: 100%;           /* 跟随 left 宽度 */
+    max-width: 100%;
     overflow: hidden;
-    text-overflow: ellipsis;   /* 省略号 */
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
@@ -222,5 +223,4 @@ function copyPath(src) {
                 <span class="copy-btn" onclick="copyPath('category-covers/macos-wallpaper.webp')">复制url</span>
               </span>
             </li>
-</ul>
-</div></body></html>
+</ul></div></body></html>
