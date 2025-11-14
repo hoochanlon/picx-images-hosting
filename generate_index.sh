@@ -52,7 +52,7 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
 
   .file::before   { content: "📄 "; }
   .folder::before { content: "📁 "; }
-  .image::before  { content: "🖼️ "; }
+  .image::before  { content: "🖼 "; }
 
   .preview-btn, .copy-btn {
     padding: 2px 6px;
@@ -160,9 +160,7 @@ EOF
     else
       echo "<li>
               <span class=\"left file\"><a href=\"$base\" class=\"file-name\">$base</a></span>
-              <span class=\"right\">
-                <span class=\"copy-btn\" onclick=\"copyPath('$url_path')\">复制url</span>
-              </span>
+              <span class=\"right\"></span>
             </li>" >> "$INDEX"
     fi
   done
