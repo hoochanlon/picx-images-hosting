@@ -72,10 +72,10 @@
   }
 
   .file-name {
-    max-width: 260px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    max-width: 300px;            /* 最大宽度 */
+    overflow: hidden;            /* 超过宽度的部分隐藏 */
+    text-overflow: ellipsis;     /* 显示省略号 */
+    white-space: nowrap;         /* 禁止换行 */
   }
 </style>
 <script>
@@ -91,7 +91,7 @@ function hideLightbox() {
 }
 
 function copyPath(src) {
-  const fullUrl = "https://hoochanlon.github.io/picx-images-hosting/" + src.replace(/^\.\//, "");
+  const fullUrl = "$BASE_URL/" + src.replace(/^\\.\//, "");
   navigator.clipboard.writeText(fullUrl);
 }
 </script>
