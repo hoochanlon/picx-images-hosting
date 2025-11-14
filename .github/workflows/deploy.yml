@@ -3,7 +3,7 @@ name: Deploy to gh-pages
 on:
   push:
     branches:
-      - master
+      - master   # 或 main
 
 jobs:
   deploy:
@@ -13,9 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 生成 index.html（无分页 + 顶部导航 + 文件列表）
       - name: Generate index.html for all directories
         run: |
-          echo "Generating index.html for all directories..."
+          echo "Generating index.html..."
 
           find . -type d -not -path '*/.git/*' -exec bash -c '
             DIR="{}"
@@ -23,37 +24,35 @@ jobs:
 
             echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">" > "$INDEX"
             echo "<title>Index of $DIR</title>" >> "$INDEX"
+
             echo "<style>
-              body { font-family: Arial, sans-serif; line-height: 1.8; padding: 0 20px; }
+              body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
               ul { list-style: none; padding-left: 0; }
-              li { margin: 4px 0; }
-              a { text-decoration: none; color: #0070f3; }
+              li { margin: 5px 0; }
+              a { color: #0366d6; text-decoration: none; }
               a:hover { text-decoration: underline; }
 
-              /* 顶部导航栏 */
+              /* 顶部固定导航栏 */
               .topbar {
                 position: fixed;
                 top: 0; left: 0;
                 width: 100%;
-                background: #f0f0f0;
+                background: #f7f7f7;
                 border-bottom: 1px solid #ccc;
-                padding: 10px 20px;
-                z-index: 100;
+                padding: 12px 20px;
+                z-index: 1000;
               }
-              .container { margin-top: 70px; }
+
+              .container { margin-top: 75px; }
 
               /* 图标 */
-              .file::before {
-                content: \"📄 \";
-              }
-              .folder::before {
-                content: \"📁 \";
-              }
+              .file::before   { content: \"📄 \"; }
+              .folder::before { content: \"📁 \"; }
             </style>" >> "$INDEX"
 
             echo "</head><body>" >> "$INDEX"
 
-            # ========== 顶部导航（固定） ==========
+            # 顶部导航
             echo "<div class=\"topbar\">" >> "$INDEX"
             echo "<strong>📂 Index Navigation:</strong> " >> "$INDEX"
             echo "<a href=\"./index.html\">Home</a>" >> "$INDEX"
@@ -64,18 +63,21 @@ jobs:
 
             echo "</div>" >> "$INDEX"
 
-            # 页面内容
+            # 内容
             echo "<div class=\"container\">" >> "$INDEX"
             echo "<h2>Index of $DIR</h2>" >> "$INDEX"
             echo "<ul>" >> "$INDEX"
 
-            for file in \"$DIR\"/*; do
-              base=$(basename \"$file\")
-              [ \"$base\" = \"index.html\" ] && continue
+            # ⚠ 正确展开文件列表 —— 不加引号！
+            for file in $DIR/*; do
+              base=$(basename "$file")
 
-              if [ -d \"$file\" ]; then
+              # 跳过自身
+              [ "$base" = "index.html" ] && continue
+
+              if [ -d "$file" ]; then
                 echo "<li class=\"folder\"><a href=\"$base/\">$base/</a></li>" >> "$INDEX"
-              elif [ -f \"$file\" ]; then
+              elif [ -f "$file" ]; then
                 echo "<li class=\"file\"><a href=\"$base\">$base</a></li>" >> "$INDEX"
               fi
             done
