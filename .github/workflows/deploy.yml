@@ -13,20 +13,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 生成目录索引文件
+      # 生成带有“当前文件夹”和“上一层目录”链接的 index.html 文件
       - name: Generate index.html files
         run: |
           echo "Generating index.html files for directories"
           find . -type d -not -path '*/.git/*' -exec bash -c '
             DIR="{}"
             if [ "$(ls -A "$DIR")" ]; then
-              echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Index of $DIR</title></head><body><h1>Index of $DIR</h1><ul>" > $DIR/index.html
+              # 创建目录的 index.html 文件
+              echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Index of $DIR</title></head><body>" > $DIR/index.html
+              # 添加返回上一层目录的链接
+              if [ "$DIR" != "." ]; then
+                echo "<a href=\"../\">.. (Go Up)</a><br>" >> $DIR/index.html
+              fi
+              # 当前目录链接
+              echo "<h1>Index of $DIR</h1>" >> $DIR/index.html
+              echo "<ul>" >> $DIR/index.html
+              # 列出目录下的文件
               for file in $DIR/*; do
                 if [ -f "$file" ]; then
                   echo "<li><a href=\"$(basename "$file")\">$(basename "$file")</a></li>" >> $DIR/index.html
                 fi
               done
-              echo "</ul></body></html>" >> $DIR/index.html
+              echo "</ul>" >> $DIR/index.html
+              echo "</body></html>" >> $DIR/index.html
             fi
           ' \;
 
