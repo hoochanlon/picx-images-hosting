@@ -1,5 +1,59 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>Index of ./docs</title>
+
+
+### 生成图床 index 目录
+
+./github/workflows/deploy.yml
+
+```
+name: Deploy to gh-pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Generate index.html using script
+        run: bash generate_index.sh
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.DEPLOY_KEY }}
+          publish_branch: gh-pages
+          publish_dir: ./
+```
+
+generate_index.sh
+
+```
+#!/usr/bin/env bash
+
+echo "Generating index.html..."
+
+BASE_URL="https://hoochanlon.github.io/picx-images-hosting"
+
+# 遍历所有目录（没有排除任何目录）
+find . | while read -r DIR; do
+  INDEX="$DIR/index.html"
+
+  echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">" > "$INDEX"
+  echo "<title>Index of $DIR</title>" >> "$INDEX"
+
+  # ------------------------ CSS ------------------------
+  cat >> "$INDEX" <<'EOF'
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
   ul { list-style: none; padding-left: 0; }
@@ -145,6 +199,10 @@
     white-space: nowrap;
   }
 </style>
+EOF
+
+  # ------------------------ JS ------------------------
+  cat >> "$INDEX" <<EOF
 <script>
 let imageList = [];
 let currentIndex = -1;
@@ -165,7 +223,7 @@ function showPrev(){ if(currentIndex>0) openLightbox(currentIndex-1); }
 function showNext(){ if(currentIndex < imageList.length-1) openLightbox(currentIndex+1); }
 
 function copyPath(p){
-  const full = "https://hoochanlon.github.io/picx-images-hosting/" + p.replace(/^\.\//,"");
+  const full = "$BASE_URL/" + p.replace(/^\\.\//,"");
   navigator.clipboard.writeText(full);
 }
 
@@ -193,7 +251,12 @@ document.addEventListener("keydown", e=>{
   if(e.key==="ArrowRight") showNext();
 });
 </script>
-</head><body>
+EOF
+
+  echo "</head><body>" >> "$INDEX"
+
+  # ------------------------ Lightbox HTML ------------------------
+  cat >> "$INDEX" <<'EOF'
 <div id="lightbox" onclick="if(event.target===this)closeLightbox()">
   <div class="lightbox-content" onclick="event.stopPropagation()">
     <div class="lightbox-main">
@@ -208,14 +271,72 @@ document.addEventListener("keydown", e=>{
     </div>
   </div>
 </div>
-<div class="topbar">
-<div><strong>🗂 picx-images-hosting:</strong> <a href="https://hoochanlon.github.io/picx-images-hosting">Home</a>
- | <a href="../">⬆ Go Up</a>
-</div>
-<div class="loc"><strong>📍 当前定位：</strong> <a href="https://hoochanlon.github.io/picx-images-hosting">Home</a> &gt; <a href="https://hoochanlon.github.io/picx-images-hosting/docs/">docs</a></div>
-</div>
-<div class="container">
-<h2>Index of ./docs</h2><ul>
-<li><span class="left file"><a href="photopreview.md">photopreview.md</a></span></li>
-<li><span class="left file"><a href="imgrename.md">imgrename.md</a></span></li>
-</ul></div></body></html>
+EOF
+
+  # ------------------------ Breadcrumb（放到 topbar 内） ------------------------
+  REL_PATH="${DIR#./}"
+  IFS='/' read -ra parts <<< "$REL_PATH"
+
+  breadcrumb="<div class=\"loc\"><strong>📍 当前定位：</strong> <a href=\"$BASE_URL\">Home</a>"
+  running=""
+  for part in "${parts[@]}"; do
+    [ -z "$part" ] && continue
+    running="$running/$part"
+    breadcrumb="$breadcrumb &gt; <a href=\"$BASE_URL$running/\">$part</a>"
+  done
+  breadcrumb="$breadcrumb</div>"
+
+  # ------------------------ TOPBAR（含 breadcrumb） ------------------------
+  echo "<div class=\"topbar\">" >> "$INDEX"
+  echo "<div><strong>🗂 picx-images-hosting:</strong> <a href=\"$BASE_URL\">Home</a>" >> "$INDEX"
+  if [ "$DIR" != "." ]; then
+    echo " | <a href=\"../\">⬆ Go Up</a>" >> "$INDEX"
+  fi
+  echo "</div>" >> "$INDEX"
+
+  echo "$breadcrumb" >> "$INDEX"
+  echo "</div>" >> "$INDEX"
+
+  # ------------------------ 内容区域 ------------------------
+  echo "<div class=\"container\">" >> "$INDEX"
+  echo "<h2>Index of $DIR</h2><ul>" >> "$INDEX"
+
+  img_index=0
+  find "$DIR" -maxdepth 1 -mindepth 1 | while read -r file; do
+    base=$(basename "$file")
+    [ "$base" = "index.html" ] && continue
+
+    url_path="${REL_PATH}/${base}"
+    url_path="${url_path#/}"
+
+    name="${base}"
+    (( ${#name} > 60 )) && name="${name:0:27}..."
+
+    ext="${base##*.}"
+    ext="${ext,,}"
+
+    if [ -d "$file" ]; then
+      echo "<li><span class=\"left folder\"><a href=\"$base/\">$name/</a></span></li>" >> "$INDEX"
+
+    elif [[ "$ext" =~ ^(jpg|jpeg|png|gif|webp|svg)$ ]]; then
+      echo "<li>
+        <span class=\"left image\"><a href=\"$base\">$name</a></span>
+        <span class=\"right\">
+          <span class=\"preview-btn\" onclick=\"openLightbox($img_index)\">预览</span>
+          <span class=\"copy-btn\" onclick=\"copyPath('$url_path')\">复制url</span>
+        </span>
+      </li>" >> "$INDEX"
+
+      echo "<script>imageList[$img_index] = {src: \"$base\", fullUrl: \"$BASE_URL/$url_path\"};</script>" >> "$INDEX"
+      img_index=$((img_index+1))
+
+    else
+      echo "<li><span class=\"left file\"><a href=\"$base\">$name</a></span></li>" >> "$INDEX"
+    fi
+  done
+
+  echo "</ul></div></body></html>" >> "$INDEX"
+done
+
+echo "index.html generation complete."
+```
