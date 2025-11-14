@@ -2,7 +2,7 @@
 
 echo "Generating index.html..."
 
-BASE_URL="https://blog.hoochanlon.space/picx-images-hosting"
+BASE_URL="https://hoochanlon.github.io/picx-images-hosting"
 
 find . -type d -not -path '*/.git/*' | while read -r DIR; do
   INDEX="$DIR/index.html"
@@ -10,30 +10,29 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
   echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">" > "$INDEX"
   echo "<title>Index of $DIR</title>" >> "$INDEX"
 
-  ###############################
-  # CSS（紧凑列表 + 预览按钮 + Lightbox + 复制路径）
-  ###############################
   cat >> "$INDEX" <<'EOF'
 <style>
   body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
   ul { list-style: none; padding-left: 0; }
+
   li {
     margin: 6px 0;
     display: flex;
-    justify-content: space-between;  /* 左右分布但不拉伸中间 */
     align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
   }
 
   .left {
     display: flex;
     align-items: center;
-    gap: 6px;       /* 图标与文件名之间的距离 */
+    gap: 6px;    
   }
 
   .right {
     display: flex;
     align-items: center;
-    gap: 6px;       /* 按钮之间的距离 */
+    gap: 6px;
   }
 
   a { color: #0366d6; text-decoration: none; }
@@ -92,10 +91,7 @@ find . -type d -not -path '*/.git/*' | while read -r DIR; do
 </style>
 EOF
 
-  ###############################
-  # JS（Lightbox + 复制路径功能）
-  ###############################
-  cat >> "$INDEX" <<'EOF'
+  cat >> "$INDEX" <<EOF
 <script>
 function showImage(src) {
   const lb = document.getElementById("lightbox");
@@ -115,31 +111,22 @@ function copyPath(src) {
 </script>
 EOF
 
-  echo "</head><body>"
+  echo "</head><body>" >> "$INDEX"
 
-  ###############################
-  # Lightbox HTML 容器
-  ###############################
   cat >> "$INDEX" <<'EOF'
 <div id="lightbox" onclick="hideLightbox()">
   <img id="lightbox-img" src="">
 </div>
 EOF
 
-  ###############################
-  # 顶部导航
-  ###############################
   echo "<div class=\"topbar\">" >> "$INDEX"
   echo "<strong>📂 Index Navigation:</strong> " >> "$INDEX"
-  echo "<a href=\"./index.html\">Home</a>" >> "$INDEX"
+  echo "<a href=\"https://hoochanlon.github.io/picx-images-hosting\">Home</a>" >> "$INDEX"
   if [ "$DIR" != "." ]; then
     echo " | <a href=\"../\">⬆ Go Up</a>" >> "$INDEX"
   fi
   echo "</div>" >> "$INDEX"
 
-  ###############################
-  # 文件列表
-  ###############################
   echo "<div class=\"container\">" >> "$INDEX"
   echo "<h2>Index of $DIR</h2>" >> "$INDEX"
   echo "<ul>" >> "$INDEX"
