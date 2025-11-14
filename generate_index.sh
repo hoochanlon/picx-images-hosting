@@ -1,45 +1,67 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# 为每个目录生成 index.html
+echo "Generating index.html..."
+
 find . -type d -not -path '*/.git/*' -exec bash -c '
   DIR="{}"
   INDEX="$DIR/index.html"
 
-  # 如果目录不为空
-  if [ "$(ls -A "$DIR")" ]; then
-    echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Index of $DIR</title>" > "$INDEX"
-    echo "<style>body { font-family: Arial, sans-serif; }</style>" >> "$INDEX"
-    echo "</head><body>" >> "$INDEX"
+  echo "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">" > "$INDEX"
+  echo "<title>Index of $DIR</title>" >> "$INDEX"
 
-    # 固定导航栏
-    echo "<div style=\"position: fixed; top: 0; left: 0; width: 100%; background-color: #f4f4f4; padding: 10px; border-bottom: 1px solid #ccc; z-index: 100;\">" >> "$INDEX"
-    echo "<a href=\"../\">.. (Go Up)</a>" >> "$INDEX"
-    echo "</div>" >> "$INDEX"
+  echo "<style>
+    body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
+    ul { list-style: none; padding-left: 0; }
+    li { margin: 5px 0; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    # 页面内容
-    echo "<div style=\"margin-top: 60px;\">" >> "$INDEX"
-    echo "<h1>Index of $DIR</h1>" >> "$INDEX"
-    echo "<ul>" >> "$INDEX"
+    .topbar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      background: #f7f7f7;
+      border-bottom: 1px solid #ccc;
+      padding: 12px 20px;
+      z-index: 1000;
+    }
 
-    # 列出目录下的文件（排除 index.html 自己）
-    for file in "$DIR"/*; do
-      base=$(basename "$file")
-      if [ -f "$file" ] && [ "$base" != "index.html" ]; then
-        echo "<li><a href=\"/$DIR/$base\">$base</a></li>" >> "$INDEX"  # 使用绝对路径
-      elif [ -d "$file" ]; then
-        echo "<li><a href=\"/$DIR/$base/\">$base/</a></li>" >> "$INDEX"  # 使用绝对路径
-      fi
-    done
+    .container { margin-top: 75px; }
 
-    echo "</ul>" >> "$INDEX"
+    .file::before   { content: \"📄 \"; }
+    .folder::before { content: \"📁 \"; }
+  </style>" >> "$INDEX"
 
-    # 底部显示 index.html 和 Go Up
-    echo "<hr>" >> "$INDEX"
-    echo "<div style=\"margin-top:20px;\">" >> "$INDEX"
-    echo "<a href=\"index.html\">index.html</a><br>" >> "$INDEX"  # 使用绝对路径
-    if [ "$DIR" != "." ]; then
-      echo "<a href=\"../\">.. (Go Up)</a>" >> "$INDEX"  # 使用绝对路径
-    fi
-    echo "</div></body></html>" >> "$INDEX"
+  echo "</head><body>" >> "$INDEX"
+
+  echo "<div class=\"topbar\">" >> "$INDEX"
+  echo "<strong>📂 Index Navigation:</strong> " >> "$INDEX"
+  echo "<a href=\"./index.html\">Home</a>" >> "$INDEX"
+
+  if [ \"$DIR\" != \".\" ]; then
+    echo " | <a href=\"../\">⬆ Go Up</a>" >> "$INDEX"
   fi
+
+  echo "</div>" >> "$INDEX"
+
+  echo "<div class=\"container\">" >> "$INDEX"
+  echo "<h2>Index of $DIR</h2>" >> "$INDEX"
+  echo "<ul>" >> "$INDEX"
+
+  for file in $DIR/*; do
+    base=$(basename "$file")
+    [ "$base" = "index.html" ] && continue
+
+    if [ -d "$file" ]; then
+      echo "<li class=\"folder\"><a href=\"$base/\">$base/</a></li>" >> "$INDEX"
+    elif [ -f "$file" ]; then
+      echo "<li class=\"file\"><a href=\"$base\">$base</a></li>" >> "$INDEX"
+    fi
+  done
+
+  echo "</ul>" >> "$INDEX"
+  echo "</div></body></html>" >> "$INDEX"
+
 ' \;
+
+echo "index.html generation complete."
