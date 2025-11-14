@@ -3,7 +3,8 @@
 <style>
     body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
     ul { list-style: none; padding-left: 0; }
-    li { margin: 5px 0; }
+    li { margin: 10px 0; }
+
     a { color: #0366d6; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
@@ -19,8 +20,22 @@
 
     .container { margin-top: 75px; }
 
+    /* 图标 */
     .file::before   { content: "📄 "; }
     .folder::before { content: "📁 "; }
+    .image::before  { content: "🖼 "; }
+
+    /* 图片预览 */
+    .preview {
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    .preview img {
+      width: 120px;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
   </style>
 </head><body>
 <div class="topbar">
@@ -32,22 +47,22 @@
 <h2>Index of ./fkca</h2>
 <ul>
 <li class="file"><a href="1.txt">1.txt</a></li>
-<li class="file"><a href="PixPin_2025-11-12_21-49-26.png">PixPin_2025-11-12_21-49-26.png</a></li>
-<li class="file"><a href="PixPin_2025-11-12_21-54-02.png">PixPin_2025-11-12_21-54-02.png</a></li>
-<li class="file"><a href="PixPin_2025-11-12_22-24-31.png">PixPin_2025-11-12_22-24-31.png</a></li>
-<li class="file"><a href="PixPin_2025-11-12_22-26-55.png">PixPin_2025-11-12_22-26-55.png</a></li>
-<li class="file"><a href="PixPin_2025-11-12_22-27-54.png">PixPin_2025-11-12_22-27-54.png</a></li>
-<li class="file"><a href="PixPin_2025-11-12_22-29-06.png">PixPin_2025-11-12_22-29-06.png</a></li>
-<li class="file"><a href="PixPin_2025-11-12_22-30-58.png">PixPin_2025-11-12_22-30-58.png</a></li>
-<li class="file"><a href="PixPin_2025-11-12_22-38-44.png">PixPin_2025-11-12_22-38-44.png</a></li>
-<li class="file"><a href="PixPin_2025-11-12_22-45-24.png">PixPin_2025-11-12_22-45-24.png</a></li>
-<li class="file"><a href="PixPin_2025-11-13_12-52-53.png">PixPin_2025-11-13_12-52-53.png</a></li>
-<li class="file"><a href="PixPin_2025-11-13_20-10-33.png">PixPin_2025-11-13_20-10-33.png</a></li>
-<li class="file"><a href="PixPin_2025-11-13_20-14-20.png">PixPin_2025-11-13_20-14-20.png</a></li>
-<li class="file"><a href="PixPin_2025-11-13_20-16-03.png">PixPin_2025-11-13_20-16-03.png</a></li>
-<li class="file"><a href="PixPin_2025-11-13_20-26-55.png">PixPin_2025-11-13_20-26-55.png</a></li>
-<li class="file"><a href="PixPin_2025-11-13_20-28-35.png">PixPin_2025-11-13_20-28-35.png</a></li>
-<li class="file"><a href="PixPin_2025-11-13_21-12-40.png">PixPin_2025-11-13_21-12-40.png</a></li>
-<li class="file"><a href="PixPin_2025-11-14_00-32-26.png">PixPin_2025-11-14_00-32-26.png</a></li>
+<li class="image"><a href="PixPin_2025-11-12_21-49-26.png">PixPin_2025-11-12_21-49-26.png</a> <span class="preview"><img src="PixPin_2025-11-12_21-49-26.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-12_21-54-02.png">PixPin_2025-11-12_21-54-02.png</a> <span class="preview"><img src="PixPin_2025-11-12_21-54-02.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-12_22-24-31.png">PixPin_2025-11-12_22-24-31.png</a> <span class="preview"><img src="PixPin_2025-11-12_22-24-31.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-12_22-26-55.png">PixPin_2025-11-12_22-26-55.png</a> <span class="preview"><img src="PixPin_2025-11-12_22-26-55.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-12_22-27-54.png">PixPin_2025-11-12_22-27-54.png</a> <span class="preview"><img src="PixPin_2025-11-12_22-27-54.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-12_22-29-06.png">PixPin_2025-11-12_22-29-06.png</a> <span class="preview"><img src="PixPin_2025-11-12_22-29-06.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-12_22-30-58.png">PixPin_2025-11-12_22-30-58.png</a> <span class="preview"><img src="PixPin_2025-11-12_22-30-58.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-12_22-38-44.png">PixPin_2025-11-12_22-38-44.png</a> <span class="preview"><img src="PixPin_2025-11-12_22-38-44.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-12_22-45-24.png">PixPin_2025-11-12_22-45-24.png</a> <span class="preview"><img src="PixPin_2025-11-12_22-45-24.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-13_12-52-53.png">PixPin_2025-11-13_12-52-53.png</a> <span class="preview"><img src="PixPin_2025-11-13_12-52-53.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-13_20-10-33.png">PixPin_2025-11-13_20-10-33.png</a> <span class="preview"><img src="PixPin_2025-11-13_20-10-33.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-13_20-14-20.png">PixPin_2025-11-13_20-14-20.png</a> <span class="preview"><img src="PixPin_2025-11-13_20-14-20.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-13_20-16-03.png">PixPin_2025-11-13_20-16-03.png</a> <span class="preview"><img src="PixPin_2025-11-13_20-16-03.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-13_20-26-55.png">PixPin_2025-11-13_20-26-55.png</a> <span class="preview"><img src="PixPin_2025-11-13_20-26-55.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-13_20-28-35.png">PixPin_2025-11-13_20-28-35.png</a> <span class="preview"><img src="PixPin_2025-11-13_20-28-35.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-13_21-12-40.png">PixPin_2025-11-13_21-12-40.png</a> <span class="preview"><img src="PixPin_2025-11-13_21-12-40.png"></span></li>
+<li class="image"><a href="PixPin_2025-11-14_00-32-26.png">PixPin_2025-11-14_00-32-26.png</a> <span class="preview"><img src="PixPin_2025-11-14_00-32-26.png"></span></li>
 </ul>
 </div></body></html>

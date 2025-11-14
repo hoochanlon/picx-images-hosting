@@ -3,7 +3,8 @@
 <style>
     body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
     ul { list-style: none; padding-left: 0; }
-    li { margin: 5px 0; }
+    li { margin: 10px 0; }
+
     a { color: #0366d6; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
@@ -19,8 +20,22 @@
 
     .container { margin-top: 75px; }
 
+    /* 图标 */
     .file::before   { content: "📄 "; }
     .folder::before { content: "📁 "; }
+    .image::before  { content: "🖼 "; }
+
+    /* 图片预览 */
+    .preview {
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    .preview img {
+      width: 120px;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
   </style>
 </head><body>
 <div class="topbar">
@@ -31,18 +46,18 @@
 <div class="container">
 <h2>Index of ./special</h2>
 <ul>
-<li class="file"><a href="404.png">404.png</a></li>
-<li class="file"><a href="404.webp">404.webp</a></li>
-<li class="file"><a href="appleid.png">appleid.png</a></li>
-<li class="file"><a href="author.png">author.png</a></li>
-<li class="file"><a href="caffe.png">caffe.png</a></li>
-<li class="file"><a href="default.png">default.png</a></li>
-<li class="file"><a href="doge-404.png">doge-404.png</a></li>
-<li class="file"><a href="eromaga-404.png">eromaga-404.png</a></li>
-<li class="file"><a href="example.jpg">example.jpg</a></li>
-<li class="file"><a href="loading.gif">loading.gif</a></li>
-<li class="file"><a href="mastercard-btc.png">mastercard-btc.png</a></li>
-<li class="file"><a href="test.webp">test.webp</a></li>
-<li class="file"><a href="web-development-workflow.png">web-development-workflow.png</a></li>
+<li class="image"><a href="404.png">404.png</a> <span class="preview"><img src="404.png"></span></li>
+<li class="image"><a href="404.webp">404.webp</a> <span class="preview"><img src="404.webp"></span></li>
+<li class="image"><a href="appleid.png">appleid.png</a> <span class="preview"><img src="appleid.png"></span></li>
+<li class="image"><a href="author.png">author.png</a> <span class="preview"><img src="author.png"></span></li>
+<li class="image"><a href="caffe.png">caffe.png</a> <span class="preview"><img src="caffe.png"></span></li>
+<li class="image"><a href="default.png">default.png</a> <span class="preview"><img src="default.png"></span></li>
+<li class="image"><a href="doge-404.png">doge-404.png</a> <span class="preview"><img src="doge-404.png"></span></li>
+<li class="image"><a href="eromaga-404.png">eromaga-404.png</a> <span class="preview"><img src="eromaga-404.png"></span></li>
+<li class="image"><a href="example.jpg">example.jpg</a> <span class="preview"><img src="example.jpg"></span></li>
+<li class="image"><a href="loading.gif">loading.gif</a> <span class="preview"><img src="loading.gif"></span></li>
+<li class="image"><a href="mastercard-btc.png">mastercard-btc.png</a> <span class="preview"><img src="mastercard-btc.png"></span></li>
+<li class="image"><a href="test.webp">test.webp</a> <span class="preview"><img src="test.webp"></span></li>
+<li class="image"><a href="web-development-workflow.png">web-development-workflow.png</a> <span class="preview"><img src="web-development-workflow.png"></span></li>
 </ul>
 </div></body></html>

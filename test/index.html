@@ -3,7 +3,8 @@
 <style>
     body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
     ul { list-style: none; padding-left: 0; }
-    li { margin: 5px 0; }
+    li { margin: 10px 0; }
+
     a { color: #0366d6; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
@@ -19,8 +20,22 @@
 
     .container { margin-top: 75px; }
 
+    /* 图标 */
     .file::before   { content: "📄 "; }
     .folder::before { content: "📁 "; }
+    .image::before  { content: "🖼 "; }
+
+    /* 图片预览 */
+    .preview {
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    .preview img {
+      width: 120px;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
   </style>
 </head><body>
 <div class="topbar">

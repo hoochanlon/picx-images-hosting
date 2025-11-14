@@ -3,7 +3,8 @@
 <style>
     body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
     ul { list-style: none; padding-left: 0; }
-    li { margin: 5px 0; }
+    li { margin: 10px 0; }
+
     a { color: #0366d6; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
@@ -19,8 +20,22 @@
 
     .container { margin-top: 75px; }
 
+    /* 图标 */
     .file::before   { content: "📄 "; }
     .folder::before { content: "📁 "; }
+    .image::before  { content: "🖼 "; }
+
+    /* 图片预览 */
+    .preview {
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    .preview img {
+      width: 120px;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
   </style>
 </head><body>
 <div class="topbar">
@@ -31,17 +46,17 @@
 <div class="container">
 <h2>Index of ./category-covers</h2>
 <ul>
-<li class="file"><a href="archived.webp">archived.webp</a></li>
-<li class="file"><a href="author.webp">author.webp</a></li>
-<li class="file"><a href="blog-post.webp">blog-post.webp</a></li>
-<li class="file"><a href="blue-butterfly.webp">blue-butterfly.webp</a></li>
-<li class="file"><a href="cloud.jpeg">cloud.jpeg</a></li>
-<li class="file"><a href="coding.webp">coding.webp</a></li>
-<li class="file"><a href="kaoshi.webp">kaoshi.webp</a></li>
-<li class="file"><a href="macos-wallpaper.webp">macos-wallpaper.webp</a></li>
-<li class="file"><a href="renshenga.webp">renshenga.webp</a></li>
-<li class="file"><a href="woniu.webp">woniu.webp</a></li>
-<li class="file"><a href="yogioh-1.webp">yogioh-1.webp</a></li>
-<li class="file"><a href="yogioh.webp">yogioh.webp</a></li>
+<li class="image"><a href="archived.webp">archived.webp</a> <span class="preview"><img src="archived.webp"></span></li>
+<li class="image"><a href="author.webp">author.webp</a> <span class="preview"><img src="author.webp"></span></li>
+<li class="image"><a href="blog-post.webp">blog-post.webp</a> <span class="preview"><img src="blog-post.webp"></span></li>
+<li class="image"><a href="blue-butterfly.webp">blue-butterfly.webp</a> <span class="preview"><img src="blue-butterfly.webp"></span></li>
+<li class="image"><a href="cloud.jpeg">cloud.jpeg</a> <span class="preview"><img src="cloud.jpeg"></span></li>
+<li class="image"><a href="coding.webp">coding.webp</a> <span class="preview"><img src="coding.webp"></span></li>
+<li class="image"><a href="kaoshi.webp">kaoshi.webp</a> <span class="preview"><img src="kaoshi.webp"></span></li>
+<li class="image"><a href="macos-wallpaper.webp">macos-wallpaper.webp</a> <span class="preview"><img src="macos-wallpaper.webp"></span></li>
+<li class="image"><a href="renshenga.webp">renshenga.webp</a> <span class="preview"><img src="renshenga.webp"></span></li>
+<li class="image"><a href="woniu.webp">woniu.webp</a> <span class="preview"><img src="woniu.webp"></span></li>
+<li class="image"><a href="yogioh-1.webp">yogioh-1.webp</a> <span class="preview"><img src="yogioh-1.webp"></span></li>
+<li class="image"><a href="yogioh.webp">yogioh.webp</a> <span class="preview"><img src="yogioh.webp"></span></li>
 </ul>
 </div></body></html>

@@ -3,7 +3,8 @@
 <style>
     body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
     ul { list-style: none; padding-left: 0; }
-    li { margin: 5px 0; }
+    li { margin: 10px 0; }
+
     a { color: #0366d6; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
@@ -19,8 +20,22 @@
 
     .container { margin-top: 75px; }
 
+    /* 图标 */
     .file::before   { content: "📄 "; }
     .folder::before { content: "📁 "; }
+    .image::before  { content: "🖼 "; }
+
+    /* 图片预览 */
+    .preview {
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    .preview img {
+      width: 120px;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
   </style>
 </head><body>
 <div class="topbar">
@@ -32,26 +47,26 @@
 <h2>Index of ./uploads/2025</h2>
 <ul>
 <li class="file"><a href="1.txt">1.txt</a></li>
-<li class="file"><a href="2025-10-24_22-29-39.webp">2025-10-24_22-29-39.webp</a></li>
-<li class="file"><a href="2025-10-28_09-57-20.webp">2025-10-28_09-57-20.webp</a></li>
-<li class="file"><a href="2025-10-31_17-24-09.webp">2025-10-31_17-24-09.webp</a></li>
-<li class="file"><a href="2025-1025-205537.webp">2025-1025-205537.webp</a></li>
-<li class="file"><a href="2025-1027-160610.webp">2025-1027-160610.webp</a></li>
-<li class="file"><a href="2025-11-01_15-05-41.webp">2025-11-01_15-05-41.webp</a></li>
-<li class="file"><a href="2025-11-01_15-54-18.webp">2025-11-01_15-54-18.webp</a></li>
-<li class="file"><a href="2025-11-01_17-35-04.webp">2025-11-01_17-35-04.webp</a></li>
-<li class="file"><a href="2025-11-01_18-18-22.webp">2025-11-01_18-18-22.webp</a></li>
-<li class="file"><a href="2025-11-01_18-19-55.webp">2025-11-01_18-19-55.webp</a></li>
-<li class="file"><a href="2025-11-01_20-06-37.webp">2025-11-01_20-06-37.webp</a></li>
-<li class="file"><a href="2025-11-01_20-09-33.webp">2025-11-01_20-09-33.webp</a></li>
-<li class="file"><a href="2025-11-03_00-48-23-321.webp">2025-11-03_00-48-23-321.webp</a></li>
-<li class="file"><a href="2025-11-03_00-48-23.webp">2025-11-03_00-48-23.webp</a></li>
-<li class="file"><a href="2025-11-03_01-29-12.webp">2025-11-03_01-29-12.webp</a></li>
-<li class="file"><a href="2025-11-03_19-19-51.webp">2025-11-03_19-19-51.webp</a></li>
-<li class="file"><a href="2025-11-03_19-40-29.webp">2025-11-03_19-40-29.webp</a></li>
-<li class="file"><a href="20251024_222605_1.webp">20251024_222605_1.webp</a></li>
-<li class="file"><a href="PixPin_2025-11-05_18-11-00.webp">PixPin_2025-11-05_18-11-00.webp</a></li>
-<li class="file"><a href="PixPin_2025-11-06_20-48-17.webp">PixPin_2025-11-06_20-48-17.webp</a></li>
-<li class="file"><a href="PixPin_2025-11-09_00-45-15.webp">PixPin_2025-11-09_00-45-15.webp</a></li>
+<li class="image"><a href="2025-10-24_22-29-39.webp">2025-10-24_22-29-39.webp</a> <span class="preview"><img src="2025-10-24_22-29-39.webp"></span></li>
+<li class="image"><a href="2025-10-28_09-57-20.webp">2025-10-28_09-57-20.webp</a> <span class="preview"><img src="2025-10-28_09-57-20.webp"></span></li>
+<li class="image"><a href="2025-10-31_17-24-09.webp">2025-10-31_17-24-09.webp</a> <span class="preview"><img src="2025-10-31_17-24-09.webp"></span></li>
+<li class="image"><a href="2025-1025-205537.webp">2025-1025-205537.webp</a> <span class="preview"><img src="2025-1025-205537.webp"></span></li>
+<li class="image"><a href="2025-1027-160610.webp">2025-1027-160610.webp</a> <span class="preview"><img src="2025-1027-160610.webp"></span></li>
+<li class="image"><a href="2025-11-01_15-05-41.webp">2025-11-01_15-05-41.webp</a> <span class="preview"><img src="2025-11-01_15-05-41.webp"></span></li>
+<li class="image"><a href="2025-11-01_15-54-18.webp">2025-11-01_15-54-18.webp</a> <span class="preview"><img src="2025-11-01_15-54-18.webp"></span></li>
+<li class="image"><a href="2025-11-01_17-35-04.webp">2025-11-01_17-35-04.webp</a> <span class="preview"><img src="2025-11-01_17-35-04.webp"></span></li>
+<li class="image"><a href="2025-11-01_18-18-22.webp">2025-11-01_18-18-22.webp</a> <span class="preview"><img src="2025-11-01_18-18-22.webp"></span></li>
+<li class="image"><a href="2025-11-01_18-19-55.webp">2025-11-01_18-19-55.webp</a> <span class="preview"><img src="2025-11-01_18-19-55.webp"></span></li>
+<li class="image"><a href="2025-11-01_20-06-37.webp">2025-11-01_20-06-37.webp</a> <span class="preview"><img src="2025-11-01_20-06-37.webp"></span></li>
+<li class="image"><a href="2025-11-01_20-09-33.webp">2025-11-01_20-09-33.webp</a> <span class="preview"><img src="2025-11-01_20-09-33.webp"></span></li>
+<li class="image"><a href="2025-11-03_00-48-23-321.webp">2025-11-03_00-48-23-321.webp</a> <span class="preview"><img src="2025-11-03_00-48-23-321.webp"></span></li>
+<li class="image"><a href="2025-11-03_00-48-23.webp">2025-11-03_00-48-23.webp</a> <span class="preview"><img src="2025-11-03_00-48-23.webp"></span></li>
+<li class="image"><a href="2025-11-03_01-29-12.webp">2025-11-03_01-29-12.webp</a> <span class="preview"><img src="2025-11-03_01-29-12.webp"></span></li>
+<li class="image"><a href="2025-11-03_19-19-51.webp">2025-11-03_19-19-51.webp</a> <span class="preview"><img src="2025-11-03_19-19-51.webp"></span></li>
+<li class="image"><a href="2025-11-03_19-40-29.webp">2025-11-03_19-40-29.webp</a> <span class="preview"><img src="2025-11-03_19-40-29.webp"></span></li>
+<li class="image"><a href="20251024_222605_1.webp">20251024_222605_1.webp</a> <span class="preview"><img src="20251024_222605_1.webp"></span></li>
+<li class="image"><a href="PixPin_2025-11-05_18-11-00.webp">PixPin_2025-11-05_18-11-00.webp</a> <span class="preview"><img src="PixPin_2025-11-05_18-11-00.webp"></span></li>
+<li class="image"><a href="PixPin_2025-11-06_20-48-17.webp">PixPin_2025-11-06_20-48-17.webp</a> <span class="preview"><img src="PixPin_2025-11-06_20-48-17.webp"></span></li>
+<li class="image"><a href="PixPin_2025-11-09_00-45-15.webp">PixPin_2025-11-09_00-45-15.webp</a> <span class="preview"><img src="PixPin_2025-11-09_00-45-15.webp"></span></li>
 </ul>
 </div></body></html>

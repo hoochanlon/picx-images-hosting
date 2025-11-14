@@ -12,7 +12,8 @@ find . -type d -not -path '*/.git/*' -exec bash -c '
   echo "<style>
     body { font-family: Arial, sans-serif; line-height: 1.7; padding: 0 20px; }
     ul { list-style: none; padding-left: 0; }
-    li { margin: 5px 0; }
+    li { margin: 10px 0; }
+
     a { color: #0366d6; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
@@ -28,8 +29,22 @@ find . -type d -not -path '*/.git/*' -exec bash -c '
 
     .container { margin-top: 75px; }
 
+    /* 图标 */
     .file::before   { content: \"📄 \"; }
     .folder::before { content: \"📁 \"; }
+    .image::before  { content: \"🖼 \"; }
+
+    /* 图片预览 */
+    .preview {
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    .preview img {
+      width: 120px;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
   </style>" >> "$INDEX"
 
   echo "</head><body>" >> "$INDEX"
@@ -52,11 +67,24 @@ find . -type d -not -path '*/.git/*' -exec bash -c '
     base=$(basename "$file")
     [ "$base" = "index.html" ] && continue
 
-    if [ -d "$file" ]; then
-      echo "<li class=\"folder\"><a href=\"$base/\">$base/</a></li>" >> "$INDEX"
-    elif [ -f "$file" ]; then
-      echo "<li class=\"file\"><a href=\"$base\">$base</a></li>" >> "$INDEX"
-    fi
+    # 识别图片扩展名
+    ext="${base##*.}"
+    ext_lower=$(echo "$ext" | tr A-Z a-z)
+
+    case "$ext_lower" in
+      jpg|jpeg|png|gif|webp|svg)
+        # 图片文件
+        echo "<li class=\"image\"><a href=\"$base\">$base</a> <span class=\"preview\"><img src=\"$base\"></span></li>" >> "$INDEX"
+        ;;
+      *)
+        # 判断是否文件夹
+        if [ -d "$file" ]; then
+          echo "<li class=\"folder\"><a href=\"$base/\">$base/</a></li>" >> "$INDEX"
+        elif [ -f "$file" ]; then
+          echo "<li class=\"file\"><a href=\"$base\">$base</a></li>" >> "$INDEX"
+        fi
+        ;;
+    esac
   done
 
   echo "</ul>" >> "$INDEX"
