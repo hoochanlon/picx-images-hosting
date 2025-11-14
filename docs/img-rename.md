@@ -55,3 +55,8 @@ Get-ChildItem *.png | ForEach-Object {
     Rename-Item $_.FullName -NewName $newName
 }
 ```
+
+> [!CAUTION]
+> * 批量重命名工具：https://rename.jgrass.xyz （`<date.modify:YYYY-MMDD-HHmmss>`）
+> * 网站故障检测工具：https://www.websiteplanet.com/zh-hans/webtools/down-or-not
+> * 网站有效性链接检测：https://httpstatus.io 、 https://http.app
