@@ -16,8 +16,8 @@
 * http://hoochanlon.github.io/picx-images-hosting
 
 > [!note]
-> * [几乎不受审查的图床标记](https://hoochanlon.github.io/posts/20250821144721.html)
-> * [壁纸资源及图床整合笔记](https://hoochanlon.github.io/posts/20250821071908.html)
+> * [几乎不受审查的图床标记](https://hoochanlon.github.io/posts/20250821144721)
+> * [壁纸资源及图床整合笔记](https://hoochanlon.github.io/posts/20250821071908)
 > * [gh-pages 图床索引](/docs/img-preview.md)
 
 > [!TIP]
