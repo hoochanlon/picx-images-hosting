@@ -1,0 +1,35 @@
+name: Deploy GitHub Pages (no gh-pages branch)
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # 如需构建请在此添加步骤，例如：
+      # - run: npm ci
+      # - run: npm run build
+      # 纯静态站点直接上传当前目录
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./  # 发布目录，如有构建产物请改为输出目录
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
+

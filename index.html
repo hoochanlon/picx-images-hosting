@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>picx-images-hosting - 静态索引</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="emoji">🗂</span>
+      <span class="title">picx-images-hosting</span>
+    </div>
+    <div class="desc">无需脚本生成，直接部署 GitHub Pages。图片同时提供 Pages 与 jsDelivr 链接。</div>
+    <div class="controls">
+      <label for="folder">目录：</label>
+      <select id="folder">
+        <option value="ALL">全部目录</option>
+      </select>
+      <label for="filter">搜索文件名：</label>
+      <input id="filter" type="search" placeholder="输入关键词过滤" />
+      <button id="reset-filter" type="button">清空</button>
+    </div>
+    <div class="legend">
+      <span class="badge pages">Pages 链接</span>
+      <span class="badge cdn">jsDelivr 链接</span>
+    </div>
+
+    <div class="upload-panel">
+      <div class="upload-row">
+        <label for="upload-file">上传文件：</label>
+        <input id="upload-file" type="file" multiple />
+        <label for="upload-path">保存到：</label>
+        <input id="upload-path" type="text" placeholder="例如 uploads/2025/" />
+        <button id="upload-btn" type="button">上传</button>
+        <button id="reload-btn" type="button">刷新列表</button>
+      </div>
+      <p class="upload-tip">文件经 Vercel Serverless 调用 GitHub API，前端不存 token。路径留空默认存入 uploads/。</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="status" class="status">正在加载仓库树...</section>
+    <section id="grid" class="grid" aria-live="polite"></section>
+  </main>
+
+  <div id="lightbox" class="lightbox hidden" aria-modal="true" role="dialog">
+    <div class="lightbox-backdrop" data-close></div>
+    <div class="lightbox-body">
+      <button class="lightbox-close" aria-label="关闭" data-close>×</button>
+      <div class="lightbox-img-wrap">
+        <button class="lightbox-nav prev" aria-label="上一张">←</button>
+        <img id="lightbox-img" alt="预览大图" />
+        <button class="lightbox-nav next" aria-label="下一张">→</button>
+      </div>
+      <div class="lightbox-zoom">
+        <button id="zoom-out" type="button">-</button>
+        <button id="zoom-reset" type="button">1:1</button>
+        <button id="zoom-in" type="button">+</button>
+      </div>
+    </div>
+  </div>
+
+  <template id="card-template">
+    <article class="card">
+      <div class="meta-top">
+        <div class="path" title=""></div>
+      </div>
+      <div class="thumb">
+        <img loading="lazy" alt="" />
+      </div>
+      <div class="meta">
+        <div class="actions-row">
+          <button class="btn" type="button" data-copy="pages">链接复制</button>
+          <button class="btn" type="button" data-copy="cdn">CDN 复制</button>
+          <button class="btn danger delete-btn" type="button">删除</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    const REPO_OWNER = 'hoochanlon';
+    const REPO_NAME = 'picx-images-hosting';
+    const BRANCH = 'master';
+    const PAGES_BASE = `https://${REPO_OWNER}.github.io/${REPO_NAME}`;
+    const CDN_BASE = `https://cdn.jsdelivr.net/gh/${REPO_OWNER}/${REPO_NAME}@${BRANCH}`;
+    const IMAGE_EXT = /\.(jpe?g|png|gif|webp|svg)$/i;
+    const EXCLUDES = ['.git/', '.github/'];
+    const API_BASE = '';
+    const API_ENDPOINT = `${API_BASE}/api/github`;
+    const DEFAULT_DIR = 'uploads/';
+
+    const statusEl = document.getElementById('status');
+    const gridEl = document.getElementById('grid');
+    const filterInput = document.getElementById('filter');
+    const folderSelect = document.getElementById('folder');
+    const resetBtn = document.getElementById('reset-filter');
+    const cardTpl = document.getElementById('card-template');
+    const lightboxEl = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const zoomInBtn = document.getElementById('zoom-in');
+    const zoomOutBtn = document.getElementById('zoom-out');
+    const zoomResetBtn = document.getElementById('zoom-reset');
+    const uploadFileInput = document.getElementById('upload-file');
+    const uploadPathInput = document.getElementById('upload-path');
+    const uploadBtn = document.getElementById('upload-btn');
+    const reloadBtn = document.getElementById('reload-btn');
+
+    let images = [];
+    let folders = [];
+    let currentIndex = -1;
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    let isPanning = false;
+    let panStartX = 0;
+    let panStartY = 0;
+
+    function applyTransform() {
+      lbImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    }
+
+    function resetTransform() {
+      scale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function setStatus(text, isError = false) {
+      statusEl.textContent = text;
+      statusEl.classList.toggle('error', isError);
+    }
+
+    function shouldSkip(path) {
+      return EXCLUDES.some((ex) => path.startsWith(ex));
+    }
+
+    function buildTargetPath(folderInput, fileName) {
+      let base = (folderInput || '').trim();
+      if (!base) base = DEFAULT_DIR;
+      if (!base.endsWith('/')) base += '/';
+      return `${base}${fileName}`;
+    }
+
+    async function toBase64(file) {
+      const buffer = await file.arrayBuffer();
+      const bytes = new Uint8Array(buffer);
+      let binary = '';
+      const chunk = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunk) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+      }
+      return btoa(binary);
+    }
+
+    async function apiRequest(payload) {
+      const res = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `API 请求失败: ${res.status}`);
+      }
+      return res.json();
+    }
+
+    async function fetchTree() {
+      const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/trees/${BRANCH}?recursive=1`;
+      const res = await fetch(url);
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        const hint = body.message || `HTTP ${res.status}`;
+        throw new Error(`获取仓库树失败：${hint}`);
+      }
+      return res.json();
+    }
+
+    function buildCard(item) {
+      const node = cardTpl.content.firstElementChild.cloneNode(true);
+      const imgEl = node.querySelector('img');
+      const pathEl = node.querySelector('.path');
+      const pagesLink = document.createElement('a');
+      pagesLink.href = `${PAGES_BASE}/${item.path}`;
+      const cdnLink = document.createElement('a');
+      cdnLink.href = `${CDN_BASE}/${item.path}`;
+      const delBtn = node.querySelector('.delete-btn');
+      const copyButtons = node.querySelectorAll('[data-copy]');
+
+      imgEl.src = `${CDN_BASE}/${item.path}`;
+      imgEl.alt = item.name;
+      pathEl.textContent = item.path;
+      pathEl.title = item.path;
+
+      pagesLink.href = `${PAGES_BASE}/${item.path}`;
+      cdnLink.href = `${CDN_BASE}/${item.path}`;
+
+      imgEl.addEventListener('click', () => openLightbox(item.idx));
+      node.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
+        openLightbox(item.idx);
+      });
+
+      copyButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const type = btn.dataset.copy;
+          const url = type === 'pages' ? pagesLink.href : cdnLink.href;
+          navigator.clipboard.writeText(url);
+          const old = btn.textContent;
+          btn.textContent = '已复制';
+          setTimeout(() => (btn.textContent = old), 1500);
+        });
+      });
+
+      delBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const ok = confirm(`确定删除文件：${item.path} 吗？此操作会提交到仓库。`);
+        if (!ok) return;
+        try {
+          setStatus('删除中...');
+          await deleteFile(item.path);
+          await loadImages(false);
+          setStatus('删除完成');
+        } catch (err) {
+          console.error(err);
+          setStatus(err.message || '删除失败', true);
+        }
+      });
+
+      return node;
+    }
+
+    function render(list) {
+      gridEl.innerHTML = '';
+      if (!list.length) {
+        setStatus('未找到匹配的图片，请检查过滤条件。', true);
+        return;
+      }
+      setStatus(`共 ${list.length} 张图片，可点击预览与复制链接。`);
+      const frag = document.createDocumentFragment();
+      list.forEach((item) => frag.appendChild(buildCard(item)));
+      gridEl.appendChild(frag);
+    }
+
+    function applyFilter() {
+      const keyword = filterInput.value.trim().toLowerCase();
+      const folder = folderSelect.value;
+      if (!keyword) {
+        const base = folder === 'ALL' ? images : images.filter((img) => img.dir === folder);
+        render(base);
+        return;
+      }
+      const filtered = images
+        .filter((img) => img.path.toLowerCase().includes(keyword))
+        .filter((img) => (folder === 'ALL' ? true : img.dir === folder));
+      render(filtered);
+    }
+
+    function openLightbox(idx) {
+      if (idx < 0 || idx >= images.length) return;
+      currentIndex = idx;
+      const item = images[idx];
+      const cdnUrl = `${CDN_BASE}/${item.path}`;
+
+      lbImg.src = cdnUrl;
+      resetTransform();
+
+      lightboxEl.classList.remove('hidden');
+    }
+
+    function closeLightbox() {
+      lightboxEl.classList.add('hidden');
+      currentIndex = -1;
+    }
+
+    function showPrev() {
+      if (currentIndex <= 0) return;
+      openLightbox(currentIndex - 1);
+    }
+
+    function showNext() {
+      if (currentIndex >= images.length - 1) return;
+      openLightbox(currentIndex + 1);
+    }
+
+    function setupLightbox() {
+      lightboxEl.addEventListener('click', (e) => {
+        const target = e.target;
+        if (
+          target.dataset.close !== undefined ||
+          target.classList.contains('lightbox-backdrop') ||
+          target === lightboxEl
+        ) {
+          closeLightbox();
+        }
+      });
+      lightboxEl.querySelector('.prev').addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+      lightboxEl.querySelector('.next').addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+      lightboxEl.querySelector('.lightbox-close').addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (lightboxEl.classList.contains('hidden')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') showPrev();
+        if (e.key === 'ArrowRight') showNext();
+      });
+
+      lbImg.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.1 : -0.1;
+        scale = Math.min(5, Math.max(0.5, scale + delta));
+        applyTransform();
+      }, { passive: false });
+
+      lbImg.addEventListener('dblclick', () => {
+        scale = scale === 1 ? 2 : 1;
+        translateX = 0;
+        translateY = 0;
+        applyTransform();
+      });
+
+      lbImg.addEventListener('mousedown', (e) => {
+        if (scale <= 1) return;
+        isPanning = true;
+        panStartX = e.clientX - translateX;
+        panStartY = e.clientY - translateY;
+        e.preventDefault();
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isPanning) return;
+        translateX = e.clientX - panStartX;
+        translateY = e.clientY - panStartY;
+        applyTransform();
+      });
+
+      window.addEventListener('mouseup', () => {
+        isPanning = false;
+      });
+
+      zoomInBtn.addEventListener('click', () => {
+        scale = Math.min(5, scale + 0.25);
+        applyTransform();
+      });
+
+      zoomOutBtn.addEventListener('click', () => {
+        scale = Math.max(0.5, scale - 0.25);
+        applyTransform();
+      });
+
+      zoomResetBtn.addEventListener('click', () => {
+        resetTransform();
+      });
+    }
+
+    function buildFolders() {
+      const map = new Map();
+      images.forEach((img) => {
+        map.set(img.dir, (map.get(img.dir) || 0) + 1);
+      });
+      folders = Array.from(map.entries())
+        .map(([dir, count]) => ({ dir, count }))
+        .sort((a, b) => a.dir.localeCompare(b.dir));
+
+      folderSelect.innerHTML = '<option value="ALL">全部目录</option>';
+      folders.forEach((f) => {
+        const opt = document.createElement('option');
+        opt.value = f.dir;
+        opt.textContent = f.dir ? `${f.dir} (${f.count})` : `(根目录) (${f.count})`;
+        folderSelect.appendChild(opt);
+      });
+    }
+
+    async function loadImages(showLoading = true) {
+      try {
+        if (showLoading) setStatus('正在加载仓库树...');
+        const tree = await fetchTree();
+        images = (tree.tree || [])
+          .filter((item) => item.type === 'blob' && IMAGE_EXT.test(item.path))
+          .filter((item) => !shouldSkip(item.path))
+          .map((item) => ({
+            path: item.path,
+            name: item.path.split('/').pop(),
+            dir: item.path.includes('/') ? item.path.slice(0, item.path.lastIndexOf('/')) : '',
+          }));
+
+        images.sort((a, b) => a.path.localeCompare(b.path));
+        images.forEach((item, idx) => {
+          item.idx = idx;
+        });
+        buildFolders();
+        render(images);
+      } catch (err) {
+        console.error(err);
+        setStatus(err.message, true);
+      }
+    }
+
+    async function uploadSelectedFiles() {
+      const files = Array.from(uploadFileInput.files || []);
+      if (!files.length) {
+        alert('请先选择文件');
+        return;
+      }
+      const folder = uploadPathInput.value;
+      try {
+        setStatus('上传中...');
+        for (const file of files) {
+          const content = await toBase64(file);
+          const targetPath = buildTargetPath(folder, file.name);
+          await apiRequest({
+            action: 'upload',
+            path: targetPath,
+            content,
+            message: `upload ${targetPath}`,
+          });
+        }
+        setStatus('上传完成，正在刷新列表...');
+        await loadImages(false);
+        setStatus(`共 ${images.length} 张图片，可点击预览与复制链接。`);
+        uploadFileInput.value = '';
+      } catch (err) {
+        console.error(err);
+        setStatus(err.message || '上传失败', true);
+      }
+    }
+
+    async function fetchFileSha(path) {
+      const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${encodeURIComponent(path)}`);
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        const hint = body.message || `HTTP ${res.status}`;
+        throw new Error(`获取文件信息失败：${hint}`);
+      }
+      const data = await res.json();
+      return data.sha;
+    }
+
+    async function deleteFile(path) {
+      const sha = await fetchFileSha(path);
+      return apiRequest({
+        action: 'delete',
+        path,
+        sha,
+        message: `delete ${path}`,
+      });
+    }
+
+    async function init() {
+      setupLightbox();
+      await loadImages();
+    }
+
+    filterInput.addEventListener('input', applyFilter);
+    resetBtn.addEventListener('click', () => {
+      filterInput.value = '';
+      folderSelect.value = 'ALL';
+      applyFilter();
+    });
+
+    folderSelect.addEventListener('change', applyFilter);
+
+    uploadBtn.addEventListener('click', uploadSelectedFiles);
+    reloadBtn.addEventListener('click', () => loadImages());
+
+    init();
+  </script>
+</body>
+</html>
+
