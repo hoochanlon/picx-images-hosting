@@ -367,6 +367,12 @@
       <input type="file" id="folder-input" webkitdirectory multiple style="display: none;" />
     </div>
 
+    <div class="upload-area" id="upload-area">
+      <div class="upload-area-icon">📤</div>
+      <div class="upload-area-text">拖拽文件或文件夹到这里上传</div>
+      <div class="upload-area-hint">支持多文件上传</div>
+    </div>
+
     <div class="breadcrumb" id="breadcrumb">
       <div class="breadcrumb-item">
         <a href="#" data-path="">根目录</a>
@@ -380,12 +386,6 @@
           <div>正在加载...</div>
         </li>
       </ul>
-    </div>
-
-    <div class="upload-area" id="upload-area">
-      <div class="upload-area-icon">📤</div>
-      <div class="upload-area-text">拖拽文件或文件夹到这里上传</div>
-      <div class="upload-area-hint">支持多文件上传</div>
     </div>
 
     <div class="upload-progress" id="upload-progress" style="display: none;"></div>
@@ -477,16 +477,33 @@
     }
 
     async function apiRequest(payload) {
-      const res = await fetch(API_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || `API 请求失败: ${res.status}`);
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        
+        if (!res.ok) {
+          let errorMessage = `API 请求失败: HTTP ${res.status}`;
+          try {
+            const errorData = await res.json();
+            errorMessage = errorData.message || errorData.error || errorMessage;
+          } catch (e) {
+            const text = await res.text().catch(() => '');
+            if (text) errorMessage = text;
+          }
+          throw new Error(errorMessage);
+        }
+        
+        return res.json();
+      } catch (err) {
+        // 处理网络错误
+        if (err.name === 'TypeError' && err.message.includes('fetch')) {
+          throw new Error('网络连接失败，请检查网络连接或稍后重试');
+        }
+        throw err;
       }
-      return res.json();
     }
 
     async function fetchTree() {
@@ -829,9 +846,19 @@
       
       try {
         if (type === 'file') {
+          // 获取文件信息
           const fileRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(path)}`);
-          const fileData = await fileRes.json();
+          if (!fileRes.ok) {
+            const errorData = await fileRes.json().catch(() => ({}));
+            throw new Error(errorData.message || `获取文件信息失败: HTTP ${fileRes.status}`);
+          }
           
+          const fileData = await fileRes.json();
+          if (!fileData.sha) {
+            throw new Error('无法获取文件 SHA，文件可能不存在');
+          }
+          
+          // 执行删除
           await apiRequest({
             action: 'delete',
             path: path,
@@ -845,8 +872,9 @@
         
         loadFiles();
       } catch (err) {
-        console.error(err);
-        alert('删除失败：' + err.message);
+        console.error('删除失败:', err);
+        const errorMessage = err.message || '删除失败，请检查网络连接或稍后重试';
+        alert('删除失败：' + errorMessage);
       }
     }
 
