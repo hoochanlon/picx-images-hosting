@@ -6,17 +6,17 @@
   <title>picx-images-hosting - 静态索引</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hoochanlon/fonts@refs/heads/main/public/OPPOSans4/result.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./css/global.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
       <span class="emoji">🖼️</span>
-      <span class="title">picx-images-hosting</span>
+      <span class="title" id="brand-title" style="cursor: pointer;">picx-images-hosting</span>
     </div>
     <div class="controls">
       <div class="folder-control-group">
-        <label for="folder" class="icon-label toggle-control" data-target="folder-control" title="目录">
+        <label for="folder" class="icon-label toggle-control" data-target="folder-control">
           <i class="fas fa-folder"></i>
         </label>
         <div class="custom-select-wrapper collapsible" id="folder-control">
@@ -34,15 +34,23 @@
           </select>
         </div>
       </div>
-      <label for="filter" class="icon-label toggle-control" data-target="filter-control" title="搜索文件名">
+      <label for="filter" class="icon-label toggle-control" data-target="filter-control">
         <i class="fas fa-search"></i>
       </label>
       <div class="collapsible" id="filter-control">
         <input id="filter" type="search" placeholder="输入关键词过滤" />
       </div>
-      <button id="open-upload" type="button">快速上传</button>
-      <a href="upload.html" class="btn-upload-manage">上传管理</a>
-      <button id="reload-btn" type="button">刷新列表</button>
+      <label for="open-upload" class="icon-label">
+        <i class="fas fa-cloud-upload-alt"></i>
+      </label>
+      <button id="open-upload" type="button" style="display: none;"></button>
+      <a href="upload.html" class="icon-label">
+        <i class="fas fa-tasks"></i>
+      </a>
+      <label for="reload-btn" class="icon-label">
+        <i class="fas fa-sync"></i>
+      </label>
+      <button id="reload-btn" type="button" style="display: none;"></button>
     </div>
   </header>
 
@@ -50,6 +58,10 @@
     <section id="status" class="status">正在加载仓库树...</section>
     <section id="grid" class="grid" aria-live="polite"></section>
   </main>
+
+  <button id="back-to-top" class="back-to-top" aria-label="回到顶部" title="回到顶部">
+    <i class="fas fa-arrow-up"></i>
+  </button>
 
   <div id="lightbox" class="lightbox hidden" aria-modal="true" role="dialog">
     <div class="lightbox-backdrop" data-close></div>
@@ -188,6 +200,9 @@
     let images = [];
     let folders = [];
     let currentIndex = -1;
+    let displayedCount = 0;
+    const ITEMS_PER_PAGE = 100;
+    let isLoadingMore = false;
     let scale = 1;
     let rotation = 0;
     let translateX = 0;
@@ -286,8 +301,12 @@
       const delBtn = node.querySelector('.delete-btn');
       const copyButtons = node.querySelectorAll('[data-copy]');
 
-      imgEl.src = `${CDN_BASE}/${item.path}`;
+      // 懒加载：使用 data-src 存储真实图片地址，先用 loading.gif 作为占位符
+      const loadingGif = `${CDN_BASE}/imgs/special/loading.gif`;
+      imgEl.src = loadingGif;
+      imgEl.dataset.src = `${CDN_BASE}/${item.path}`;
       imgEl.alt = item.name;
+      imgEl.classList.add('lazy-load');
       pathEl.textContent = item.name;
       pathEl.title = item.path;
 
@@ -329,16 +348,219 @@
       return node;
     }
 
-    function render(list) {
-      gridEl.innerHTML = '';
+    function render(list, reset = true) {
+      if (reset) {
+        gridEl.innerHTML = '';
+        displayedCount = 0;
+      }
+      
       if (!list.length) {
-        setStatus('未找到匹配的图片，请检查过滤条件。', true);
+        if (reset) {
+          setStatus('未找到匹配的图片，请检查过滤条件。', true);
+        }
         return;
       }
-      setStatus(`共 ${list.length} 张图片，可点击预览与复制链接。`);
+      
+      const total = list.length;
+      const toDisplay = Math.min(displayedCount + ITEMS_PER_PAGE, total);
+      const itemsToAdd = list.slice(displayedCount, toDisplay);
+      
+      if (itemsToAdd.length === 0) {
+        return;
+      }
+      
       const frag = document.createDocumentFragment();
-      list.forEach((item) => frag.appendChild(buildCard(item)));
+      itemsToAdd.forEach((item) => frag.appendChild(buildCard(item)));
       gridEl.appendChild(frag);
+      
+      // 观察新添加的图片，启用懒加载
+      observeNewImages();
+      
+      displayedCount = toDisplay;
+      
+      if (reset) {
+        setStatus(`共 ${total} 张图片，已显示 ${displayedCount} 张，可点击预览与复制链接。`);
+      } else {
+        setStatus(`共 ${total} 张图片，已显示 ${displayedCount} 张，可点击预览与复制链接。`);
+      }
+      
+      // 如果还有更多图片，显示加载提示
+      if (displayedCount < total) {
+        showLoadMoreIndicator();
+      } else {
+        hideLoadMoreIndicator();
+      }
+    }
+    
+    function showLoadMoreIndicator() {
+      let indicator = document.getElementById('load-more-indicator');
+      if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'load-more-indicator';
+        indicator.className = 'load-more-indicator';
+        indicator.textContent = '滚动到底部加载更多...';
+        gridEl.appendChild(indicator);
+      }
+    }
+    
+    function hideLoadMoreIndicator() {
+      const indicator = document.getElementById('load-more-indicator');
+      if (indicator) {
+        indicator.remove();
+      }
+    }
+    
+    function loadMoreImages() {
+      if (isLoadingMore) return;
+      
+      const keyword = filterInput.value.trim().toLowerCase();
+      const folder = folderSelect.value;
+      
+      let list;
+      if (!keyword) {
+        list = folder === 'ALL' ? images : images.filter((img) => img.dir === folder);
+      } else {
+        list = images
+          .filter((img) => img.path.toLowerCase().includes(keyword))
+          .filter((img) => (folder === 'ALL' ? true : img.dir === folder));
+      }
+      
+      if (displayedCount >= list.length) {
+        hideLoadMoreIndicator();
+        return;
+      }
+      
+      isLoadingMore = true;
+      render(list, false);
+      isLoadingMore = false;
+    }
+    
+    function setupInfiniteScroll() {
+      const backToTopBtn = document.getElementById('back-to-top');
+      let scrollTimeout;
+      window.addEventListener('scroll', () => {
+        if (scrollTimeout) {
+          clearTimeout(scrollTimeout);
+        }
+        
+        scrollTimeout = setTimeout(() => {
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const windowHeight = window.innerHeight;
+          const documentHeight = document.documentElement.scrollHeight;
+          
+          // 显示/隐藏回到顶部按钮
+          if (scrollTop > 300) {
+            backToTopBtn.classList.add('show');
+          } else {
+            backToTopBtn.classList.remove('show');
+          }
+          
+          // 当滚动到距离底部 200px 时开始加载
+          if (scrollTop + windowHeight >= documentHeight - 200) {
+            loadMoreImages();
+          }
+        }, 100);
+      });
+      
+      // 回到顶部功能
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+    
+    function setupLazyLoad() {
+      const lazyImages = document.querySelectorAll('img.lazy-load');
+      
+      if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              const dataSrc = img.dataset.src;
+              
+              if (dataSrc) {
+                // 创建新的 Image 对象来预加载
+                const imageLoader = new Image();
+                imageLoader.onload = () => {
+                  img.src = dataSrc;
+                  img.classList.remove('lazy-load');
+                  img.classList.add('lazy-loaded');
+                };
+                imageLoader.onerror = () => {
+                  // 如果加载失败，保持 loading.gif
+                  console.error('Failed to load image:', dataSrc);
+                };
+                imageLoader.src = dataSrc;
+                
+                observer.unobserve(img);
+              }
+            }
+          });
+        }, {
+          rootMargin: '50px' // 提前50px开始加载
+        });
+        
+        lazyImages.forEach(img => imageObserver.observe(img));
+      } else {
+        // 不支持 IntersectionObserver 的浏览器，直接加载所有图片
+        lazyImages.forEach(img => {
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.classList.remove('lazy-load');
+            img.classList.add('lazy-loaded');
+          }
+        });
+      }
+    }
+    
+    function observeNewImages() {
+      // 观察新添加的图片
+      const newLazyImages = document.querySelectorAll('img.lazy-load:not(.observed)');
+      if (newLazyImages.length === 0) return;
+      
+      if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              const dataSrc = img.dataset.src;
+              
+              if (dataSrc) {
+                const imageLoader = new Image();
+                imageLoader.onload = () => {
+                  img.src = dataSrc;
+                  img.classList.remove('lazy-load');
+                  img.classList.add('lazy-loaded');
+                };
+                imageLoader.onerror = () => {
+                  console.error('Failed to load image:', dataSrc);
+                };
+                imageLoader.src = dataSrc;
+                
+                observer.unobserve(img);
+              }
+            }
+          });
+        }, {
+          rootMargin: '50px'
+        });
+        
+        newLazyImages.forEach(img => {
+          img.classList.add('observed');
+          imageObserver.observe(img);
+        });
+      } else {
+        newLazyImages.forEach(img => {
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.classList.remove('lazy-load');
+            img.classList.add('lazy-loaded');
+          }
+        });
+      }
     }
 
     function applyFilter() {
@@ -346,13 +568,13 @@
       const folder = folderSelect.value;
       if (!keyword) {
         const base = folder === 'ALL' ? images : images.filter((img) => img.dir === folder);
-        render(base);
+        render(base, true);
         return;
       }
       const filtered = images
         .filter((img) => img.path.toLowerCase().includes(keyword))
         .filter((img) => (folder === 'ALL' ? true : img.dir === folder));
-      render(filtered);
+      render(filtered, true);
     }
 
     function openLightbox(idx) {
@@ -539,7 +761,9 @@
           item.idx = idx;
         });
         buildFolders();
-        render(images);
+        
+        // 应用当前的过滤条件，而不是直接渲染所有图片
+        applyFilter();
       } catch (err) {
         console.error(err);
         setStatus(err.message, true);
@@ -601,9 +825,11 @@
       setupLightbox();
       // 确保初始状态展开
       initCollapsible();
+      setupInfiniteScroll();
       await loadImages();
       // 加载完成后再次确保状态正确
       initCollapsible();
+      setupLazyLoad();
     }
 
     // 展开/收缩功能
@@ -855,7 +1081,44 @@
       closeUploadModal();
     });
 
-    reloadBtn.addEventListener('click', () => loadImages());
+    reloadBtn.addEventListener('click', async () => {
+      // 保存当前的过滤条件
+      const currentFolder = folderSelect.value;
+      const currentKeyword = filterInput.value.trim().toLowerCase();
+      
+      // 重新加载图片
+      await loadImages();
+      
+      // 恢复过滤条件
+      folderSelect.value = currentFolder;
+      filterInput.value = currentKeyword;
+      
+      // 应用过滤条件
+      applyFilter();
+    });
+    
+    // 标题点击完全刷新
+    const brandTitle = document.getElementById('brand-title');
+    brandTitle.addEventListener('click', async () => {
+      // 重置所有过滤条件
+      folderSelect.value = 'ALL';
+      filterInput.value = '';
+      
+      // 更新自定义下拉框显示
+      const customSelectValue = document.querySelector('.custom-select-value');
+      if (customSelectValue) {
+        customSelectValue.textContent = '全部目录';
+      }
+      const customSelectOptions = document.querySelectorAll('.custom-select-option');
+      customSelectOptions.forEach(opt => opt.classList.remove('selected'));
+      const allOption = Array.from(customSelectOptions).find(opt => opt.dataset.value === 'ALL');
+      if (allOption) {
+        allOption.classList.add('selected');
+      }
+      
+      // 重新加载图片（会应用过滤条件，此时是全部）
+      await loadImages();
+    });
 
     init();
   </script>

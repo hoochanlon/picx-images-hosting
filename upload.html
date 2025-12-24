@@ -6,376 +6,13 @@
   <title>上传管理 - picx-images-hosting</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hoochanlon/fonts@refs/heads/main/public/OPPOSans4/result.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="./style.css" />
-  <style>
-    .upload-page {
-      min-height: 100vh;
-      background: #f6f8fa;
-    }
-
-    .upload-header {
-      background: #fff;
-      border-bottom: 1px solid #d0d7de;
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .upload-header h1 {
-      margin: 0;
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .upload-header .back-link {
-      color: #0969da;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .upload-header .back-link:hover {
-      text-decoration: underline;
-    }
-
-    .upload-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-
-    .upload-toolbar {
-      background: #fff;
-      border: 1px solid #d0d7de;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .upload-toolbar button {
-      padding: 8px 16px;
-      border: 1px solid #d0d7de;
-      background: #fff;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .upload-toolbar button:hover {
-      background: #f6f8fa;
-    }
-
-    .upload-toolbar .btn-primary {
-      background: #0969da;
-      color: #fff;
-      border-color: #0969da;
-    }
-
-    .upload-toolbar .btn-primary:hover {
-      background: #0860ca;
-    }
-
-    .breadcrumb {
-      background: #fff;
-      border: 1px solid #d0d7de;
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .breadcrumb-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .breadcrumb-item a {
-      color: #0969da;
-      text-decoration: none;
-    }
-
-    .breadcrumb-item a:hover {
-      text-decoration: underline;
-      color: #0860ca;
-    }
-    
-    .breadcrumb-item a {
-      cursor: pointer;
-    }
-
-    .breadcrumb-separator {
-      color: #8b949e;
-    }
-
-    .file-browser {
-      background: #fff;
-      border: 1px solid #d0d7de;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .file-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .file-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-bottom: 1px solid #f6f8fa;
-      cursor: pointer;
-    }
-
-    .file-item:hover {
-      background: #f6f8fa;
-    }
-
-    .file-item.selected {
-      background: #e7f3ff;
-    }
-
-    .file-icon {
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #8b949e;
-    }
-
-    .file-name {
-      flex: 1;
-      font-size: 0.95rem;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .file-item .file-name:hover {
-      color: #0969da;
-    }
-
-    .file-actions {
-      display: flex;
-      gap: 8px;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .file-item:hover .file-actions {
-      opacity: 1;
-    }
-
-    .file-actions button {
-      padding: 4px 8px;
-      border: 1px solid #d0d7de;
-      background: #fff;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.85rem;
-    }
-
-    .file-actions button:hover {
-      background: #f6f8fa;
-    }
-
-    .file-actions .btn-danger {
-      color: #cf222e;
-      border-color: #e6b0b0;
-    }
-
-    .file-actions .btn-danger:hover {
-      background: #fff3f3;
-    }
-
-    .file-actions .btn-copy-pages {
-      color: #0969da;
-      border-color: #0969da;
-    }
-
-    .file-actions .btn-copy-pages:hover {
-      background: #e8f1fd;
-    }
-
-    .file-actions .btn-copy-cdn {
-      color: #117a37;
-      border-color: #117a37;
-    }
-
-    .file-actions .btn-copy-cdn:hover {
-      background: #e6fff5;
-    }
-
-    .file-name {
-      cursor: pointer;
-    }
-
-    .upload-area {
-      border: 2px dashed #d0d7de;
-      border-radius: 8px;
-      padding: 48px;
-      text-align: center;
-      background: #fafbfc;
-      margin-bottom: 16px;
-      transition: all 0.2s;
-    }
-
-    .upload-area.dragover {
-      border-color: #0969da;
-      background: #e7f3ff;
-    }
-
-    .upload-area-icon {
-      font-size: 3rem;
-      color: #8b949e;
-      margin-bottom: 16px;
-    }
-
-    .upload-area-text {
-      font-size: 1.1rem;
-      color: #24292f;
-      margin-bottom: 8px;
-    }
-
-    .upload-area-hint {
-      font-size: 0.9rem;
-      color: #57606a;
-    }
-
-    .upload-progress {
-      margin-top: 16px;
-    }
-
-    .progress-item {
-      background: #fff;
-      border: 1px solid #d0d7de;
-      border-radius: 6px;
-      padding: 12px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .progress-bar {
-      flex: 1;
-      height: 8px;
-      background: #f6f8fa;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: #0969da;
-      transition: width 0.3s;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      background: rgba(0, 0, 0, 0.5);
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal.show {
-      display: flex;
-    }
-
-    .modal-content {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      min-width: 400px;
-      max-width: 90vw;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .modal-header h2 {
-      margin: 0;
-      font-size: 1.25rem;
-    }
-
-    .modal-close {
-      border: none;
-      background: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #8b949e;
-    }
-
-    .modal-body {
-      margin-bottom: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
-      font-size: 0.95rem;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 8px 12px;
-      border: 1px solid #d0d7de;
-      border-radius: 6px;
-      font-size: 0.95rem;
-    }
-
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 48px;
-      color: #8b949e;
-    }
-
-    .empty-state-icon {
-      font-size: 3rem;
-      margin-bottom: 16px;
-    }
-  </style>
+  <link rel="stylesheet" href="./css/global.css" />
 </head>
 <body class="upload-page">
   <header class="upload-header">
     <h1>
       <span>🖼️</span>
-      <span>上传管理</span>
+      <span id="upload-title" style="cursor: pointer;">上传管理</span>
     </h1>
     <a href="index.html" class="back-link">
       <i class="fas fa-arrow-left"></i>
@@ -393,16 +30,11 @@
         <i class="fas fa-upload"></i>
         上传文件
       </button>
-      <button id="upload-folder-btn">
-        <i class="fas fa-folder-open"></i>
-        上传文件夹
-      </button>
       <button id="settings-upload-path-btn" title="设置上传目录">
         <i class="fas fa-cog"></i>
         设置上传目录
       </button>
       <input type="file" id="file-input" multiple style="display: none;" />
-      <input type="file" id="folder-input" webkitdirectory multiple style="display: none;" />
     </div>
 
     <div class="upload-area" id="upload-area">
@@ -438,8 +70,16 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>文件夹名称：</label>
-          <input type="text" id="folder-name-input" placeholder="请输入文件夹名称" />
+          <label>文件夹路径：</label>
+          <input type="text" id="folder-name-input" placeholder="例如: folder 或 path/to/folder" />
+          <div style="margin-top: 8px; font-size: 12px; color: #666;">
+            <p>提示：</p>
+            <ul style="margin: 5px 0; padding-left: 20px;">
+              <li>可以输入单个文件夹名称，将在当前目录下创建</li>
+              <li>可以输入路径（如 path/to/folder），将创建嵌套文件夹结构</li>
+              <li>路径中的斜杠使用 "/" 分隔</li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -511,7 +151,7 @@
 
     // 自动检测 API 基础地址
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const isVercelDev = isLocalhost && window.location.port === '3000';
+    const isVercelDev = isLocalhost && (window.location.port === '3000' || window.location.port === '3001');
     const API_BASE = isLocalhost && !isVercelDev
       ? 'https://picx-images-hosting-brown.vercel.app' 
       : window.location.origin;
@@ -526,11 +166,9 @@
     const breadcrumbEl = document.getElementById('breadcrumb');
     const uploadAreaEl = document.getElementById('upload-area');
     const fileInputEl = document.getElementById('file-input');
-    const folderInputEl = document.getElementById('folder-input');
     const uploadProgressEl = document.getElementById('upload-progress');
     const createFolderBtn = document.getElementById('create-folder-btn');
     const uploadFilesBtn = document.getElementById('upload-files-btn');
-    const uploadFolderBtn = document.getElementById('upload-folder-btn');
     const createFolderModal = document.getElementById('create-folder-modal');
     const renameModal = document.getElementById('rename-modal');
     const folderNameInput = document.getElementById('folder-name-input');
@@ -814,23 +452,34 @@
         files = [];
         
         console.log('加载文件，当前路径:', currentPath);
+        
+        // 规范化当前路径
+        const normalizedCurrentPath = (currentPath || '').trim();
+        
         allItems.forEach(item => {
           const itemPath = item.path;
-          const itemDir = itemPath.includes('/') ? itemPath.slice(0, itemPath.lastIndexOf('/')) : '';
           
-          // 确保路径比较时都使用规范化格式（无前后斜杠）
-          const normalizedCurrentPath = (currentPath || '').trim();
-          const normalizedItemDir = (itemDir || '').trim();
-          
-          console.log(`检查项目: ${itemPath}, 项目目录: "${normalizedItemDir}", 当前路径: "${normalizedCurrentPath}"`);
-          
-          if (normalizedItemDir === normalizedCurrentPath) {
-            if (item.type === 'tree') {
+          if (item.type === 'tree') {
+            // 对于文件夹（tree），检查其父目录是否等于当前路径
+            const itemDir = itemPath.includes('/') ? itemPath.slice(0, itemPath.lastIndexOf('/')) : '';
+            const normalizedItemDir = (itemDir || '').trim();
+            
+            console.log(`检查文件夹: ${itemPath}, 父目录: "${normalizedItemDir}", 当前路径: "${normalizedCurrentPath}"`);
+            
+            if (normalizedItemDir === normalizedCurrentPath) {
               folders.push({
                 name: itemPath.split('/').pop(),
                 path: itemPath
               });
-            } else {
+            }
+          } else {
+            // 对于文件（blob），检查其所在目录是否等于当前路径
+            const itemDir = itemPath.includes('/') ? itemPath.slice(0, itemPath.lastIndexOf('/')) : '';
+            const normalizedItemDir = (itemDir || '').trim();
+            
+            console.log(`检查文件: ${itemPath}, 所在目录: "${normalizedItemDir}", 当前路径: "${normalizedCurrentPath}"`);
+            
+            if (normalizedItemDir === normalizedCurrentPath) {
               files.push({
                 name: itemPath.split('/').pop(),
                 path: itemPath
@@ -839,8 +488,8 @@
           }
         });
         
-        console.log('找到的文件夹:', folders.length, '个');
-        console.log('找到的文件:', files.length, '个');
+        console.log('找到的文件夹:', folders.length, '个', folders);
+        console.log('找到的文件:', files.length, '个', files);
         
         folders.sort((a, b) => a.name.localeCompare(b.name));
         files.sort((a, b) => a.name.localeCompare(b.name));
@@ -857,46 +506,73 @@
       }
     }
 
-    async function createFolder(name) {
-      if (!name || !name.trim()) {
-        alert('请输入文件夹名称');
+    async function createFolder(nameOrPath) {
+      if (!nameOrPath || !nameOrPath.trim()) {
+        alert('请输入文件夹名称或路径');
         return;
       }
       
-      const folderPath = buildPath(currentPath, name.trim());
-      const folderPathWithSlash = folderPath.endsWith('/') ? folderPath : folderPath + '/';
+      let inputPath = nameOrPath.trim();
       
-      // 创建 .gitkeep 文件来创建文件夹
-      const content = btoa('');
+      // 规范化路径：移除开头的斜杠（如果用户输入了绝对路径，转换为相对路径）
+      if (inputPath.startsWith('/')) {
+        inputPath = inputPath.substring(1);
+      }
+      
+      // 移除末尾的斜杠（如果有）
+      if (inputPath.endsWith('/')) {
+        inputPath = inputPath.slice(0, -1);
+      }
+      
+      // 验证路径格式（不能包含非法字符）
+      if (inputPath.includes('..') || inputPath.includes('//')) {
+        alert('路径格式不正确，不能包含 ".." 或连续的斜杠');
+        return;
+      }
+      
+      // 构建完整路径：总是相对于当前目录
+      const folderPath = buildPath(currentPath, inputPath);
+      
+      // 规范化最终路径
+      let normalizedPath = folderPath.trim();
+      if (normalizedPath.startsWith('/')) {
+        normalizedPath = normalizedPath.substring(1);
+      }
+      
+      if (!normalizedPath) {
+        alert('路径不能为空');
+        return;
+      }
+      
+      console.log('创建文件夹路径:', normalizedPath);
+      console.log('当前目录:', currentPath);
+      console.log('输入路径:', inputPath);
+      
+      // 使用 ensureDirectoryExists 来创建文件夹（支持创建嵌套文件夹）
       try {
-        await apiRequest({
-          action: 'upload',
-          path: `${folderPathWithSlash}.gitkeep`,
-          content: content,
-          message: `Create folder: ${folderPath}`
-        });
-        
-        // 删除 .gitkeep 文件（GitHub 会自动保留空文件夹）
-        // 实际上 GitHub 不支持空文件夹，所以我们保留 .gitkeep
-        // 或者创建一个 README.md
+        await ensureDirectoryExists(normalizedPath, 3);
+        console.log('文件夹创建成功:', normalizedPath);
         
         loadFiles();
         closeModal('create-folder');
         folderNameInput.value = '';
       } catch (err) {
-        console.error(err);
-        alert('创建文件夹失败：' + err.message);
+        console.error('创建文件夹失败:', err);
+        alert('创建文件夹失败：' + (err.message || '未知错误'));
       }
     }
 
     // 确保目录存在（通过创建 .gitkeep 文件）
-    async function ensureDirectoryExists(dirPath) {
+    async function ensureDirectoryExists(dirPath, maxRetries = 3) {
       if (!dirPath || dirPath === '') return;
       
-      // 规范化路径：移除开头的斜杠
+      // 规范化路径：移除开头的斜杠和末尾的斜杠
       let normalizedPath = dirPath.trim();
       if (normalizedPath.startsWith('/')) {
         normalizedPath = normalizedPath.substring(1);
+      }
+      if (normalizedPath.endsWith('/')) {
+        normalizedPath = normalizedPath.slice(0, -1);
       }
       
       // 分割路径为各个部分
@@ -909,15 +585,22 @@
         currentPath = currentPath ? `${currentPath}/${parts[i]}` : parts[i];
         const gitkeepPath = `${currentPath}/.gitkeep`;
         
-        // 检查目录是否已存在
+        // 检查目录是否已存在（增加重试次数和等待时间）
         let dirExists = false;
-        try {
-          const checkRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(gitkeepPath)}`);
-          if (checkRes.ok) {
-            dirExists = true;
+        for (let checkRetry = 0; checkRetry < 3; checkRetry++) {
+          try {
+            const checkRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(gitkeepPath)}`);
+            if (checkRes.ok) {
+              dirExists = true;
+              console.log(`目录 ${currentPath} 已存在`);
+              break;
+            }
+          } catch (e) {
+            // 文件不存在，需要创建
           }
-        } catch (e) {
-          // 文件不存在，需要创建
+          if (checkRetry < 2) {
+            await new Promise(resolve => setTimeout(resolve, 1000 * (checkRetry + 1)));
+          }
         }
         
         if (dirExists) {
@@ -928,58 +611,77 @@
         // 如果当前不是第一个目录，确保父目录存在
         if (i > 0) {
           const parentPath = parts.slice(0, i).join('/');
-          await ensureDirectoryExists(parentPath);
+          await ensureDirectoryExists(parentPath, maxRetries);
         }
         
-        // 创建 .gitkeep 文件来确保目录存在
-        try {
-          console.log(`创建目录 ${currentPath}，路径: ${gitkeepPath}`);
-          const createResult = await apiRequest({
-            action: 'upload',
-            path: gitkeepPath,
-            content: btoa(''),
-            message: `Create directory: ${currentPath}/`
-          });
-          console.log(`目录 ${currentPath} 创建API调用成功:`, createResult);
-          
-          // 验证目录是否真正创建成功
-          let verified = false;
-          for (let retry = 0; retry < 5; retry++) {
-            await new Promise(resolve => setTimeout(resolve, 1000 * (retry + 1))); // 等待 API 生效
-            try {
-              const verifyRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(gitkeepPath)}`);
-              console.log(`验证目录 ${currentPath}，尝试 ${retry + 1}/5，状态: ${verifyRes.status}`);
-              if (verifyRes.ok) {
-                verified = true;
-                console.log(`目录 ${currentPath} 验证成功`);
-                break;
-              }
-            } catch (e) {
-              console.log(`验证目录 ${currentPath} 失败:`, e);
-            }
-          }
-          
-          if (!verified) {
-            console.error(`目录 ${currentPath} 创建后验证失败`);
-            throw new Error(`目录创建后验证失败: ${currentPath}`);
-          }
-        } catch (err) {
-          console.error(`Failed to create directory ${currentPath}:`, err);
-          const errorMsg = err.message || '';
-          // 如果错误是目录不存在，尝试再次创建父目录
-          if (errorMsg.includes('not be found') && i > 0) {
-            const parentPath = parts.slice(0, i).join('/');
-            await ensureDirectoryExists(parentPath);
-            // 再次重试
-            await apiRequest({
+        // 创建 .gitkeep 文件来确保目录存在（增加重试机制）
+        let created = false;
+        let lastError = null;
+        
+        for (let createRetry = 0; createRetry < maxRetries; createRetry++) {
+          try {
+            console.log(`创建目录 ${currentPath}，路径: ${gitkeepPath} (尝试 ${createRetry + 1}/${maxRetries})`);
+            const createResult = await apiRequest({
               action: 'upload',
               path: gitkeepPath,
               content: btoa(''),
               message: `Create directory: ${currentPath}/`
             });
-          } else {
-            throw new Error(`无法创建目录 ${currentPath}: ${errorMsg || '未知错误'}`);
+            console.log(`目录 ${currentPath} 创建API调用成功:`, createResult);
+            
+            // 验证目录是否真正创建成功（增加验证重试次数和等待时间）
+            let verified = false;
+            const verifyWaitTime = isLocalhost ? 2000 : 1500;
+            const maxVerifyRetries = isLocalhost ? 8 : 6;
+            
+            for (let verifyRetry = 0; verifyRetry < maxVerifyRetries; verifyRetry++) {
+              await new Promise(resolve => setTimeout(resolve, verifyWaitTime * (verifyRetry + 1)));
+              try {
+                const verifyRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(gitkeepPath)}`);
+                console.log(`验证目录 ${currentPath}，尝试 ${verifyRetry + 1}/${maxVerifyRetries}，状态: ${verifyRes.status}`);
+                if (verifyRes.ok) {
+                  verified = true;
+                  console.log(`目录 ${currentPath} 验证成功`);
+                  break;
+                } else {
+                  const errorData = await verifyRes.json().catch(() => ({}));
+                  console.log(`验证失败，响应:`, errorData);
+                }
+              } catch (e) {
+                console.log(`验证目录 ${currentPath} 失败:`, e);
+              }
+            }
+            
+            if (verified) {
+              created = true;
+              break;
+            } else {
+              console.warn(`目录 ${currentPath} 创建后验证失败，将重试创建`);
+            }
+          } catch (err) {
+            console.error(`创建目录 ${currentPath} 失败 (尝试 ${createRetry + 1}/${maxRetries}):`, err);
+            lastError = err;
+            const errorMsg = err.message || '';
+            
+            // 如果错误是目录不存在，尝试再次创建父目录
+            if (errorMsg.includes('not be found') && i > 0) {
+              const parentPath = parts.slice(0, i).join('/');
+              console.log(`父目录不存在，先创建父目录: ${parentPath}`);
+              await ensureDirectoryExists(parentPath, maxRetries);
+              // 等待父目录生效
+              await new Promise(resolve => setTimeout(resolve, isLocalhost ? 3000 : 2000));
+            }
+            
+            // 如果不是最后一次重试，等待后继续
+            if (createRetry < maxRetries - 1) {
+              await new Promise(resolve => setTimeout(resolve, isLocalhost ? 3000 : 2000));
+            }
           }
+        }
+        
+        if (!created) {
+          const errorMsg = lastError ? lastError.message : '未知错误';
+          throw new Error(`无法创建目录 ${currentPath} (已重试 ${maxRetries} 次): ${errorMsg}`);
         }
       }
     }
@@ -1020,14 +722,23 @@
         console.log('检测到文件夹上传，先创建所有目录...');
         const dirsToCreate = new Set();
         
-        // 收集所有需要的目录
+        // 收集所有需要的目录（包括所有父目录）
         filesArray.forEach(file => {
           if (file.webkitRelativePath) {
             const filePath = buildPath(targetPath, file.webkitRelativePath);
             const fileDir = getParentPath(filePath);
             if (fileDir && fileDir !== '') {
+              // 规范化路径
+              let normalizedDir = fileDir.trim();
+              if (normalizedDir.startsWith('/')) {
+                normalizedDir = normalizedDir.substring(1);
+              }
+              if (normalizedDir.endsWith('/')) {
+                normalizedDir = normalizedDir.slice(0, -1);
+              }
+              
               // 收集所有父目录
-              const dirParts = fileDir.split('/').filter(p => p);
+              const dirParts = normalizedDir.split('/').filter(p => p);
               let currentDir = '';
               dirParts.forEach(part => {
                 currentDir = currentDir ? `${currentDir}/${part}` : part;
@@ -1044,17 +755,29 @@
           return depthA - depthB;
         });
         
-        console.log('需要创建的目录:', sortedDirs);
+        console.log(`需要创建的目录 (共 ${sortedDirs.length} 个):`, sortedDirs);
         
-        // 创建所有目录
-        for (const dir of sortedDirs) {
-          console.log('创建目录:', dir);
-          await ensureDirectoryExists(dir);
+        // 创建所有目录（增加重试次数）
+        for (let dirIndex = 0; dirIndex < sortedDirs.length; dirIndex++) {
+          const dir = sortedDirs[dirIndex];
+          console.log(`创建目录 ${dirIndex + 1}/${sortedDirs.length}: ${dir}`);
+          try {
+            await ensureDirectoryExists(dir, 3);
+            console.log(`目录 ${dir} 创建成功`);
+          } catch (err) {
+            console.error(`目录 ${dir} 创建失败:`, err);
+            // 继续尝试创建其他目录，但记录错误
+          }
+          // 每个目录创建后稍作等待，避免API限流
+          if (dirIndex < sortedDirs.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, isLocalhost ? 500 : 300));
+          }
         }
         
         console.log('所有目录创建完成，等待生效...');
-        // 等待目录生效
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        // 等待目录生效（在vercel dev环境下增加等待时间）
+        const waitTime = isLocalhost ? 10000 : 5000;
+        await new Promise(resolve => setTimeout(resolve, waitTime));
         console.log('开始上传文件...');
       }
       
@@ -1097,8 +820,41 @@
             const fileDir = getParentPath(filePath);
             if (fileDir && fileDir !== '') {
               console.log('确保目录存在:', fileDir);
-              await ensureDirectoryExists(fileDir);
-              await new Promise(resolve => setTimeout(resolve, 2000));
+              await ensureDirectoryExists(fileDir, 3);
+              // 在vercel dev环境下增加等待时间
+              await new Promise(resolve => setTimeout(resolve, isLocalhost ? 4000 : 2000));
+            }
+          } else {
+            // 文件夹上传时，再次确保文件所在目录存在（可能还有子目录）
+            const fileDir = getParentPath(filePath);
+            if (fileDir && fileDir !== '') {
+              // 规范化路径
+              let normalizedDir = fileDir.trim();
+              if (normalizedDir.startsWith('/')) {
+                normalizedDir = normalizedDir.substring(1);
+              }
+              if (normalizedDir.endsWith('/')) {
+                normalizedDir = normalizedDir.slice(0, -1);
+              }
+              
+              // 检查目录是否已创建（可能之前漏掉了）
+              const gitkeepPath = `${normalizedDir}/.gitkeep`;
+              let dirExists = false;
+              try {
+                const checkRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(gitkeepPath)}`);
+                if (checkRes.ok) {
+                  dirExists = true;
+                }
+              } catch (e) {
+                // 目录不存在，需要创建
+              }
+              
+              if (!dirExists) {
+                console.log('检测到未创建的目录，立即创建:', normalizedDir);
+                await ensureDirectoryExists(normalizedDir, 3);
+                // 等待目录生效
+                await new Promise(resolve => setTimeout(resolve, isLocalhost ? 5000 : 3000));
+              }
             }
           }
           
@@ -1136,130 +892,91 @@
           if (errorMsg.includes('not be found')) {
             // 尝试创建目录后重试
             try {
-              const fileDir = getParentPath(buildPath(targetPath, file.webkitRelativePath || file.name));
-              if (fileDir) {
-                console.log('尝试创建目录:', fileDir);
-                await ensureDirectoryExists(fileDir);
-                console.log('目录创建成功，验证目录存在...');
-                
-                // 验证目录确实存在
-                const gitkeepPath = `${fileDir}/.gitkeep`;
-                console.log('验证目录，检查路径:', gitkeepPath);
-                let dirVerified = false;
-                for (let verifyRetry = 0; verifyRetry < 5; verifyRetry++) {
-                  await new Promise(resolve => setTimeout(resolve, 2000 * (verifyRetry + 1))); // 增加等待时间
-                  try {
-                    const verifyRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(gitkeepPath)}`);
-                    console.log(`验证尝试 ${verifyRetry + 1}/5，状态: ${verifyRes.status}`);
-                    if (verifyRes.ok) {
-                      dirVerified = true;
-                      console.log('目录验证成功，开始重试上传');
-                      break;
-                    } else {
-                      const errorData = await verifyRes.json().catch(() => ({}));
-                      console.log('验证失败，响应:', errorData);
-                    }
-                  } catch (e) {
-                    console.log(`目录验证重试 ${verifyRetry + 1}/5，错误:`, e);
-                  }
-                }
-                
-                if (!dirVerified) {
-                  throw new Error('目录创建后验证失败，请稍后重试');
-                }
-                
-                // 再次确保目录存在（可能文件路径中有子目录）
-                const retryFilePath = buildPath(targetPath, file.webkitRelativePath || file.name);
-                console.log('重试文件路径:', retryFilePath);
-                const retryFileDir = getParentPath(retryFilePath);
-                console.log('重试文件目录:', retryFileDir);
-                
-                // 确保目录存在
-                if (retryFileDir) {
-                  if (retryFileDir !== fileDir) {
-                    console.log('检测到子目录，确保子目录存在:', retryFileDir);
-                    await ensureDirectoryExists(retryFileDir);
-                  }
-                  
-                  // 再次验证目录存在，并等待更长时间
-                  const retryGitkeepPath = `${retryFileDir}/.gitkeep`;
-                  console.log('重试前再次验证目录:', retryGitkeepPath);
-                  let retryDirVerified = false;
-                  for (let retryVerify = 0; retryVerify < 5; retryVerify++) {
-                    await new Promise(resolve => setTimeout(resolve, 2000 * (retryVerify + 1)));
-                    try {
-                      const retryVerifyRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(retryGitkeepPath)}`);
-                      console.log(`重试验证尝试 ${retryVerify + 1}/5，状态: ${retryVerifyRes.status}`);
-                      if (retryVerifyRes.ok) {
-                        retryDirVerified = true;
-                        console.log('重试前目录验证成功');
-                        break;
-                      }
-                    } catch (e) {
-                      console.log(`重试验证失败:`, e);
-                    }
-                  }
-                  
-                  if (!retryDirVerified) {
-                    throw new Error('重试前目录验证失败');
-                  }
-                  
-                  // 额外等待，确保目录完全生效
-                  console.log('等待目录完全生效...');
-                  await new Promise(resolve => setTimeout(resolve, 5000));
-                  
-                  // 尝试通过列出目录内容来验证目录是否真正可用
-                  console.log('尝试列出目录内容以验证目录可用性...');
-                  try {
-                    const treeRes = await fetch(`${API_BASE}/api/tree`);
-                    if (treeRes.ok) {
-                      const treeData = await treeRes.json();
-                      const dirFiles = (treeData.tree || []).filter(item => 
-                        item.path.startsWith(retryFileDir + '/') && item.type === 'blob'
-                      );
-                      console.log(`目录 ${retryFileDir} 中已有 ${dirFiles.length} 个文件，目录可用`);
-                    }
-                  } catch (treeErr) {
-                    console.warn('无法列出目录内容:', treeErr);
-                  }
-                }
-                
-                console.log('重试上传文件:', retryFilePath);
-                const retryContent = await toBase64(file);
-                
-                // 直接调用 API 以获取更详细的错误信息
-                try {
-                  const uploadRes = await fetch(API_ENDPOINT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      action: 'upload',
-                      path: retryFilePath,
-                      content: retryContent,
-                      message: `Upload: ${retryFilePath}`
-                    }),
-                  });
-                  
-                  if (!uploadRes.ok) {
-                    const errorData = await uploadRes.json().catch(() => ({}));
-                    console.error('上传失败，API 响应:', errorData);
-                    console.error('上传路径:', retryFilePath);
-                    console.error('HTTP 状态:', uploadRes.status);
-                    const errorMsg = errorData.message || errorData.error || `HTTP ${uploadRes.status}`;
-                    throw new Error(errorMsg);
-                  }
-                  
-                  const uploadResult = await uploadRes.json();
-                  console.log('上传成功:', uploadResult);
-                } catch (uploadErr) {
-                  console.error('上传异常:', uploadErr);
-                  throw uploadErr;
-                }
-                progressFill.style.width = '100%';
-                progressText.textContent = '完成';
-                progressItem.style.opacity = '0.6';
-                continue; // 成功，继续下一个文件
+              // 先构建文件路径和目录路径
+              const retryFilePath = buildPath(targetPath, file.webkitRelativePath || file.name);
+              const retryFileDir = getParentPath(retryFilePath);
+              
+              if (!retryFileDir || retryFileDir === '') {
+                throw new Error('无法确定文件目录路径');
               }
+              
+              // 规范化路径
+              let normalizedDir = retryFileDir.trim();
+              if (normalizedDir.startsWith('/')) {
+                normalizedDir = normalizedDir.substring(1);
+              }
+              if (normalizedDir.endsWith('/')) {
+                normalizedDir = normalizedDir.slice(0, -1);
+              }
+              
+              console.log('上传失败，尝试创建目录后重试:', normalizedDir);
+              await ensureDirectoryExists(normalizedDir, 3);
+              console.log('目录创建成功，验证目录存在...');
+              
+              // 验证目录确实存在（增加验证次数和等待时间）
+              const gitkeepPath = `${normalizedDir}/.gitkeep`;
+              console.log('验证目录，检查路径:', gitkeepPath);
+              let dirVerified = false;
+              const verifyWaitTime = isLocalhost ? 2000 : 1500;
+              const maxVerifyRetries = isLocalhost ? 8 : 6;
+              
+              for (let verifyRetry = 0; verifyRetry < maxVerifyRetries; verifyRetry++) {
+                await new Promise(resolve => setTimeout(resolve, verifyWaitTime * (verifyRetry + 1)));
+                try {
+                  const verifyRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(gitkeepPath)}`);
+                  console.log(`验证尝试 ${verifyRetry + 1}/${maxVerifyRetries}，状态: ${verifyRes.status}`);
+                  if (verifyRes.ok) {
+                    dirVerified = true;
+                    console.log('目录验证成功，开始重试上传');
+                    break;
+                  } else {
+                    const errorData = await verifyRes.json().catch(() => ({}));
+                    console.log('验证失败，响应:', errorData);
+                  }
+                } catch (e) {
+                  console.log(`目录验证重试 ${verifyRetry + 1}/${maxVerifyRetries}，错误:`, e);
+                }
+              }
+              
+              if (!dirVerified) {
+                throw new Error('目录创建后验证失败，请稍后重试');
+              }
+              
+              // 额外等待，确保目录完全生效
+              console.log('等待目录完全生效...');
+              await new Promise(resolve => setTimeout(resolve, isLocalhost ? 6000 : 4000));
+              
+              console.log('重试上传文件:', retryFilePath);
+              const retryContent = await toBase64(file);
+              
+              // 直接调用 API 以获取更详细的错误信息
+              const uploadRes = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  action: 'upload',
+                  path: retryFilePath,
+                  content: retryContent,
+                  message: `Upload: ${retryFilePath}`
+                }),
+              });
+              
+              if (!uploadRes.ok) {
+                const errorData = await uploadRes.json().catch(() => ({}));
+                console.error('上传失败，API 响应:', errorData);
+                console.error('上传路径:', retryFilePath);
+                console.error('HTTP 状态:', uploadRes.status);
+                const retryErrorMsg = errorData.message || errorData.error || `HTTP ${uploadRes.status}`;
+                throw new Error(retryErrorMsg);
+              }
+              
+              const uploadResult = await uploadRes.json();
+              console.log('重试上传成功:', uploadResult);
+              
+              progressFill.style.width = '100%';
+              progressText.textContent = '完成';
+              progressItem.style.opacity = '0.6';
+              continue; // 成功，继续下一个文件
             } catch (retryErr) {
               console.error('目录创建或重试上传失败:', retryErr);
               errorMsg = `目录创建失败: ${retryErr.message || '请检查路径是否正确'}`;
@@ -1332,8 +1049,134 @@
       }
     }
 
+    // 递归删除文件夹及其所有内容
+    async function deleteFolder(folderPath) {
+      console.log('开始删除文件夹:', folderPath);
+      
+      // 规范化文件夹路径
+      let normalizedPath = folderPath.trim();
+      if (normalizedPath.endsWith('/')) {
+        normalizedPath = normalizedPath.slice(0, -1);
+      }
+      
+      // 获取所有文件树
+      const tree = await fetchTree();
+      const allItems = (tree.tree || []).filter(item => item.type === 'blob' || item.type === 'tree');
+      
+      // 找到文件夹下的所有文件和直接子文件夹（不包括嵌套内容）
+      const directItems = allItems.filter(item => {
+        const itemPath = item.path;
+        // 检查是否是文件夹的直接子项（不是嵌套的）
+        if (!itemPath.startsWith(normalizedPath + '/')) {
+          return false;
+        }
+        // 获取相对于文件夹的路径
+        const relativePath = itemPath.substring(normalizedPath.length + 1);
+        // 如果是直接子项，相对路径中不应该再有斜杠
+        return !relativePath.includes('/');
+      });
+      
+      console.log(`找到 ${directItems.length} 个直接子项需要删除`);
+      
+      if (directItems.length === 0) {
+        // 文件夹为空，只删除 .gitkeep 文件
+        const gitkeepPath = `${normalizedPath}/.gitkeep`;
+        try {
+          const gitkeepRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(gitkeepPath)}`);
+          if (gitkeepRes.ok) {
+            const gitkeepData = await gitkeepRes.json();
+            if (gitkeepData.sha) {
+              await apiRequest({
+                action: 'delete',
+                path: gitkeepPath,
+                sha: gitkeepData.sha,
+                message: `Delete folder: ${normalizedPath}`
+              });
+              console.log('已删除空文件夹:', normalizedPath);
+            }
+          }
+        } catch (err) {
+          console.warn('删除 .gitkeep 失败（可能不存在）:', err);
+        }
+        return;
+      }
+      
+      // 先删除所有文件，再删除子文件夹（子文件夹会递归删除其内容）
+      const filesToDelete = directItems.filter(item => item.type === 'blob');
+      const foldersToDelete = directItems.filter(item => item.type === 'tree');
+      
+      // 删除所有文件
+      let deletedCount = 0;
+      let failedItems = [];
+      
+      for (const item of filesToDelete) {
+        try {
+          const fileRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(item.path)}`);
+          if (fileRes.ok) {
+            const fileData = await fileRes.json();
+            if (fileData.sha) {
+              await apiRequest({
+                action: 'delete',
+                path: item.path,
+                sha: fileData.sha,
+                message: `Delete: ${item.path}`
+              });
+              deletedCount++;
+              console.log(`已删除文件: ${item.path}`);
+            }
+          }
+          // 每个删除操作后稍作等待，避免API限流
+          await new Promise(resolve => setTimeout(resolve, 200));
+        } catch (err) {
+          console.error(`删除失败: ${item.path}`, err);
+          failedItems.push({ path: item.path, error: err.message });
+        }
+      }
+      
+      // 递归删除所有子文件夹
+      for (const item of foldersToDelete) {
+        try {
+          await deleteFolder(item.path);
+          deletedCount++;
+          console.log(`已删除子文件夹: ${item.path}`);
+          // 每个删除操作后稍作等待，避免API限流
+          await new Promise(resolve => setTimeout(resolve, 200));
+        } catch (err) {
+          console.error(`删除子文件夹失败: ${item.path}`, err);
+          failedItems.push({ path: item.path, error: err.message });
+        }
+      }
+      
+      // 最后删除文件夹本身的 .gitkeep 文件
+      try {
+        const gitkeepPath = `${normalizedPath}/.gitkeep`;
+        const gitkeepRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(gitkeepPath)}`);
+        if (gitkeepRes.ok) {
+          const gitkeepData = await gitkeepRes.json();
+          if (gitkeepData.sha) {
+            await apiRequest({
+              action: 'delete',
+              path: gitkeepPath,
+              sha: gitkeepData.sha,
+              message: `Delete folder: ${normalizedPath}`
+            });
+            console.log('已删除文件夹 .gitkeep:', normalizedPath);
+          }
+        }
+      } catch (err) {
+        console.warn('删除 .gitkeep 失败（可能不存在）:', err);
+      }
+      
+      if (failedItems.length > 0) {
+        const failedPaths = failedItems.map(item => item.path).join('\n');
+        throw new Error(`部分项目删除失败:\n${failedPaths}`);
+      }
+      
+      console.log(`文件夹删除完成: ${normalizedPath}，共删除 ${deletedCount} 个项目`);
+    }
+
     async function deleteItem(type, path) {
-      if (!confirm(`确定要删除${type === 'folder' ? '文件夹' : '文件'} "${path}" 吗？`)) {
+      if (!confirm(`确定要删除${type === 'folder' ? '文件夹' : '文件'} "${path}" 吗？${type === 'folder' ? '\n\n注意：将删除文件夹及其所有内容！' : ''}`)) {
         return;
       }
       
@@ -1359,8 +1202,8 @@
             message: `Delete: ${path}`
           });
         } else {
-          alert('文件夹删除功能需要删除所有文件，此功能较复杂，建议手动操作');
-          return;
+          // 删除文件夹：需要删除文件夹下的所有文件和子文件夹
+          await deleteFolder(path);
         }
         
         loadFiles();
@@ -1399,9 +1242,6 @@
       fileInputEl.click();
     });
 
-    uploadFolderBtn.addEventListener('click', () => {
-      folderInputEl.click();
-    });
 
     // 设置上传目录相关
     const settingsUploadPathBtn = document.getElementById('settings-upload-path-btn');
@@ -1469,12 +1309,6 @@
       }
     });
 
-    folderInputEl.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        uploadFiles(e.target.files, currentPath || 'imgs/uploads/kate/');
-        e.target.value = '';
-      }
-    });
 
     // 拖拽上传
     uploadAreaEl.addEventListener('dragover', (e) => {
@@ -1504,6 +1338,15 @@
       });
     });
 
+    // 标题点击完全刷新
+    const uploadTitle = document.getElementById('upload-title');
+    uploadTitle.addEventListener('click', () => {
+      // 重置到根目录
+      currentPath = '';
+      updateBreadcrumb(currentPath);
+      loadFiles();
+    });
+
     // 初始化
     // 确保初始面包屑正确设置
     updateBreadcrumb(currentPath);
@@ -1511,4 +1354,3 @@
   </script>
 </body>
 </html>
-
