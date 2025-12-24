@@ -22,17 +22,8 @@
       <label for="filter">搜索文件名：</label>
       <input id="filter" type="search" placeholder="输入关键词过滤" />
       <button id="reset-filter" type="button">清空</button>
-    </div>
-    <div class="upload-panel">
-      <div class="upload-row">
-        <label for="upload-file">上传文件：</label>
-        <input id="upload-file" type="file" multiple />
-        <label for="upload-path">保存到：</label>
-        <input id="upload-path" type="text" placeholder="例如 uploads/2025/" />
-        <button id="upload-btn" type="button">上传</button>
-        <button id="reload-btn" type="button">刷新列表</button>
-      </div>
-      <p class="upload-tip">文件经 Vercel Serverless 调用 GitHub API，前端不存 token。路径留空默认存入 uploads/。</p>
+      <button id="open-upload" type="button">上传</button>
+      <button id="reload-btn" type="button">刷新列表</button>
     </div>
   </header>
 
@@ -60,6 +51,43 @@
       <div id="lightbox-info" class="lightbox-info hidden" aria-live="polite">
         <div class="lightbox-info-title">图片信息</div>
         <div id="lightbox-info-content" class="lightbox-info-code"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="upload-modal" class="upload-modal hidden" aria-modal="true" role="dialog">
+    <div class="upload-modal-backdrop" data-close-upload></div>
+    <div class="upload-modal-content">
+      <div class="upload-modal-header">
+        <h2>上传文件</h2>
+        <button class="upload-modal-close" aria-label="关闭" data-close-upload>×</button>
+      </div>
+      <div class="upload-modal-body">
+        <div class="upload-form-group">
+          <label for="upload-file">选择文件：</label>
+          <input id="upload-file" type="file" multiple />
+          <div id="upload-file-list" class="upload-file-list"></div>
+        </div>
+        <div class="upload-form-group">
+          <label for="upload-path">保存到：</label>
+          <input id="upload-path" type="text" placeholder="例如 imgs/2025/" />
+          <p class="upload-tip">路径留空默认存入 <span id="default-path-display">imgs/uploads/kate/</span></p>
+        </div>
+        <div class="upload-form-group">
+          <label for="default-upload-path">设置默认路径：</label>
+          <div class="default-path-setting">
+            <input id="default-upload-path" type="text" placeholder="例如 imgs/uploads/kate/" />
+            <button id="save-default-path" type="button" class="btn-secondary">保存</button>
+          </div>
+          <p class="upload-tip">设置后，下次上传时路径留空将使用此默认路径</p>
+        </div>
+        <div class="upload-form-group">
+          <p class="upload-tip">文件经 Vercel Serverless 调用 GitHub API，前端不存 token。</p>
+        </div>
+      </div>
+      <div class="upload-modal-footer">
+        <button id="upload-btn" type="button" class="btn-primary">上传</button>
+        <button id="cancel-upload" type="button" class="btn-secondary" data-close-upload>取消</button>
       </div>
     </div>
   </div>
@@ -92,7 +120,7 @@
     const EXCLUDES = ['.git/', '.github/'];
     const API_BASE = '';
     const API_ENDPOINT = `${API_BASE}/api/github`;
-    const DEFAULT_DIR = 'uploads/';
+    const DEFAULT_DIR = 'imgs/uploads/kate/';
 
     const statusEl = document.getElementById('status');
     const gridEl = document.getElementById('grid');
@@ -109,9 +137,15 @@
     const fullscreenBtn = document.getElementById('fullscreen-toggle');
     const zoomResetBtn = document.getElementById('zoom-reset');
     const rotateBtn = document.getElementById('rotate');
+    const openUploadBtn = document.getElementById('open-upload');
+    const uploadModal = document.getElementById('upload-modal');
     const uploadFileInput = document.getElementById('upload-file');
     const uploadPathInput = document.getElementById('upload-path');
     const uploadBtn = document.getElementById('upload-btn');
+    const uploadFileList = document.getElementById('upload-file-list');
+    const defaultUploadPathInput = document.getElementById('default-upload-path');
+    const defaultPathDisplay = document.getElementById('default-path-display');
+    const saveDefaultPathBtn = document.getElementById('save-default-path');
     const reloadBtn = document.getElementById('reload-btn');
 
     let images = [];
@@ -147,9 +181,24 @@
       return EXCLUDES.some((ex) => path.startsWith(ex));
     }
 
+    function getDefaultUploadPath() {
+      const saved = localStorage.getItem('defaultUploadPath');
+      return saved || DEFAULT_DIR;
+    }
+
+    function saveDefaultUploadPath(path) {
+      if (path && path.trim()) {
+        let normalizedPath = path.trim();
+        if (!normalizedPath.endsWith('/')) normalizedPath += '/';
+        localStorage.setItem('defaultUploadPath', normalizedPath);
+        return normalizedPath;
+      }
+      return null;
+    }
+
     function buildTargetPath(folderInput, fileName) {
       let base = (folderInput || '').trim();
-      if (!base) base = DEFAULT_DIR;
+      if (!base) base = getDefaultUploadPath();
       if (!base.endsWith('/')) base += '/';
       return `${base}${fileName}`;
     }
@@ -563,7 +612,69 @@
       infoPanel.classList.toggle('hidden');
     });
 
-    uploadBtn.addEventListener('click', uploadSelectedFiles);
+    function openUploadModal() {
+      const savedPath = getDefaultUploadPath();
+      if (defaultUploadPathInput) {
+        defaultUploadPathInput.value = savedPath;
+      }
+      if (defaultPathDisplay) {
+        defaultPathDisplay.textContent = savedPath;
+      }
+      uploadModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeUploadModal() {
+      uploadModal.classList.add('hidden');
+      document.body.style.overflow = '';
+      uploadFileInput.value = '';
+      uploadFileList.innerHTML = '';
+      uploadPathInput.value = '';
+    }
+
+    function updateFileList() {
+      const files = Array.from(uploadFileInput.files || []);
+      if (files.length === 0) {
+        uploadFileList.innerHTML = '';
+        return;
+      }
+      uploadFileList.innerHTML = '<div class="upload-file-list-title">已选择文件：</div>' +
+        files.map((file, index) => `
+          <div class="upload-file-item">
+            <span class="upload-file-name">${file.name}</span>
+            <span class="upload-file-size">(${(file.size / 1024).toFixed(2)} KB)</span>
+          </div>
+        `).join('');
+    }
+
+    openUploadBtn.addEventListener('click', openUploadModal);
+    
+    uploadModal.addEventListener('click', (e) => {
+      if (e.target.dataset.closeUpload !== undefined || e.target.classList.contains('upload-modal-backdrop')) {
+        closeUploadModal();
+      }
+    });
+
+    uploadFileInput.addEventListener('change', updateFileList);
+
+    saveDefaultPathBtn.addEventListener('click', () => {
+      const path = defaultUploadPathInput.value.trim();
+      if (path) {
+        const savedPath = saveDefaultUploadPath(path);
+        if (savedPath && defaultPathDisplay) {
+          defaultPathDisplay.textContent = savedPath;
+          alert('默认路径已保存！');
+        }
+      } else {
+        alert('请输入有效的路径');
+      }
+    });
+
+    uploadBtn.addEventListener('click', async () => {
+      await uploadSelectedFiles();
+      closeUploadModal();
+    });
+
     reloadBtn.addEventListener('click', () => loadImages());
 
     init();
