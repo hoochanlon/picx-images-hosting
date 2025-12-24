@@ -4,7 +4,7 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "OPPO Sans 4.0", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   background-attachment: fixed;
   color: #24292f;
@@ -807,15 +807,17 @@ a:hover {
   font-size: 0.85rem;
   line-height: 1.5;
   z-index: 2;
+  font-family: "OPPO Sans 4.0", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .lightbox-info-title {
   font-weight: 600;
   margin-bottom: 4px;
+  font-family: "OPPO Sans 4.0", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .lightbox-info-code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: "OPPO Sans 4.0", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   word-break: break-all;
 }
 
@@ -931,12 +933,55 @@ a:hover {
   font-size: 0.95rem;
 }
 
+.file-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .upload-form-group input[type="file"] {
-  width: 100%;
-  padding: 8px;
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.file-input-button {
+  padding: 10px 20px;
   border: 1px solid #d0d7de;
+  background: #fff;
   border-radius: 6px;
   font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  color: #24292f;
+  font-family: "OPPO Sans 4.0", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.file-input-button:hover {
+  background: #f6f8fa;
+  border-color: #0969da;
+  color: #0969da;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(9, 105, 218, 0.15);
+}
+
+.file-input-button i {
+  font-size: 1rem;
+}
+
+.file-input-text {
+  flex: 1;
+  color: #57606a;
+  font-size: 0.9rem;
+  font-family: "OPPO Sans 4.0", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .upload-form-group input[type="text"] {

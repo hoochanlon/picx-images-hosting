@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>picx-images-hosting - 静态索引</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hoochanlon/fonts@refs/heads/main/public/OPPOSans4/result.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="./style.css" />
 </head>
@@ -83,8 +84,15 @@
       <div class="upload-modal-body">
         <div class="upload-form-group">
           <label for="upload-file">选择文件：</label>
-          <input id="upload-file" type="file" multiple />
-          <div id="upload-file-list" class="upload-file-list"></div>
+          <div class="file-input-wrapper">
+            <input id="upload-file" type="file" multiple />
+            <button type="button" class="file-input-button" id="file-input-trigger">
+              <i class="fas fa-folder-open"></i>
+              选择文件
+            </button>
+            <span class="file-input-text" id="file-input-text">未选择任何文件</span>
+          </div>
+          <div id="upload-file-list" class="upload-file-list" style="display: none;"></div>
         </div>
         <div class="upload-form-group">
           <label for="upload-path">保存到：</label>
@@ -774,15 +782,34 @@
       document.body.style.overflow = '';
       uploadFileInput.value = '';
       uploadFileList.innerHTML = '';
+      uploadFileList.style.display = 'none';
       uploadPathInput.value = '';
+      const fileInputText = document.getElementById('file-input-text');
+      if (fileInputText) {
+        fileInputText.textContent = '未选择任何文件';
+      }
     }
 
     function updateFileList() {
       const files = Array.from(uploadFileInput.files || []);
+      const fileInputText = document.getElementById('file-input-text');
+      
       if (files.length === 0) {
         uploadFileList.innerHTML = '';
+        uploadFileList.style.display = 'none';
+        if (fileInputText) {
+          fileInputText.textContent = '未选择任何文件';
+        }
         return;
       }
+      
+      // 更新文件选择提示文本
+      if (fileInputText) {
+        fileInputText.textContent = `已选择 ${files.length} 个文件`;
+      }
+      
+      // 显示文件列表
+      uploadFileList.style.display = 'block';
       uploadFileList.innerHTML = '<div class="upload-file-list-title">已选择文件：</div>' +
         files.map((file, index) => `
           <div class="upload-file-item">
@@ -801,6 +828,14 @@
     });
 
     uploadFileInput.addEventListener('change', updateFileList);
+    
+    // 自定义文件选择按钮
+    const fileInputTrigger = document.getElementById('file-input-trigger');
+    if (fileInputTrigger) {
+      fileInputTrigger.addEventListener('click', () => {
+        uploadFileInput.click();
+      });
+    }
 
     saveDefaultPathBtn.addEventListener('click', () => {
       const path = defaultUploadPathInput.value.trim();
