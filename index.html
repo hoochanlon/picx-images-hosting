@@ -118,7 +118,15 @@
     const CDN_BASE = `https://cdn.jsdelivr.net/gh/${REPO_OWNER}/${REPO_NAME}@${BRANCH}`;
     const IMAGE_EXT = /\.(jpe?g|png|gif|webp|svg)$/i;
     const EXCLUDES = ['.git/', '.github/'];
-    const API_BASE = 'https://picx-images-hosting-brown.vercel.app';
+    // 自动检测 API 基础地址
+    // vercel dev 运行时（localhost:3000）使用本地 API
+    // 其他本地端口（如 8000）使用 Vercel 部署的 API
+    // 生产环境使用当前域名
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const isVercelDev = isLocalhost && window.location.port === '3000';
+    const API_BASE = isLocalhost && !isVercelDev
+      ? 'https://picx-images-hosting-brown.vercel.app' 
+      : window.location.origin;
     const API_ENDPOINT = `${API_BASE}/api/github`;
     const DEFAULT_DIR = 'imgs/uploads/kate/';
 
