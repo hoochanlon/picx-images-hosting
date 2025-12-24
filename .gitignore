@@ -4,4 +4,4 @@ node_modules/
 .vercel
 .env*.local
 .settings
-config.local.js
+api-config.local.json

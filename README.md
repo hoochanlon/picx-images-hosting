@@ -39,8 +39,15 @@ vercel dev
 
 vercel 变量
 
-* `API_BASE`:`https://YOUR-PROJECT.vercel.app`
-* `GH_TOKEN`:`YOUR-PERSONAL-ACCESS-TOKEN`
+* `GH_TOKEN`:`YOUR-PERSONAL-ACCESS-TOKEN` (必需)
+* `ALLOWED_ORIGINS`:`https://your-domain.com,https://another-domain.com` (可选，用逗号分隔多个域名，如果不设置则从 `api-config.json` 读取)
+
+配置文件
+
+* `config.js`: 前端配置（Vercel API 地址、自定义域名等）
+* `api-config.json`: API CORS 配置（允许的域名列表）
+  - 优先级：环境变量 `ALLOWED_ORIGINS` > `api-config.json` > 默认值
+  - 可以复制 `api-config.example.json` 为 `api-config.json` 并修改
 
 
 ## 网络图床

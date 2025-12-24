@@ -1,0 +1,10 @@
+{
+  "allowedOrigins": [
+    "https://hoochanlon.github.io",
+    "https://blog.hoochanlon.moe",
+    "https://picx-images-hosting-brown.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:8000"
+  ]
+}
+
