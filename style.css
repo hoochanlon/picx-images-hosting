@@ -9,6 +9,14 @@ body {
   color: #24292f;
 }
 
+ .hidden {
+  display: none !important;
+}
+
+body.lightbox-open {
+  overflow: hidden;
+}
+
 a {
   color: #0969da;
   text-decoration: none;
@@ -276,10 +284,10 @@ a:hover {
   border: none;
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   cursor: pointer;
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   z-index: 2;
 }
@@ -295,25 +303,33 @@ a:hover {
 }
 
 .lightbox-img-wrap img {
-  max-width: 92vw;
-  max-height: 92vh;
+  max-width: calc(92vw - 144px);
+  max-height: calc(92vh - 100px);
   border-radius: 8px;
   object-fit: contain;
   background: rgba(255, 255, 255, 0.04);
   transition: transform 0.1s ease-out;
+  z-index: 1;
+}
+
+:fullscreen .lightbox-img-wrap img {
+  max-width: 92vw;
+  max-height: 92vh;
 }
 
 .lightbox-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.4);
   background: rgba(0, 0, 0, 0.4);
   color: #fff;
   cursor: pointer;
+  z-index: 2;
+  font-size: 1.2rem;
 }
 
 .lightbox-nav.prev {
@@ -334,13 +350,74 @@ a:hover {
 }
 
 .lightbox-zoom button {
-  width: 46px;
-  height: 32px;
+  min-width: 48px;
+  height: 38px;
   border: 1px solid rgba(255, 255, 255, 0.4);
   background: rgba(0, 0, 0, 0.4);
   color: #fff;
   border-radius: 6px;
+  font-size: 1rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-zoom button i {
+  font-size: 1rem;
+}
+
+.lightbox-icon-outline {
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0.5px currentColor;
+}
+
+.lightbox-controls-hidden .lightbox-control-btn {
+  display: none !important;
+}
+
+.lightbox-info {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  max-width: 340px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #f6f8fa;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  z-index: 2;
+}
+
+.lightbox-info-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.lightbox-info-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  word-break: break-all;
+}
+
+.lightbox-info a {
+  color: #58a6ff;
+}
+
+.lightbox-info .info-copy-btn {
+  margin-left: 6px;
+  padding: 2px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.lightbox-info .info-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 

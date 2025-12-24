@@ -4,12 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>picx-images-hosting - 静态索引</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
-      <span class="emoji">🗂</span>
+      <span class="emoji">🖼️</span>
       <span class="title">picx-images-hosting</span>
     </div>
     <div class="desc">无需脚本生成，直接部署 GitHub Pages。图片同时提供 Pages 与 jsDelivr 链接。</div>
@@ -22,11 +23,6 @@
       <input id="filter" type="search" placeholder="输入关键词过滤" />
       <button id="reset-filter" type="button">清空</button>
     </div>
-    <div class="legend">
-      <span class="badge pages">Pages 链接</span>
-      <span class="badge cdn">jsDelivr 链接</span>
-    </div>
-
     <div class="upload-panel">
       <div class="upload-row">
         <label for="upload-file">上传文件：</label>
@@ -48,16 +44,22 @@
   <div id="lightbox" class="lightbox hidden" aria-modal="true" role="dialog">
     <div class="lightbox-backdrop" data-close></div>
     <div class="lightbox-body">
-      <button class="lightbox-close" aria-label="关闭" data-close>×</button>
+      <button class="lightbox-close lightbox-control-btn" aria-label="关闭" data-close>×</button>
       <div class="lightbox-img-wrap">
-        <button class="lightbox-nav prev" aria-label="上一张">←</button>
+        <button class="lightbox-nav prev lightbox-control-btn" aria-label="上一张">←</button>
         <img id="lightbox-img" alt="预览大图" />
-        <button class="lightbox-nav next" aria-label="下一张">→</button>
+        <button class="lightbox-nav next lightbox-control-btn" aria-label="下一张">→</button>
       </div>
       <div class="lightbox-zoom">
-        <button id="zoom-out" type="button">-</button>
-        <button id="zoom-reset" type="button">1:1</button>
-        <button id="zoom-in" type="button">+</button>
+        <button id="toggle-controls" type="button" aria-label="切换控制按钮"><i class="fas fa-eye-slash lightbox-icon-outline"></i></button>
+        <button id="info-btn" class="lightbox-control-btn" type="button" aria-label="图片信息"><i class="fas fa-info-circle lightbox-icon-outline"></i></button>
+        <button id="fullscreen-toggle" class="lightbox-control-btn" type="button" aria-label="全屏切换">⛶</button>
+        <button id="zoom-reset" class="lightbox-control-btn" type="button">1:1</button>
+        <button id="rotate" class="lightbox-control-btn" type="button">⟳</button>
+      </div>
+      <div id="lightbox-info" class="lightbox-info hidden" aria-live="polite">
+        <div class="lightbox-info-title">图片信息</div>
+        <div id="lightbox-info-content" class="lightbox-info-code"></div>
       </div>
     </div>
   </div>
@@ -97,12 +99,16 @@
     const filterInput = document.getElementById('filter');
     const folderSelect = document.getElementById('folder');
     const resetBtn = document.getElementById('reset-filter');
+    const infoBtn = document.getElementById('info-btn');
+    const toggleControlsBtn = document.getElementById('toggle-controls');
     const cardTpl = document.getElementById('card-template');
     const lightboxEl = document.getElementById('lightbox');
     const lbImg = document.getElementById('lightbox-img');
-    const zoomInBtn = document.getElementById('zoom-in');
-    const zoomOutBtn = document.getElementById('zoom-out');
+    const infoPanel = document.getElementById('lightbox-info');
+    const infoContent = document.getElementById('lightbox-info-content');
+    const fullscreenBtn = document.getElementById('fullscreen-toggle');
     const zoomResetBtn = document.getElementById('zoom-reset');
+    const rotateBtn = document.getElementById('rotate');
     const uploadFileInput = document.getElementById('upload-file');
     const uploadPathInput = document.getElementById('upload-path');
     const uploadBtn = document.getElementById('upload-btn');
@@ -112,18 +118,21 @@
     let folders = [];
     let currentIndex = -1;
     let scale = 1;
+    let rotation = 0;
     let translateX = 0;
     let translateY = 0;
     let isPanning = false;
     let panStartX = 0;
     let panStartY = 0;
+    let isFullscreen = false;
 
     function applyTransform() {
-      lbImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+      lbImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale}) rotate(${rotation}deg)`;
     }
 
     function resetTransform() {
       scale = 1;
+      rotation = 0;
       translateX = 0;
       translateY = 0;
       applyTransform();
@@ -193,7 +202,7 @@
 
       imgEl.src = `${CDN_BASE}/${item.path}`;
       imgEl.alt = item.name;
-      pathEl.textContent = item.path;
+      pathEl.textContent = item.name;
       pathEl.title = item.path;
 
       pagesLink.href = `${PAGES_BASE}/${item.path}`;
@@ -270,20 +279,42 @@
       resetTransform();
 
       lightboxEl.classList.remove('hidden');
+      document.body.classList.add('lightbox-open');
+      if (infoPanel) {
+        infoPanel.classList.add('hidden');
+      }
     }
 
     function closeLightbox() {
       lightboxEl.classList.add('hidden');
       currentIndex = -1;
+      document.body.classList.remove('lightbox-open');
+      if (infoPanel) {
+        infoPanel.classList.add('hidden');
+      }
+      // 重置控制按钮显示状态
+      lightboxEl.classList.remove('lightbox-controls-hidden');
+      if (toggleControlsBtn) {
+        const icon = toggleControlsBtn.querySelector('i');
+        if (icon) {
+          icon.className = 'fas fa-eye-slash lightbox-icon-outline';
+        }
+      }
     }
 
     function showPrev() {
-      if (currentIndex <= 0) return;
+      if (currentIndex <= 0) {
+        openLightbox(images.length - 1);
+        return;
+      }
       openLightbox(currentIndex - 1);
     }
 
     function showNext() {
-      if (currentIndex >= images.length - 1) return;
+      if (currentIndex >= images.length - 1) {
+        openLightbox(0);
+        return;
+      }
       openLightbox(currentIndex + 1);
     }
 
@@ -351,18 +382,30 @@
         isPanning = false;
       });
 
-      zoomInBtn.addEventListener('click', () => {
-        scale = Math.min(5, scale + 0.25);
-        applyTransform();
-      });
-
-      zoomOutBtn.addEventListener('click', () => {
-        scale = Math.max(0.5, scale - 0.25);
-        applyTransform();
-      });
-
       zoomResetBtn.addEventListener('click', () => {
         resetTransform();
+      });
+
+      rotateBtn.addEventListener('click', () => {
+        rotation = (rotation + 90) % 360;
+        applyTransform();
+      });
+
+      fullscreenBtn.addEventListener('click', async () => {
+        try {
+          if (!document.fullscreenElement) {
+            await document.documentElement.requestFullscreen();
+            isFullscreen = true;
+            fullscreenBtn.textContent = '⏍';
+          } else {
+            await document.exitFullscreen();
+            isFullscreen = false;
+            fullscreenBtn.textContent = '⛶';
+          }
+        } catch (err) {
+          console.error(err);
+          alert('浏览器阻止了全屏请求，请手动允许。');
+        }
       });
     }
 
@@ -472,6 +515,53 @@
     });
 
     folderSelect.addEventListener('change', applyFilter);
+
+    toggleControlsBtn.addEventListener('click', () => {
+      lightboxEl.classList.toggle('lightbox-controls-hidden');
+      const isHidden = lightboxEl.classList.contains('lightbox-controls-hidden');
+      const icon = toggleControlsBtn.querySelector('i');
+      if (icon) {
+        icon.className = isHidden ? 'fas fa-eye lightbox-icon-outline' : 'fas fa-eye-slash lightbox-icon-outline';
+      }
+    });
+
+    infoBtn.addEventListener('click', () => {
+      if (!infoPanel || !infoContent) return;
+      if (currentIndex < 0 || currentIndex >= images.length) return;
+      const item = images[currentIndex];
+      const dims =
+        lbImg.naturalWidth && lbImg.naturalHeight
+          ? `${lbImg.naturalWidth} × ${lbImg.naturalHeight}`
+          : '未知';
+      const pagesUrl = `${PAGES_BASE}/${item.path}`;
+      const cdnUrl = `${CDN_BASE}/${item.path}`;
+      infoContent.innerHTML = `
+        文件名：${item.name}<br />
+        路径：${item.path}<br />
+        目录：${item.dir || '(根目录)'}<br />
+        尺寸：${dims}<br />
+        Pages：<a href="${pagesUrl}" target="_blank" rel="noreferrer">打开</a> <button class="info-copy-btn" data-url="${pagesUrl}">复制</button><br />
+        jsDelivr：<a href="${cdnUrl}" target="_blank" rel="noreferrer">打开</a> <button class="info-copy-btn" data-url="${cdnUrl}">复制</button>
+      `;
+      // 添加复制按钮事件监听
+      infoContent.querySelectorAll('.info-copy-btn').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const url = btn.dataset.url;
+          try {
+            await navigator.clipboard.writeText(url);
+            const originalText = btn.textContent;
+            btn.textContent = '已复制';
+            setTimeout(() => {
+              btn.textContent = originalText;
+            }, 1500);
+          } catch (err) {
+            console.error('复制失败:', err);
+          }
+        });
+      });
+      infoPanel.classList.toggle('hidden');
+    });
 
     uploadBtn.addEventListener('click', uploadSelectedFiles);
     reloadBtn.addEventListener('click', () => loadImages());
