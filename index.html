@@ -13,16 +13,30 @@
       <span class="emoji">🖼️</span>
       <span class="title">picx-images-hosting</span>
     </div>
-    <div class="desc">无需脚本生成，直接部署 GitHub Pages。图片同时提供 Pages 与 jsDelivr 链接。</div>
     <div class="controls">
-      <label for="folder">目录：</label>
-      <select id="folder">
-        <option value="ALL">全部目录</option>
-      </select>
-      <label for="filter">搜索文件名：</label>
+      <label for="folder" class="icon-label" title="目录">
+        <i class="fas fa-folder"></i>
+      </label>
+      <div class="custom-select-wrapper">
+        <div class="custom-select" id="folder-select">
+          <div class="custom-select-trigger">
+            <span class="custom-select-value">全部目录</span>
+            <i class="fas fa-chevron-down custom-select-arrow"></i>
+          </div>
+          <div class="custom-select-options" id="folder-options">
+            <div class="custom-select-option" data-value="ALL">全部目录</div>
+          </div>
+        </div>
+        <select id="folder" style="display: none;">
+          <option value="ALL">全部目录</option>
+        </select>
+      </div>
+      <label for="filter" class="icon-label" title="搜索文件名">
+        <i class="fas fa-search"></i>
+      </label>
       <input id="filter" type="search" placeholder="输入关键词过滤" />
-      <button id="reset-filter" type="button">清空</button>
-      <button id="open-upload" type="button">上传</button>
+      <button id="open-upload" type="button">快速上传</button>
+      <a href="upload.html" class="btn-upload-manage">上传管理</a>
       <button id="reload-btn" type="button">刷新列表</button>
     </div>
   </header>
@@ -134,7 +148,10 @@
     const gridEl = document.getElementById('grid');
     const filterInput = document.getElementById('filter');
     const folderSelect = document.getElementById('folder');
-    const resetBtn = document.getElementById('reset-filter');
+    const customSelect = document.getElementById('folder-select');
+    const customSelectTrigger = customSelect.querySelector('.custom-select-trigger');
+    const customSelectValue = customSelect.querySelector('.custom-select-value');
+    const customSelectOptions = document.getElementById('folder-options');
     const infoBtn = document.getElementById('info-btn');
     const toggleControlsBtn = document.getElementById('toggle-controls');
     const cardTpl = document.getElementById('card-template');
@@ -476,11 +493,19 @@
         .sort((a, b) => a.dir.localeCompare(b.dir));
 
       folderSelect.innerHTML = '<option value="ALL">全部目录</option>';
+      customSelectOptions.innerHTML = '<div class="custom-select-option selected" data-value="ALL">全部目录</div>';
+      
       folders.forEach((f) => {
         const opt = document.createElement('option');
         opt.value = f.dir;
         opt.textContent = f.dir ? `${f.dir} (${f.count})` : `(根目录) (${f.count})`;
         folderSelect.appendChild(opt);
+        
+        const customOpt = document.createElement('div');
+        customOpt.className = 'custom-select-option';
+        customOpt.dataset.value = f.dir;
+        customOpt.textContent = f.dir ? `${f.dir} (${f.count})` : `(根目录) (${f.count})`;
+        customSelectOptions.appendChild(customOpt);
       });
     }
 
@@ -566,13 +591,39 @@
     }
 
     filterInput.addEventListener('input', applyFilter);
-    resetBtn.addEventListener('click', () => {
-      filterInput.value = '';
-      folderSelect.value = 'ALL';
+
+    folderSelect.addEventListener('change', applyFilter);
+
+    // 自定义下拉框事件处理
+    customSelectTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      customSelect.classList.toggle('active');
+    });
+
+    customSelectOptions.addEventListener('click', (e) => {
+      const option = e.target.closest('.custom-select-option');
+      if (!option) return;
+      
+      const value = option.dataset.value;
+      folderSelect.value = value;
+      customSelectValue.textContent = option.textContent;
+      
+      // 更新选中状态
+      customSelectOptions.querySelectorAll('.custom-select-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      option.classList.add('selected');
+      
+      customSelect.classList.remove('active');
       applyFilter();
     });
 
-    folderSelect.addEventListener('change', applyFilter);
+    // 点击外部关闭下拉框
+    document.addEventListener('click', (e) => {
+      if (!customSelect.contains(e.target)) {
+        customSelect.classList.remove('active');
+      }
+    });
 
     toggleControlsBtn.addEventListener('click', () => {
       lightboxEl.classList.toggle('lightbox-controls-hidden');

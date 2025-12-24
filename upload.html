@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>上传管理 - picx-images-hosting</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    .upload-page {
+      min-height: 100vh;
+      background: #f6f8fa;
+    }
+
+    .upload-header {
+      background: #fff;
+      border-bottom: 1px solid #d0d7de;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .upload-header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .upload-header .back-link {
+      color: #0969da;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .upload-header .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .upload-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .upload-toolbar {
+      background: #fff;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .upload-toolbar button {
+      padding: 8px 16px;
+      border: 1px solid #d0d7de;
+      background: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .upload-toolbar button:hover {
+      background: #f6f8fa;
+    }
+
+    .upload-toolbar .btn-primary {
+      background: #0969da;
+      color: #fff;
+      border-color: #0969da;
+    }
+
+    .upload-toolbar .btn-primary:hover {
+      background: #0860ca;
+    }
+
+    .breadcrumb {
+      background: #fff;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .breadcrumb-item a {
+      color: #0969da;
+      text-decoration: none;
+    }
+
+    .breadcrumb-item a:hover {
+      text-decoration: underline;
+    }
+
+    .breadcrumb-separator {
+      color: #8b949e;
+    }
+
+    .file-browser {
+      background: #fff;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .file-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid #f6f8fa;
+      cursor: pointer;
+    }
+
+    .file-item:hover {
+      background: #f6f8fa;
+    }
+
+    .file-item.selected {
+      background: #e7f3ff;
+    }
+
+    .file-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8b949e;
+    }
+
+    .file-name {
+      flex: 1;
+      font-size: 0.95rem;
+    }
+
+    .file-actions {
+      display: flex;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .file-item:hover .file-actions {
+      opacity: 1;
+    }
+
+    .file-actions button {
+      padding: 4px 8px;
+      border: 1px solid #d0d7de;
+      background: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .file-actions button:hover {
+      background: #f6f8fa;
+    }
+
+    .file-actions .btn-danger {
+      color: #cf222e;
+      border-color: #e6b0b0;
+    }
+
+    .file-actions .btn-danger:hover {
+      background: #fff3f3;
+    }
+
+    .upload-area {
+      border: 2px dashed #d0d7de;
+      border-radius: 8px;
+      padding: 48px;
+      text-align: center;
+      background: #fafbfc;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+
+    .upload-area.dragover {
+      border-color: #0969da;
+      background: #e7f3ff;
+    }
+
+    .upload-area-icon {
+      font-size: 3rem;
+      color: #8b949e;
+      margin-bottom: 16px;
+    }
+
+    .upload-area-text {
+      font-size: 1.1rem;
+      color: #24292f;
+      margin-bottom: 8px;
+    }
+
+    .upload-area-hint {
+      font-size: 0.9rem;
+      color: #57606a;
+    }
+
+    .upload-progress {
+      margin-top: 16px;
+    }
+
+    .progress-item {
+      background: #fff;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: #f6f8fa;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #0969da;
+      transition: width 0.3s;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      min-width: 400px;
+      max-width: 90vw;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .modal-close {
+      border: none;
+      background: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #8b949e;
+    }
+
+    .modal-body {
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px;
+      color: #8b949e;
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body class="upload-page">
+  <header class="upload-header">
+    <h1>
+      <span>🖼️</span>
+      <span>上传管理</span>
+    </h1>
+    <a href="index.html" class="back-link">
+      <i class="fas fa-arrow-left"></i>
+      返回首页
+    </a>
+  </header>
+
+  <div class="upload-container">
+    <div class="upload-toolbar">
+      <button id="create-folder-btn" class="btn-primary">
+        <i class="fas fa-folder-plus"></i>
+        新建文件夹
+      </button>
+      <button id="upload-files-btn">
+        <i class="fas fa-upload"></i>
+        上传文件
+      </button>
+      <button id="upload-folder-btn">
+        <i class="fas fa-folder-open"></i>
+        上传文件夹
+      </button>
+      <input type="file" id="file-input" multiple style="display: none;" />
+      <input type="file" id="folder-input" webkitdirectory multiple style="display: none;" />
+    </div>
+
+    <div class="breadcrumb" id="breadcrumb">
+      <div class="breadcrumb-item">
+        <a href="#" data-path="">根目录</a>
+      </div>
+    </div>
+
+    <div class="file-browser">
+      <ul class="file-list" id="file-list">
+        <li class="empty-state">
+          <div class="empty-state-icon">📁</div>
+          <div>正在加载...</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="upload-area" id="upload-area">
+      <div class="upload-area-icon">📤</div>
+      <div class="upload-area-text">拖拽文件或文件夹到这里上传</div>
+      <div class="upload-area-hint">支持多文件上传</div>
+    </div>
+
+    <div class="upload-progress" id="upload-progress" style="display: none;"></div>
+  </div>
+
+  <!-- 创建文件夹模态框 -->
+  <div class="modal" id="create-folder-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>新建文件夹</h2>
+        <button class="modal-close" data-close="create-folder">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>文件夹名称：</label>
+          <input type="text" id="folder-name-input" placeholder="请输入文件夹名称" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close="create-folder">取消</button>
+        <button class="btn-primary" id="confirm-create-folder">创建</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 重命名模态框 -->
+  <div class="modal" id="rename-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>重命名</h2>
+        <button class="modal-close" data-close="rename">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>新名称：</label>
+          <input type="text" id="rename-input" placeholder="请输入新名称" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close="rename">取消</button>
+        <button class="btn-primary" id="confirm-rename">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const REPO_OWNER = 'hoochanlon';
+    const REPO_NAME = 'picx-images-hosting';
+    const BRANCH = 'master';
+    const IMAGE_EXT = /\.(jpe?g|png|gif|webp|svg)$/i;
+
+    // 自动检测 API 基础地址
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const isVercelDev = isLocalhost && window.location.port === '3000';
+    const API_BASE = isLocalhost && !isVercelDev
+      ? 'https://picx-images-hosting-brown.vercel.app' 
+      : window.location.origin;
+    const API_ENDPOINT = `${API_BASE}/api/github`;
+
+    let currentPath = '';
+    let files = [];
+    let folders = [];
+
+    // DOM 元素
+    const fileListEl = document.getElementById('file-list');
+    const breadcrumbEl = document.getElementById('breadcrumb');
+    const uploadAreaEl = document.getElementById('upload-area');
+    const fileInputEl = document.getElementById('file-input');
+    const folderInputEl = document.getElementById('folder-input');
+    const uploadProgressEl = document.getElementById('upload-progress');
+    const createFolderBtn = document.getElementById('create-folder-btn');
+    const uploadFilesBtn = document.getElementById('upload-files-btn');
+    const uploadFolderBtn = document.getElementById('upload-folder-btn');
+    const createFolderModal = document.getElementById('create-folder-modal');
+    const renameModal = document.getElementById('rename-modal');
+    const folderNameInput = document.getElementById('folder-name-input');
+    const renameInput = document.getElementById('rename-input');
+
+    // 工具函数
+    async function toBase64(file) {
+      const buffer = await file.arrayBuffer();
+      const bytes = new Uint8Array(buffer);
+      let binary = '';
+      const chunk = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunk) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+      }
+      return btoa(binary);
+    }
+
+    async function apiRequest(payload) {
+      const res = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `API 请求失败: ${res.status}`);
+      }
+      return res.json();
+    }
+
+    async function fetchTree() {
+      const url = `${API_BASE}/api/tree`;
+      const res = await fetch(url);
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        const hint = body.message || `HTTP ${res.status}`;
+        throw new Error(`获取仓库树失败：${hint}`);
+      }
+      return res.json();
+    }
+
+    function buildPath(...parts) {
+      return parts.filter(p => p).join('/');
+    }
+
+    function getParentPath(path) {
+      if (!path) return '';
+      const parts = path.split('/').filter(p => p);
+      parts.pop();
+      return parts.join('/');
+    }
+
+    function updateBreadcrumb(path) {
+      breadcrumbEl.innerHTML = '';
+      const parts = path ? path.split('/').filter(p => p) : [];
+      
+      // 根目录
+      const rootItem = document.createElement('div');
+      rootItem.className = 'breadcrumb-item';
+      const rootLink = document.createElement('a');
+      rootLink.href = '#';
+      rootLink.textContent = '根目录';
+      rootLink.dataset.path = '';
+      rootLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateTo('');
+      });
+      rootItem.appendChild(rootLink);
+      breadcrumbEl.appendChild(rootItem);
+
+      // 路径部分
+      let currentPath = '';
+      parts.forEach((part, index) => {
+        const separator = document.createElement('span');
+        separator.className = 'breadcrumb-separator';
+        separator.textContent = ' / ';
+        breadcrumbEl.appendChild(separator);
+
+        currentPath = buildPath(currentPath, part);
+        const item = document.createElement('div');
+        item.className = 'breadcrumb-item';
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = part;
+        link.dataset.path = currentPath;
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateTo(currentPath);
+        });
+        item.appendChild(link);
+        breadcrumbEl.appendChild(item);
+      });
+    }
+
+    function navigateTo(path) {
+      currentPath = path;
+      updateBreadcrumb(path);
+      loadFiles();
+    }
+
+    function renderFiles() {
+      fileListEl.innerHTML = '';
+      
+      if (folders.length === 0 && files.length === 0) {
+        fileListEl.innerHTML = `
+          <li class="empty-state">
+            <div class="empty-state-icon">📁</div>
+            <div>当前目录为空</div>
+          </li>
+        `;
+        return;
+      }
+
+      // 显示文件夹
+      folders.forEach(folder => {
+        const li = document.createElement('li');
+        li.className = 'file-item';
+        li.innerHTML = `
+          <div class="file-icon"><i class="fas fa-folder"></i></div>
+          <div class="file-name">${folder.name}</div>
+          <div class="file-actions">
+            <button class="btn-rename" data-type="folder" data-path="${folder.path}" title="重命名">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-delete btn-danger" data-type="folder" data-path="${folder.path}" title="删除">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        `;
+        
+        li.querySelector('.file-name').addEventListener('click', () => {
+          navigateTo(folder.path);
+        });
+        
+        li.querySelector('.btn-rename').addEventListener('click', (e) => {
+          e.stopPropagation();
+          showRenameModal('folder', folder.path, folder.name);
+        });
+        
+        li.querySelector('.btn-delete').addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteItem('folder', folder.path);
+        });
+        
+        fileListEl.appendChild(li);
+      });
+
+      // 显示文件
+      files.forEach(file => {
+        const li = document.createElement('li');
+        li.className = 'file-item';
+        const isImage = IMAGE_EXT.test(file.name);
+        li.innerHTML = `
+          <div class="file-icon">
+            <i class="fas ${isImage ? 'fa-image' : 'fa-file'}"></i>
+          </div>
+          <div class="file-name">${file.name}</div>
+          <div class="file-actions">
+            <button class="btn-rename" data-type="file" data-path="${file.path}" title="重命名">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-delete btn-danger" data-type="file" data-path="${file.path}" title="删除">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        `;
+        
+        li.querySelector('.btn-rename').addEventListener('click', (e) => {
+          e.stopPropagation();
+          showRenameModal('file', file.path, file.name);
+        });
+        
+        li.querySelector('.btn-delete').addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteItem('file', file.path);
+        });
+        
+        fileListEl.appendChild(li);
+      });
+    }
+
+    async function loadFiles() {
+      try {
+        fileListEl.innerHTML = '<li class="empty-state"><div>正在加载...</div></li>';
+        const tree = await fetchTree();
+        
+        const allItems = (tree.tree || []).filter(item => item.type === 'blob' || item.type === 'tree');
+        
+        folders = [];
+        files = [];
+        
+        allItems.forEach(item => {
+          const itemPath = item.path;
+          const itemDir = itemPath.includes('/') ? itemPath.slice(0, itemPath.lastIndexOf('/')) : '';
+          
+          if (itemDir === currentPath) {
+            if (item.type === 'tree') {
+              folders.push({
+                name: itemPath.split('/').pop(),
+                path: itemPath
+              });
+            } else {
+              files.push({
+                name: itemPath.split('/').pop(),
+                path: itemPath
+              });
+            }
+          }
+        });
+        
+        folders.sort((a, b) => a.name.localeCompare(b.name));
+        files.sort((a, b) => a.name.localeCompare(b.name));
+        
+        renderFiles();
+      } catch (err) {
+        console.error(err);
+        fileListEl.innerHTML = `
+          <li class="empty-state">
+            <div class="empty-state-icon">❌</div>
+            <div>加载失败：${err.message}</div>
+          </li>
+        `;
+      }
+    }
+
+    async function createFolder(name) {
+      if (!name || !name.trim()) {
+        alert('请输入文件夹名称');
+        return;
+      }
+      
+      const folderPath = buildPath(currentPath, name.trim());
+      const folderPathWithSlash = folderPath.endsWith('/') ? folderPath : folderPath + '/';
+      
+      // 创建 .gitkeep 文件来创建文件夹
+      const content = btoa('');
+      try {
+        await apiRequest({
+          action: 'upload',
+          path: `${folderPathWithSlash}.gitkeep`,
+          content: content,
+          message: `Create folder: ${folderPath}`
+        });
+        
+        // 删除 .gitkeep 文件（GitHub 会自动保留空文件夹）
+        // 实际上 GitHub 不支持空文件夹，所以我们保留 .gitkeep
+        // 或者创建一个 README.md
+        
+        loadFiles();
+        closeModal('create-folder');
+        folderNameInput.value = '';
+      } catch (err) {
+        console.error(err);
+        alert('创建文件夹失败：' + err.message);
+      }
+    }
+
+    async function uploadFiles(fileList, basePath = '') {
+      const targetPath = basePath || currentPath || 'imgs/uploads/kate/';
+      const filesArray = Array.from(fileList);
+      
+      if (filesArray.length === 0) return;
+      
+      uploadProgressEl.style.display = 'block';
+      uploadProgressEl.innerHTML = '';
+      
+      for (let i = 0; i < filesArray.length; i++) {
+        const file = filesArray[i];
+        const progressItem = document.createElement('div');
+        progressItem.className = 'progress-item';
+        progressItem.innerHTML = `
+          <div class="file-name">${file.name}</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+          <div class="progress-text">0%</div>
+        `;
+        uploadProgressEl.appendChild(progressItem);
+        
+        const progressFill = progressItem.querySelector('.progress-fill');
+        const progressText = progressItem.querySelector('.progress-text');
+        
+        try {
+          const content = await toBase64(file);
+          const filePath = buildPath(targetPath, file.name);
+          
+          await apiRequest({
+            action: 'upload',
+            path: filePath,
+            content: content,
+            message: `Upload: ${filePath}`
+          });
+          
+          progressFill.style.width = '100%';
+          progressText.textContent = '完成';
+          progressItem.style.opacity = '0.6';
+        } catch (err) {
+          console.error(err);
+          progressText.textContent = '失败：' + err.message;
+          progressItem.style.color = '#cf222e';
+        }
+      }
+      
+      setTimeout(() => {
+        loadFiles();
+        setTimeout(() => {
+          uploadProgressEl.style.display = 'none';
+          uploadProgressEl.innerHTML = '';
+        }, 2000);
+      }, 1000);
+    }
+
+    function showRenameModal(type, path, currentName) {
+      renameInput.value = currentName;
+      renameInput.dataset.type = type;
+      renameInput.dataset.path = path;
+      showModal('rename');
+    }
+
+    async function renameItem(type, oldPath, newName) {
+      if (!newName || !newName.trim()) {
+        alert('请输入新名称');
+        return;
+      }
+      
+      const parentPath = getParentPath(oldPath);
+      const newPath = buildPath(parentPath, newName.trim());
+      
+      if (type === 'folder') {
+        // 文件夹重命名需要移动所有文件
+        alert('文件夹重命名功能需要移动所有文件，此功能较复杂，建议手动操作');
+        return;
+      }
+      
+      try {
+        // 获取原文件内容
+        const fileRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(oldPath)}`);
+        const fileData = await fileRes.json();
+        
+        // 创建新文件
+        await apiRequest({
+          action: 'upload',
+          path: newPath,
+          content: fileData.content,
+          message: `Rename: ${oldPath} -> ${newPath}`
+        });
+        
+        // 删除原文件
+        await apiRequest({
+          action: 'delete',
+          path: oldPath,
+          sha: fileData.sha,
+          message: `Delete old file: ${oldPath}`
+        });
+        
+        loadFiles();
+        closeModal('rename');
+      } catch (err) {
+        console.error(err);
+        alert('重命名失败：' + err.message);
+      }
+    }
+
+    async function deleteItem(type, path) {
+      if (!confirm(`确定要删除${type === 'folder' ? '文件夹' : '文件'} "${path}" 吗？`)) {
+        return;
+      }
+      
+      try {
+        if (type === 'file') {
+          const fileRes = await fetch(`${API_BASE}/api/file?path=${encodeURIComponent(path)}`);
+          const fileData = await fileRes.json();
+          
+          await apiRequest({
+            action: 'delete',
+            path: path,
+            sha: fileData.sha,
+            message: `Delete: ${path}`
+          });
+        } else {
+          alert('文件夹删除功能需要删除所有文件，此功能较复杂，建议手动操作');
+          return;
+        }
+        
+        loadFiles();
+      } catch (err) {
+        console.error(err);
+        alert('删除失败：' + err.message);
+      }
+    }
+
+    function showModal(modalId) {
+      document.getElementById(`${modalId}-modal`).classList.add('show');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(`${modalId}-modal`).classList.remove('show');
+    }
+
+    // 事件监听
+    createFolderBtn.addEventListener('click', () => {
+      folderNameInput.value = '';
+      showModal('create-folder');
+    });
+
+    document.getElementById('confirm-create-folder').addEventListener('click', () => {
+      createFolder(folderNameInput.value);
+    });
+
+    document.getElementById('confirm-rename').addEventListener('click', () => {
+      const type = renameInput.dataset.type;
+      const path = renameInput.dataset.path;
+      renameItem(type, path, renameInput.value);
+    });
+
+    uploadFilesBtn.addEventListener('click', () => {
+      fileInputEl.click();
+    });
+
+    uploadFolderBtn.addEventListener('click', () => {
+      folderInputEl.click();
+    });
+
+    fileInputEl.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        uploadFiles(e.target.files);
+        e.target.value = '';
+      }
+    });
+
+    folderInputEl.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        uploadFiles(e.target.files, currentPath || 'imgs/uploads/kate/');
+        e.target.value = '';
+      }
+    });
+
+    // 拖拽上传
+    uploadAreaEl.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadAreaEl.classList.add('dragover');
+    });
+
+    uploadAreaEl.addEventListener('dragleave', () => {
+      uploadAreaEl.classList.remove('dragover');
+    });
+
+    uploadAreaEl.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadAreaEl.classList.remove('dragover');
+      
+      const files = Array.from(e.dataTransfer.files);
+      if (files.length > 0) {
+        uploadFiles(files);
+      }
+    });
+
+    // 模态框关闭
+    document.querySelectorAll('[data-close]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modalId = btn.dataset.close;
+        closeModal(modalId);
+      });
+    });
+
+    // 初始化
+    loadFiles();
+  </script>
+</body>
+</html>
+
