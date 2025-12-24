@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hoochanlon/fonts@refs/heads/main/public/OPPOSans4/result.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="./css/global.css" />
+  <script src="./config.js"></script>
 </head>
 <body class="upload-page">
   <header class="upload-header">
@@ -150,10 +151,25 @@
     const IMAGE_EXT = /\.(jpe?g|png|gif|webp|svg)$/i;
 
     // 自动检测 API 基础地址
+    // vercel dev 运行时（localhost:3000）使用本地 API
+    // GitHub Pages 和自定义域名使用 Vercel 部署的 API（因为 GitHub Pages 不支持 Serverless Functions）
+    // Vercel 部署使用当前域名
+    const config = window.APP_CONFIG || {
+      VERCEL_API_BASE: 'https://picx-images-hosting-brown.vercel.app',
+      CUSTOM_DOMAINS: ['blog.hoochanlon.moe'],
+      GITHUB_PAGES_PATTERN: /\.github\.io$/
+    };
+    
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const isVercelDev = isLocalhost && (window.location.port === '3000' || window.location.port === '3001');
+    const isGitHubPages = config.GITHUB_PAGES_PATTERN.test(window.location.hostname);
+    const isCustomDomain = config.CUSTOM_DOMAINS.includes(window.location.hostname);
+    const VERCEL_API_BASE = config.VERCEL_API_BASE;
+    
     const API_BASE = isLocalhost && !isVercelDev
-      ? 'https://picx-images-hosting-brown.vercel.app' 
+      ? VERCEL_API_BASE
+      : (isGitHubPages || isCustomDomain)
+      ? VERCEL_API_BASE
       : window.location.origin;
     const API_ENDPOINT = `${API_BASE}/api/github`;
 
