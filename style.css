@@ -77,12 +77,29 @@ a:hover {
 .controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 4px;
   align-items: center;
   font-size: 0.9rem;
   flex: 1;
   min-width: 0;
   justify-content: flex-end;
+}
+
+.folder-control-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 当目录栏收缩时，移除内部间距，确保不占用空间 */
+.folder-control-group .collapsible.collapsed {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  flex-shrink: 0;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
 }
 
 .controls label {
@@ -113,9 +130,48 @@ a:hover {
   font-size: 1rem;
 }
 
+.collapsible {
+  overflow: hidden;
+  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 500px;
+  flex-shrink: 1;
+}
+
+.collapsible.collapsed {
+  max-width: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* 当文件夹控制展开且下拉框激活时，允许下拉选项显示 */
+#folder-control:not(.collapsed) .custom-select-wrapper {
+  overflow: visible;
+}
+
+.collapsible.collapsed * {
+  pointer-events: none;
+}
+
+/* 下拉选项不受 collapsible 的 pointer-events 影响 */
+.collapsible .custom-select-options {
+  pointer-events: auto;
+}
+
+.controls label.toggle-control {
+  position: relative;
+}
+
+.controls label.toggle-control.active {
+  background: rgba(102, 126, 234, 0.15);
+  color: #667eea;
+}
+
 .controls input {
   padding: 8px 12px;
   min-width: 240px;
+  width: 100%;
   height: 36px;
   border: 1px solid rgba(208, 215, 222, 0.5);
   border-radius: 6px;
@@ -124,6 +180,15 @@ a:hover {
   font-size: 0.9rem;
   line-height: 1.5;
   box-sizing: border-box;
+}
+
+.collapsible input {
+  min-width: 0;
+}
+
+.collapsible .custom-select-wrapper {
+  min-width: 0;
+  width: 100%;
 }
 
 .controls input:focus {
@@ -140,11 +205,50 @@ a:hover {
 .custom-select-wrapper {
   position: relative;
   min-width: 240px;
+  width: 100%;
+  overflow: visible;
 }
 
+.collapsible .custom-select-wrapper {
+  min-width: 0;
+  width: 100%;
+}
+
+/* 确保目录栏展开时有合适的宽度 */
+.collapsible:not(.collapsed) .custom-select-wrapper {
+  min-width: 240px;
+}
+
+/* 确保目录栏折叠时完全收缩 */
+.collapsible.collapsed .custom-select-wrapper {
+  min-width: 0 !important;
+  width: 0 !important;
+}
+
+.collapsible.collapsed .custom-select,
+.collapsible.collapsed .custom-select-trigger {
+  min-width: 0 !important;
+  width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  height: 0 !important;
+}
+
+.collapsible.collapsed .custom-select-value,
+.collapsible.collapsed .custom-select-arrow {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* 确保下拉选项能显示在 collapsible 外部 */
 .custom-select {
   position: relative;
   width: 100%;
+  overflow: visible;
 }
 
 .custom-select-trigger {
@@ -211,6 +315,11 @@ a:hover {
 }
 
 .custom-select.active .custom-select-options {
+  display: block;
+}
+
+/* 确保下拉选项在 collapsible 展开时也能显示 */
+.collapsible:not(.collapsed) .custom-select.active .custom-select-options {
   display: block;
 }
 

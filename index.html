@@ -14,27 +14,31 @@
       <span class="title">picx-images-hosting</span>
     </div>
     <div class="controls">
-      <label for="folder" class="icon-label" title="目录">
-        <i class="fas fa-folder"></i>
-      </label>
-      <div class="custom-select-wrapper">
-        <div class="custom-select" id="folder-select">
-          <div class="custom-select-trigger">
-            <span class="custom-select-value">全部目录</span>
-            <i class="fas fa-chevron-down custom-select-arrow"></i>
+      <div class="folder-control-group">
+        <label for="folder" class="icon-label toggle-control" data-target="folder-control" title="目录">
+          <i class="fas fa-folder"></i>
+        </label>
+        <div class="custom-select-wrapper collapsible" id="folder-control">
+          <div class="custom-select" id="folder-select">
+            <div class="custom-select-trigger">
+              <span class="custom-select-value">全部目录</span>
+              <i class="fas fa-chevron-down custom-select-arrow"></i>
+            </div>
+            <div class="custom-select-options" id="folder-options">
+              <div class="custom-select-option" data-value="ALL">全部目录</div>
+            </div>
           </div>
-          <div class="custom-select-options" id="folder-options">
-            <div class="custom-select-option" data-value="ALL">全部目录</div>
-          </div>
+          <select id="folder" style="display: none;">
+            <option value="ALL">全部目录</option>
+          </select>
         </div>
-        <select id="folder" style="display: none;">
-          <option value="ALL">全部目录</option>
-        </select>
       </div>
-      <label for="filter" class="icon-label" title="搜索文件名">
+      <label for="filter" class="icon-label toggle-control" data-target="filter-control" title="搜索文件名">
         <i class="fas fa-search"></i>
       </label>
-      <input id="filter" type="search" placeholder="输入关键词过滤" />
+      <div class="collapsible" id="filter-control">
+        <input id="filter" type="search" placeholder="输入关键词过滤" />
+      </div>
       <button id="open-upload" type="button">快速上传</button>
       <a href="upload.html" class="btn-upload-manage">上传管理</a>
       <button id="reload-btn" type="button">刷新列表</button>
@@ -587,8 +591,72 @@
 
     async function init() {
       setupLightbox();
+      // 确保初始状态展开
+      initCollapsible();
       await loadImages();
+      // 加载完成后再次确保状态正确
+      initCollapsible();
     }
+
+    // 展开/收缩功能
+    function toggleCollapsible(targetId) {
+      const target = document.getElementById(targetId);
+      const toggle = document.querySelector(`[data-target="${targetId}"]`);
+      if (!target || !toggle) return;
+      
+      const isCollapsed = target.classList.contains('collapsed');
+      if (isCollapsed) {
+        target.classList.remove('collapsed');
+        toggle.classList.add('active');
+        localStorage.setItem(`collapsed_${targetId}`, 'false');
+      } else {
+        target.classList.add('collapsed');
+        toggle.classList.remove('active');
+        localStorage.setItem(`collapsed_${targetId}`, 'true');
+      }
+    }
+
+    // 初始化展开/收缩状态
+    function initCollapsible() {
+      document.querySelectorAll('.collapsible').forEach(el => {
+        const targetId = el.id;
+        const savedState = localStorage.getItem(`collapsed_${targetId}`);
+        const toggle = document.querySelector(`[data-target="${targetId}"]`);
+        
+        // 默认展开，只有明确保存为 'true' 时才收缩
+        if (savedState === 'true') {
+          el.classList.add('collapsed');
+          if (toggle) toggle.classList.remove('active');
+        } else {
+          // 默认展开状态
+          el.classList.remove('collapsed');
+          if (toggle) toggle.classList.add('active');
+        }
+      });
+    }
+
+    // 绑定展开/收缩按钮事件
+    document.querySelectorAll('.toggle-control').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = toggle.dataset.target;
+        // 如果是文件夹控制，确保下拉框在展开时能正常工作
+        if (targetId === 'folder-control') {
+          const folderControl = document.getElementById('folder-control');
+          const isCollapsed = folderControl && folderControl.classList.contains('collapsed');
+          toggleCollapsible(targetId);
+          // 如果从折叠状态展开，确保下拉框可以正常显示
+          if (isCollapsed && folderControl && !folderControl.classList.contains('collapsed')) {
+            // 延迟一下，确保动画完成后再允许下拉
+            setTimeout(() => {
+              // 下拉框现在可以正常工作了
+            }, 300);
+          }
+        } else {
+          toggleCollapsible(targetId);
+        }
+      });
+    });
 
     filterInput.addEventListener('input', applyFilter);
 
@@ -597,6 +665,21 @@
     // 自定义下拉框事件处理
     customSelectTrigger.addEventListener('click', (e) => {
       e.stopPropagation();
+      // 确保文件夹控制区域是展开的
+      const folderControl = document.getElementById('folder-control');
+      if (folderControl && folderControl.classList.contains('collapsed')) {
+        folderControl.classList.remove('collapsed');
+        const toggle = document.querySelector('[data-target="folder-control"]');
+        if (toggle) {
+          toggle.classList.add('active');
+        }
+        localStorage.setItem('collapsed_folder-control', 'false');
+        // 等待动画完成后再显示下拉选项
+        setTimeout(() => {
+          customSelect.classList.toggle('active');
+        }, 300);
+        return;
+      }
       customSelect.classList.toggle('active');
     });
 
@@ -620,7 +703,9 @@
 
     // 点击外部关闭下拉框
     document.addEventListener('click', (e) => {
-      if (!customSelect.contains(e.target)) {
+      const folderControl = document.getElementById('folder-control');
+      // 如果点击的不是下拉框内的元素，关闭下拉框
+      if (!customSelect.contains(e.target) && !e.target.closest('.folder-control-group')) {
         customSelect.classList.remove('active');
       }
     });
