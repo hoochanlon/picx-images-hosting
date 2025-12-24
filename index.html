@@ -118,7 +118,7 @@
     const CDN_BASE = `https://cdn.jsdelivr.net/gh/${REPO_OWNER}/${REPO_NAME}@${BRANCH}`;
     const IMAGE_EXT = /\.(jpe?g|png|gif|webp|svg)$/i;
     const EXCLUDES = ['.git/', '.github/'];
-    const API_BASE = '';
+    const API_BASE = 'https://picx-images-hosting-brown.vercel.app';
     const API_ENDPOINT = `${API_BASE}/api/github`;
     const DEFAULT_DIR = 'imgs/uploads/kate/';
 
@@ -228,7 +228,7 @@
     }
 
     async function fetchTree() {
-      const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/trees/${BRANCH}?recursive=1`;
+      const url = `${API_BASE}/api/tree`;
       const res = await fetch(url);
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
@@ -531,7 +531,8 @@
     }
 
     async function fetchFileSha(path) {
-      const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${encodeURIComponent(path)}`);
+      const url = `${API_BASE}/api/file?path=${encodeURIComponent(path)}`;
+      const res = await fetch(url);
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         const hint = body.message || `HTTP ${res.status}`;
