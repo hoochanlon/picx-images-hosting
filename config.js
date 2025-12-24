@@ -13,6 +13,9 @@ window.APP_CONFIG = {
   ],
   
   // GitHub Pages 域名模式（匹配所有 github.io 域名）
-  GITHUB_PAGES_PATTERN: /\.github\.io$/
+  GITHUB_PAGES_PATTERN: /\.github\.io$/,
+  
+  // 默认上传目录（如果用户没有设置，将使用此路径）
+  DEFAULT_UPLOAD_DIR: 'imgs/uploads/kate/'
 };
 

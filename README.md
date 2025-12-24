@@ -44,10 +44,25 @@ vercel 变量
 
 配置文件
 
-* `config.js`: 前端配置（Vercel API 地址、自定义域名等）
+* `config.js`: 前端配置
+  - `VERCEL_API_BASE`: Vercel API 基础地址
+  - `CUSTOM_DOMAINS`: 自定义域名列表（需要使用 Vercel API 的域名）
+  - `GITHUB_PAGES_PATTERN`: GitHub Pages 域名匹配模式
+  - `DEFAULT_UPLOAD_DIR`: 默认上传目录（例如：`'imgs/uploads/kate/'`），如果用户没有在 UI 中设置默认路径，将使用此值
 * `api-config.json`: API CORS 配置（允许的域名列表）
   - 优先级：环境变量 `ALLOWED_ORIGINS` > `api-config.json` > 默认值
   - 可以复制 `api-config.example.json` 为 `api-config.json` 并修改
+
+默认图片文件夹
+
+项目会按以下优先级识别默认图片文件夹：
+1. 用户在上传时输入的路径（最高优先级）
+2. 用户在 UI 中设置并保存到 localStorage 的默认路径
+3. `config.js` 中的 `DEFAULT_UPLOAD_DIR` 配置（默认值：`'imgs/uploads/kate/'`）
+
+要修改默认图片文件夹，可以：
+* 在 `config.js` 中修改 `DEFAULT_UPLOAD_DIR` 的值
+* 或者在应用界面中通过"设置默认路径"功能设置（会保存到浏览器 localStorage）
 
 
 ## 网络图床

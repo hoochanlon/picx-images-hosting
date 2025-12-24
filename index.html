@@ -164,7 +164,8 @@
     const config = window.APP_CONFIG || {
       VERCEL_API_BASE: 'https://picx-images-hosting-brown.vercel.app',
       CUSTOM_DOMAINS: ['blog.hoochanlon.moe'],
-      GITHUB_PAGES_PATTERN: /\.github\.io$/
+      GITHUB_PAGES_PATTERN: /\.github\.io$/,
+      DEFAULT_UPLOAD_DIR: 'imgs/uploads/kate/'
     };
     
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
@@ -179,7 +180,9 @@
       ? VERCEL_API_BASE
       : window.location.origin;
     const API_ENDPOINT = `${API_BASE}/api/github`;
-    const DEFAULT_DIR = 'imgs/uploads/kate/';
+    
+    // 默认上传目录，从配置文件读取，如果没有则使用默认值
+    const DEFAULT_DIR = config.DEFAULT_UPLOAD_DIR || 'imgs/uploads/kate/';
 
     const statusEl = document.getElementById('status');
     const gridEl = document.getElementById('grid');
