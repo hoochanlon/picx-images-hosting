@@ -30,6 +30,61 @@
 
 fork 这个仓库
 
+### 快速克隆（排除图片目录）
+
+如果仓库图片很多，克隆会很慢。可以使用以下方法：
+
+#### 方法 1：使用稀疏检出（推荐）
+
+只克隆必要的代码文件，排除 `imgs` 等图片目录：
+
+```bash
+# 创建空仓库
+git clone --no-checkout https://github.com/YOUR-USERNAME/picx-images-hosting.git
+cd picx-images-hosting
+
+# 启用稀疏检出
+git sparse-checkout init --cone
+
+# 只克隆必要的目录和文件（排除 imgs 目录）
+git sparse-checkout set api css index.html upload.html config.js api-config.json README.md .gitignore package.json
+
+# 检出文件
+git checkout
+```
+
+#### 方法 2：浅克隆 + 稀疏检出
+
+结合浅克隆和稀疏检出，速度更快：
+
+```bash
+# 浅克隆（只克隆最新提交）
+git clone --depth=1 --no-checkout https://github.com/YOUR-USERNAME/picx-images-hosting.git
+cd picx-images-hosting
+
+# 启用稀疏检出
+git sparse-checkout init --cone
+
+# 设置要检出的文件
+git sparse-checkout set api css index.html upload.html config.js api-config.json README.md .gitignore package.json
+
+# 检出文件
+git checkout
+```
+
+#### 方法 3：完整克隆
+
+如果需要所有文件（包括图片）：
+
+```bash
+git clone https://github.com/YOUR-USERNAME/picx-images-hosting.git
+cd picx-images-hosting
+```
+
+> [!TIP]
+> 如果后续需要图片文件，可以运行 `git sparse-checkout disable` 然后 `git pull` 来获取所有文件。
+
+### 安装和运行
 
 ```bash
 pnpn install
@@ -49,6 +104,7 @@ vercel 变量
   - `CUSTOM_DOMAINS`: 自定义域名列表（需要使用 Vercel API 的域名）
   - `GITHUB_PAGES_PATTERN`: GitHub Pages 域名匹配模式
   - `DEFAULT_UPLOAD_DIR`: 默认上传目录（例如：`'imgs/uploads/kate/'`），如果用户没有在 UI 中设置默认路径，将使用此值
+  - `INCLUDED_DIRS`: 允许显示的图片目录列表（例如：`['imgs']` 只显示 imgs 目录下的图片，`['imgs', 'example']` 显示多个目录，`[]` 显示所有目录）
 * `api-config.json`: API CORS 配置（允许的域名列表）
   - 优先级：环境变量 `ALLOWED_ORIGINS` > `api-config.json` > 默认值
   - 可以复制 `api-config.example.json` 为 `api-config.json` 并修改
@@ -64,10 +120,18 @@ vercel 变量
 * 在 `config.js` 中修改 `DEFAULT_UPLOAD_DIR` 的值
 * 或者在应用界面中通过"设置默认路径"功能设置（会保存到浏览器 localStorage）
 
+图片目录过滤
+
+项目默认只显示 `imgs` 目录下的图片。要修改允许显示的目录：
+* 在 `config.js` 中修改 `INCLUDED_DIRS` 数组
+  - `['imgs']`: 只显示 imgs 目录下的图片（默认）
+  - `['imgs', 'example']`: 显示 imgs 和 example 目录下的图片
+  - `[]`: 显示所有目录下的图片（不限制）
+
 
 ## 网络图床
 
-有关图床的详细信息，请参考：：
+有关图床的详细信息，请参考：
 
 * [几乎不受审查的图床标记](https://hoochanlon.github.io/posts/20250821144721)
 * [壁纸资源及图床整合笔记](https://hoochanlon.github.io/posts/20250821071908)

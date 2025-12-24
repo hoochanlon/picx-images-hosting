@@ -16,6 +16,12 @@ window.APP_CONFIG = {
   GITHUB_PAGES_PATTERN: /\.github\.io$/,
   
   // 默认上传目录（如果用户没有设置，将使用此路径）
-  DEFAULT_UPLOAD_DIR: 'imgs/uploads/kate/'
+  DEFAULT_UPLOAD_DIR: 'imgs/uploads/kate/',
+  
+  // 允许的图片目录列表（只显示这些目录下的图片，为空数组则显示所有目录）
+  // 例如：['imgs'] 只显示 imgs 目录下的图片
+  // 例如：['imgs', 'example'] 显示 imgs 和 example 目录下的图片
+  // 例如：[] 显示所有目录下的图片（默认）
+  INCLUDED_DIRS: ['imgs']
 };
 

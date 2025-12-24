@@ -165,7 +165,8 @@
       VERCEL_API_BASE: 'https://picx-images-hosting-brown.vercel.app',
       CUSTOM_DOMAINS: ['blog.hoochanlon.moe'],
       GITHUB_PAGES_PATTERN: /\.github\.io$/,
-      DEFAULT_UPLOAD_DIR: 'imgs/uploads/kate/'
+      DEFAULT_UPLOAD_DIR: 'imgs/uploads/kate/',
+      INCLUDED_DIRS: ['imgs']
     };
     
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
@@ -246,7 +247,29 @@
     }
 
     function shouldSkip(path) {
-      return EXCLUDES.some((ex) => path.startsWith(ex));
+      // 检查是否在排除列表中
+      if (EXCLUDES.some((ex) => path.startsWith(ex))) {
+        return true;
+      }
+      
+      // 检查是否在允许的目录列表中
+      const includedDirs = config.INCLUDED_DIRS || [];
+      if (includedDirs.length > 0) {
+        // 如果配置了允许的目录，只显示这些目录下的图片
+        const isIncluded = includedDirs.some(dir => {
+          // 检查路径是否以目录开头（支持根目录文件）
+          if (dir === '') {
+            // 空字符串表示根目录，检查是否在根目录（不包含斜杠）
+            return !path.includes('/');
+          }
+          return path.startsWith(dir + '/') || path === dir;
+        });
+        if (!isIncluded) {
+          return true;
+        }
+      }
+      
+      return false;
     }
 
     function getDefaultUploadPath() {
