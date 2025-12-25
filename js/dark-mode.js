@@ -62,12 +62,12 @@
       if (icon) {
         if (theme === DARK_THEME) {
           icon.className = 'fas fa-sun';
-          button.setAttribute('aria-label', '切换到浅色模式');
-          button.title = '切换到浅色模式';
+          button.removeAttribute('aria-label');
+          button.removeAttribute('title');
         } else {
           icon.className = 'fas fa-moon';
-          button.setAttribute('aria-label', '切换到夜间模式');
-          button.title = '切换到夜间模式';
+          button.removeAttribute('aria-label');
+          button.removeAttribute('title');
         }
       }
     });

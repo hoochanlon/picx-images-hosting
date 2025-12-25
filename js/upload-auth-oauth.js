@@ -335,13 +335,26 @@ function isAuthenticated() {
   const now = Date.now();
   const expires = parseInt(expiresAt);
   
-  if (now > expires) {
-    // 已过期，清除
+  if (isNaN(expires) || now > expires) {
+    // 已过期或无效，清除
     clearAuth();
     return false;
   }
   
-  // 验证token格式
+  // 如果 token 是从服务器返回的（base64 格式），直接认为有效
+  // 如果是本地生成的（包含密码信息），需要验证格式
+  try {
+    // 尝试解析 token，如果是 base64 格式且不包含冒号，说明是服务器返回的
+    const decoded = atob(token);
+    if (!decoded.includes(':')) {
+      // 服务器返回的 token，直接有效
+      return true;
+    }
+  } catch (e) {
+    // 不是 base64 格式，可能是其他格式，继续验证
+  }
+  
+  // 验证token格式（本地生成的 token）
   return validateToken(token);
 }
 
@@ -362,11 +375,18 @@ function getAuthToken() {
 
 // 要求认证（如果未认证则显示授权对话框）
 function requireAuth(callback) {
-  if (isAuthenticated()) {
-    callback(true);
+  // 先检查是否已认证（同步检查，避免不必要的异步操作）
+  const authenticated = isAuthenticated();
+  
+  if (authenticated) {
+    // 已认证，直接允许操作，不显示对话框
+    if (typeof callback === 'function') {
+      callback(true);
+    }
     return;
   }
   
+  // 未认证，显示授权对话框
   showAuthDialog(callback);
 }
 

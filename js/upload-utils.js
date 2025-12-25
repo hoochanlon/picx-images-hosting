@@ -28,24 +28,28 @@ async function apiRequest(payload) {
           payload.githubToken = githubToken;
         } else {
           // GitHub token 不存在，使用密码认证
-          const authToken = window.uploadAuth.getAuthToken && window.uploadAuth.getAuthToken();
-          if (authToken) {
-            payload.authToken = authToken;
-          }
-          // 如果设置了API_SECRET，使用密码hash作为token
+          // 优先使用 API_SECRET（如果设置了）
           if (window.APP_CONFIG?.API_SECRET) {
             payload.authToken = window.APP_CONFIG.API_SECRET;
+          } else {
+            // 如果没有设置 API_SECRET，使用从服务器获取的 token
+            const authToken = window.uploadAuth.getAuthToken && window.uploadAuth.getAuthToken();
+            if (authToken) {
+              payload.authToken = authToken;
+            }
           }
         }
       } else {
         // 没有 getGitHubToken 方法，使用密码认证
-        const authToken = window.uploadAuth.getAuthToken && window.uploadAuth.getAuthToken();
-        if (authToken) {
-          payload.authToken = authToken;
-        }
-        // 如果设置了API_SECRET，使用密码hash作为token
+        // 优先使用 API_SECRET（如果设置了）
         if (window.APP_CONFIG?.API_SECRET) {
           payload.authToken = window.APP_CONFIG.API_SECRET;
+        } else {
+          // 如果没有设置 API_SECRET，使用从服务器获取的 token
+          const authToken = window.uploadAuth.getAuthToken && window.uploadAuth.getAuthToken();
+          if (authToken) {
+            payload.authToken = authToken;
+          }
         }
       }
     }

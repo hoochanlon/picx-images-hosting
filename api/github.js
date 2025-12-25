@@ -52,11 +52,39 @@ export default async function handler(req, res) {
       }
     }
     
-    // 如果 GitHub token 验证失败，回退到 API_SECRET 验证
-    if (!isAuthorized && process.env.API_SECRET) {
-      const expectedToken = process.env.API_SECRET;
-      if (authToken && authToken === expectedToken) {
-        isAuthorized = true;
+    // 如果 GitHub token 验证失败，回退到 API_SECRET 或密码 token 验证
+    if (!isAuthorized) {
+      // 优先验证 API_SECRET
+      if (process.env.API_SECRET) {
+        const expectedToken = process.env.API_SECRET;
+        if (authToken && authToken === expectedToken) {
+          isAuthorized = true;
+        }
+      }
+      
+      // 如果 API_SECRET 验证失败，检查是否是密码验证的 token
+      // 如果设置了 DELETE_PASSWORD 但没有设置 API_SECRET，接受从 verify-password API 返回的 token
+      // 因为前端已经通过密码验证获取了这个 token
+      if (!isAuthorized && authToken && process.env.DELETE_PASSWORD && !process.env.API_SECRET) {
+        // 验证 token 格式：应该是 base64 编码的字符串
+        // 从 verify-password API 返回的 token 格式是：Buffer.from(`${Date.now()}:${Math.random()}`).toString('base64')
+        try {
+          // 尝试解码 token，如果能解码说明格式正确
+          const decoded = Buffer.from(authToken, 'base64').toString();
+          // 检查是否包含时间戳（格式应该是 timestamp:random）
+          if (decoded.includes(':') && decoded.split(':').length === 2) {
+            const parts = decoded.split(':');
+            const timestamp = parseInt(parts[0]);
+            // 检查时间戳是否在合理范围内（24小时内）
+            const now = Date.now();
+            const maxAge = 24 * 60 * 60 * 1000; // 24小时
+            if (!isNaN(timestamp) && (now - timestamp) < maxAge && (now - timestamp) >= 0) {
+              isAuthorized = true;
+            }
+          }
+        } catch (e) {
+          // token 格式无效，不授权
+        }
       }
     }
     
