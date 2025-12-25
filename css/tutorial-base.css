@@ -1,0 +1,22 @@
+/* Tutorial Base Styles */
+/* 只在 tutorial 页面应用这些样式，使用更具体的选择器覆盖 base.css */
+body.tutorial-page {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #f6f8fa !important;
+  background-attachment: initial !important;
+  font-family: "OPPO Sans 4.0", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.tutorial-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.tutorial-main {
+  margin-left: 280px;
+  flex: 1;
+  background: #fff;
+  min-height: 100vh;
+}
+

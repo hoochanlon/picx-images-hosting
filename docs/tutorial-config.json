@@ -1,0 +1,33 @@
+{
+  "steps": [
+    {
+      "file": "docs/step-1-create-repo.md",
+      "title": "创建一个 GitHub 仓库",
+      "shortTitle": "创建仓库",
+      "icon": "fa-cube",
+      "order": 1
+    },
+    {
+      "file": "docs/step-2-get-token.md",
+      "title": "获取 GitHub Personal Access Token",
+      "shortTitle": "获取 Token",
+      "icon": "fa-key",
+      "order": 2
+    },
+    {
+      "file": "docs/step-3-config-vercel.md",
+      "title": "配置 Vercel 环境变量",
+      "shortTitle": "配置 Vercel",
+      "icon": "fa-cog",
+      "order": 3
+    },
+    {
+      "file": "docs/step-4-start-using.md",
+      "title": "开始使用",
+      "shortTitle": "开始使用",
+      "icon": "fa-rocket",
+      "order": 4
+    }
+  ]
+}
+

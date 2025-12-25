@@ -22,6 +22,9 @@ window.APP_CONFIG = {
   // 例如：['imgs'] 只显示 imgs 目录下的图片
   // 例如：['imgs', 'example'] 显示 imgs 和 example 目录下的图片
   // 例如：[] 显示所有目录下的图片（默认）
-  INCLUDED_DIRS: ['imgs']
+  INCLUDED_DIRS: ['imgs'],
+  
+  // GitHub 仓库地址（用于导航栏的 GitHub 按钮）
+  GITHUB_REPO_URL: 'https://github.com/hoochanlon/picx-images-hosting'
 };
 

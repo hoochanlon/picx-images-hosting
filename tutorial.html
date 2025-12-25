@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>部署教程 - picx-images-hosting</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hoochanlon/fonts@refs/heads/main/public/OPPOSans4/result.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/tutorial.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+</head>
+<body class="tutorial-page">
+  <div class="tutorial-container">
+    <aside class="tutorial-sidebar">
+      <div class="tutorial-sidebar-header">
+        <h2>📚 图床部署教程</h2>
+      </div>
+      <nav class="tutorial-sidebar-nav" id="tutorial-sidebar-nav">
+        <!-- 将从 front-matter 动态生成 -->
+      </nav>
+      <div class="tutorial-sidebar-content markdown-body" id="tutorial-sidebar-content">
+        <!-- Markdown 内容将在这里渲染 -->
+      </div>
+      <div class="tutorial-sidebar-footer">
+        <a href="index.html">
+          <i class="fas fa-arrow-left"></i>
+          <span>返回首页</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- 移动端遮罩层 -->
+    <div class="tutorial-sidebar-overlay" id="sidebar-overlay"></div>
+
+    <main class="tutorial-main">
+      <button class="tutorial-mobile-menu-toggle" id="mobile-menu-toggle" aria-label="切换菜单">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="tutorial-header">
+        <div class="tutorial-header-inner">
+          <div class="tutorial-steps" id="tutorial-steps">
+            <!-- 将从 front-matter 动态生成 -->
+          </div>
+        </div>
+      </div>
+
+      <div class="tutorial-content-wrapper">
+        <div class="tutorial-content" id="tutorial-content">
+          <!-- 步骤内容将从配置文件动态生成 -->
+          <div class="tutorial-loading">正在加载配置...</div>
+        </div>
+        
+        <!-- 右侧目录导航 -->
+        <aside class="tutorial-toc" id="tutorial-toc">
+          <div class="tutorial-toc-header">
+            <h3>目录</h3>
+          </div>
+          <nav class="tutorial-toc-nav" id="tutorial-toc-nav">
+            <div class="tutorial-toc-loading">正在生成目录...</div>
+          </nav>
+        </aside>
+      </div>
+    </main>
+    
+    <!-- 回到顶部按钮 -->
+    <button class="tutorial-back-to-top" id="back-to-top" aria-label="回到顶部">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </div>
+
+  <script>
+    let currentStep = 0;
+    let totalSteps = 0;
+    let tutorialConfig = null;
+    let markdownFiles = [];
+    
+    // 存储步骤信息
+    const stepMetadata = [];
+
+    let stepContents = [];
+    let stepIndicators = [];
+    let sidebarItems = [];
+    // prevBtn 和 nextBtn 是动态生成的，不能在这里获取
+    const sidebarNav = document.getElementById('tutorial-sidebar-nav');
+    const stepsContainer = document.getElementById('tutorial-steps');
+    const tutorialContent = document.getElementById('tutorial-content');
+
+    // 加载配置文件
+    async function loadTutorialConfig() {
+      try {
+        console.log('开始加载配置文件: docs/tutorial-config.json');
+        const response = await fetch('docs/tutorial-config.json');
+        console.log('配置文件响应状态:', response.status, response.statusText);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to load config: ${response.status} ${response.statusText}`);
+        }
+        
+        tutorialConfig = await response.json();
+        console.log('配置文件解析成功:', tutorialConfig);
+        
+        // 按 order 排序步骤
+        tutorialConfig.steps.sort((a, b) => (a.order || 0) - (b.order || 0));
+        
+        // 提取文件路径
+        markdownFiles = tutorialConfig.steps.map(step => step.file);
+        console.log('Markdown 文件列表:', markdownFiles);
+        
+        // 初始化步骤元数据
+        tutorialConfig.steps.forEach((step, index) => {
+          stepMetadata[index] = {
+            title: step.title || `步骤 ${index + 1}`,
+            shortTitle: step.shortTitle || step.title || `步骤 ${index + 1}`,
+            icon: step.icon || 'fa-circle',
+            order: step.order || index + 1
+          };
+        });
+        
+        // 确保 stepMetadata 数组连续
+        const sortedMetadata = [];
+        for (let i = 0; i < tutorialConfig.steps.length; i++) {
+          sortedMetadata[i] = stepMetadata[i] || stepMetadata.find(m => m && m.order === i + 1);
+        }
+        stepMetadata.length = 0;
+        stepMetadata.push(...sortedMetadata);
+        
+        totalSteps = tutorialConfig.steps.length;
+        console.log('步骤元数据初始化完成，总数:', totalSteps, stepMetadata);
+        
+        // 生成步骤内容区域
+        if (tutorialContent) {
+          generateStepContentAreas();
+        } else {
+          console.error('tutorialContent 未找到，无法生成步骤内容区域');
+        }
+        
+        return tutorialConfig;
+      } catch (error) {
+        console.error('Error loading tutorial config:', error);
+        if (tutorialContent) {
+          tutorialContent.innerHTML = `<div class="tutorial-header"><h1>picx-images-hosting 部署教程</h1></div><p>加载配置文件失败：${error.message}</p><p>请检查 docs/tutorial-config.json 文件是否存在。</p><p>详细错误信息请查看浏览器控制台。</p>`;
+        }
+        return null;
+      }
+    }
+
+    // 动态生成步骤内容区域
+    function generateStepContentAreas() {
+      if (!tutorialContent) {
+        console.error('tutorialContent 未找到');
+        return;
+      }
+      
+      if (!tutorialConfig || !tutorialConfig.steps) {
+        console.error('tutorialConfig 或 steps 未定义');
+        return;
+      }
+      
+      console.log('开始生成步骤内容区域，步骤数量:', tutorialConfig.steps.length);
+      
+      // 保存标题和按钮区域
+      const headerDiv = tutorialContent.querySelector('.tutorial-header');
+      const headerHTML = headerDiv ? headerDiv.outerHTML : '';
+      const actionsDiv = tutorialContent.querySelector('.tutorial-actions');
+      const actionsHTML = actionsDiv ? actionsDiv.outerHTML : '';
+      
+      // 清空内容区域（但保留标题）
+      const loadingDiv = tutorialContent.querySelector('.tutorial-loading');
+      if (loadingDiv) {
+        loadingDiv.remove();
+      }
+      
+      // 如果步骤内容区域不存在，生成它们
+      if (tutorialContent.querySelectorAll('.tutorial-step-content').length === 0) {
+        tutorialConfig.steps.forEach((step, index) => {
+          const contentDiv = document.createElement('div');
+          contentDiv.className = `tutorial-step-content ${index === 0 ? 'active' : ''}`;
+          contentDiv.dataset.step = index;
+          contentDiv.innerHTML = '<div class="tutorial-loading">正在加载内容...</div>';
+          tutorialContent.appendChild(contentDiv);
+        });
+        console.log('已生成', tutorialConfig.steps.length, '个步骤内容区域');
+      }
+      
+      // 确保标题存在
+      if (!headerDiv && headerHTML) {
+        tutorialContent.insertAdjacentHTML('afterbegin', headerHTML);
+      }
+      
+      // 确保按钮区域存在，并放在所有内容之后
+      if (!actionsDiv) {
+        if (actionsHTML) {
+          tutorialContent.insertAdjacentHTML('beforeend', actionsHTML);
+        } else {
+          const newActionsDiv = document.createElement('div');
+          newActionsDiv.className = 'tutorial-actions';
+          newActionsDiv.innerHTML = `
+            <button class="tutorial-btn tutorial-btn-secondary" id="prev-btn" disabled>
+              <i class="fas fa-arrow-left"></i> 上一步
+            </button>
+            <button class="tutorial-btn tutorial-btn-primary" id="next-btn">
+              下一步 <i class="fas fa-arrow-right"></i>
+            </button>
+          `;
+          tutorialContent.appendChild(newActionsDiv);
+        }
+      } else {
+        // 如果按钮已存在，确保它在最后
+        tutorialContent.appendChild(actionsDiv);
+      }
+      
+      // 重新获取元素引用
+      stepContents = document.querySelectorAll('.tutorial-step-content');
+      console.log('步骤内容区域生成完成，找到', stepContents.length, '个区域');
+      
+      // 绑定按钮事件监听器
+      bindButtonEvents();
+    }
+    
+    // 绑定按钮事件监听器（按钮是动态生成的，需要延迟绑定）
+    function bindButtonEvents() {
+      const prevBtnElement = document.getElementById('prev-btn');
+      const nextBtnElement = document.getElementById('next-btn');
+      
+      if (prevBtnElement) {
+        // 移除旧的事件监听器（通过克隆节点）
+        const newPrevBtn = prevBtnElement.cloneNode(true);
+        prevBtnElement.parentNode.replaceChild(newPrevBtn, prevBtnElement);
+        newPrevBtn.addEventListener('click', () => {
+          if (currentStep > 0) {
+            updateStep(currentStep - 1);
+          }
+        });
+      }
+
+      if (nextBtnElement) {
+        // 移除旧的事件监听器（通过克隆节点）
+        const newNextBtn = nextBtnElement.cloneNode(true);
+        nextBtnElement.parentNode.replaceChild(newNextBtn, nextBtnElement);
+        newNextBtn.addEventListener('click', () => {
+          if (currentStep < totalSteps - 1) {
+            updateStep(currentStep + 1);
+          } else {
+            // 完成教程，返回首页
+            window.location.href = 'index.html';
+          }
+        });
+      }
+    }
+
+    // 解析 front-matter
+    function parseFrontMatter(text) {
+      const frontMatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+      const match = text.match(frontMatterRegex);
+      
+      if (!match) {
+        return { metadata: null, content: text };
+      }
+      
+      const metadataText = match[1];
+      const content = match[2];
+      const metadata = {};
+      
+      metadataText.split('\n').forEach(line => {
+        const colonIndex = line.indexOf(':');
+        if (colonIndex > 0) {
+          const key = line.substring(0, colonIndex).trim();
+          let value = line.substring(colonIndex + 1).trim();
+          // 移除引号
+          if ((value.startsWith('"') && value.endsWith('"')) || 
+              (value.startsWith("'") && value.endsWith("'"))) {
+            value = value.slice(1, -1);
+          }
+          metadata[key] = value;
+        }
+      });
+      
+      return { metadata, content };
+    }
+
+    // 生成步骤编号（阿拉伯数字）
+    function getStepNumber(order) {
+      return order;
+    }
+
+    // 动态生成侧边栏导航
+    function generateSidebarNav() {
+      if (!sidebarNav) return;
+      
+      sidebarNav.innerHTML = '';
+      stepMetadata.forEach((meta, index) => {
+        const item = document.createElement('div');
+        item.className = `tutorial-sidebar-nav-item ${index === currentStep ? 'active' : ''}`;
+        item.dataset.step = index;
+        item.innerHTML = `
+          <i class="fas ${meta.icon || 'fa-circle'}"></i>
+          <span>${meta.shortTitle || meta.title || `步骤 ${index + 1}`}</span>
+        `;
+        sidebarNav.appendChild(item);
+      });
+      
+      sidebarItems = document.querySelectorAll('.tutorial-sidebar-nav-item');
+    }
+
+    // 动态生成步骤指示器
+    function generateStepIndicators() {
+      if (!stepsContainer) return;
+      
+      stepsContainer.innerHTML = '';
+      stepMetadata.forEach((meta, index) => {
+        const step = document.createElement('div');
+        step.className = `tutorial-step ${index === currentStep ? 'active' : ''}`;
+        step.dataset.step = index;
+        step.innerHTML = `
+          <span>${getStepNumber(meta.order || index + 1)}</span>
+          <span>${meta.title || `步骤 ${index + 1}`}</span>
+        `;
+        stepsContainer.appendChild(step);
+      });
+      
+      stepIndicators = document.querySelectorAll('.tutorial-step');
+    }
+
+    // 预处理 GitHub callout 语法
+    function preprocessCallouts(text) {
+      // 按行分割处理
+      const lines = text.split('\n');
+      const result = [];
+      let inCallout = false;
+      let calloutType = 'note';
+      let calloutContent = [];
+      
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // 检测 callout 开始: > [!type]（不区分大小写，允许前后空格）
+        const calloutStartMatch = line.match(/^>\s*\[!\s*([^\]]+)\s*\]\s*$/i);
+        if (calloutStartMatch) {
+          const typeStr = calloutStartMatch[1].trim().toLowerCase();
+          if (['note', 'tip', 'important', 'warning', 'caution'].includes(typeStr)) {
+            // 开始新的 callout
+            if (inCallout) {
+              // 先结束之前的 callout
+              result.push(renderCallout(calloutType, calloutContent.join('\n')));
+              calloutContent = [];
+            }
+            inCallout = true;
+            calloutType = typeStr;
+            continue;
+          }
+        }
+        
+        // 如果在 callout 中
+        if (inCallout) {
+          // 检测 callout 内容行: > content
+          const contentMatch = line.match(/^>\s*(.*)$/);
+          if (contentMatch) {
+            const contentLine = contentMatch[1];
+            calloutContent.push(contentLine);
+            continue;
+          } else if (line.trim() === '') {
+            // 空行：如果 callout 中已经有内容，保留空行；否则忽略
+            if (calloutContent.length > 0) {
+              calloutContent.push('');
+            }
+            continue;
+          } else {
+            // 遇到非 > 开头的非空行，callout 结束
+            result.push(renderCallout(calloutType, calloutContent.join('\n')));
+            calloutContent = [];
+            inCallout = false;
+            // 继续处理当前行
+            result.push(line);
+          }
+        } else {
+          result.push(line);
+        }
+      }
+      
+      // 处理最后一个 callout
+      if (inCallout) {
+        result.push(renderCallout(calloutType, calloutContent.join('\n')));
+      }
+      
+      return result.join('\n');
+    }
+    
+    // 渲染 callout HTML（内容保持为 Markdown，稍后由 marked.parse 统一解析）
+    function renderCallout(type, content) {
+      const processedContent = content.trim();
+      // 内容保持为 Markdown 格式，让 marked.parse 统一解析
+      return `\n<div class="markdown-callout markdown-callout-${type}">\n<div class="markdown-callout-header">\n<span class="markdown-callout-icon"></span>\n<span class="markdown-callout-title">${getCalloutTitle(type)}</span>\n</div>\n<div class="markdown-callout-content">\n${processedContent}\n</div>\n</div>\n`;
+    }
+    
+    // 获取 callout 标题（使用英文，与 GitHub 一致）
+    function getCalloutTitle(type) {
+      const titles = {
+        note: 'Note',
+        tip: 'Tip',
+        important: 'Important',
+        warning: 'Warning',
+        caution: 'Caution'
+      };
+      return titles[type] || 'Note';
+    }
+    
+    // 配置 marked.js
+    if (typeof marked !== 'undefined') {
+      marked.setOptions({
+        breaks: true,
+        gfm: true
+      });
+    }
+
+    // 加载并渲染 markdown 文件
+    async function loadMarkdownContent(stepIndex) {
+      const contentDiv = stepContents[stepIndex];
+      const markdownFile = markdownFiles[stepIndex];
+      
+      if (!markdownFile) {
+        return Promise.resolve();
+      }
+      
+      // 如果已经加载过，直接返回
+      if (contentDiv.dataset.loaded === 'true') {
+        return Promise.resolve();
+      }
+
+      try {
+        const response = await fetch(markdownFile);
+        if (!response.ok) {
+          throw new Error(`Failed to load ${markdownFile}: ${response.status} ${response.statusText}`);
+        }
+        
+        const markdownText = await response.text();
+        const { metadata, content: markdownContent } = parseFrontMatter(markdownText);
+        
+        // 存储步骤元数据
+        // 优先级：front-matter > tutorial-config.json > 默认值
+        // front-matter 可以只包含 title，其他字段从配置文件读取
+        if (metadata) {
+          // 合并元数据：front-matter 中的字段优先，如果不存在则使用配置文件中的值
+          stepMetadata[stepIndex] = {
+            title: metadata.title || stepMetadata[stepIndex]?.title || `步骤 ${stepIndex + 1}`,
+            shortTitle: metadata.shortTitle || metadata.title || stepMetadata[stepIndex]?.shortTitle || stepMetadata[stepIndex]?.title || `步骤 ${stepIndex + 1}`,
+            icon: metadata.icon || stepMetadata[stepIndex]?.icon || 'fa-circle',
+            order: metadata.order ? parseInt(metadata.order) : (stepMetadata[stepIndex]?.order || stepIndex + 1)
+          };
+        } else if (!stepMetadata[stepIndex]) {
+          // 如果没有 front-matter 且配置文件中也没有，使用默认值
+          stepMetadata[stepIndex] = {
+            title: `步骤 ${stepIndex + 1}`,
+            shortTitle: `步骤 ${stepIndex + 1}`,
+            icon: 'fa-circle',
+            order: stepIndex + 1
+          };
+        }
+        
+        // 如果是第一次加载，更新导航
+        if (stepMetadata.length === markdownFiles.length && stepMetadata.every(m => m)) {
+          totalSteps = stepMetadata.length;
+          generateSidebarNav();
+          generateStepIndicators();
+          attachNavEventListeners();
+        }
+        
+        if (contentDiv.dataset.loaded === 'true') {
+          return;
+        }
+        
+        if (typeof marked !== 'undefined') {
+          // 预处理 callout 语法（在 marked.parse 之前）
+          const processedContent = preprocessCallouts(markdownContent);
+          // 解析 Markdown
+          const html = marked.parse(processedContent);
+          contentDiv.innerHTML = html;
+          
+          // 对 callout 内容中的 Markdown 进行解析（因为 callout 内容在 HTML 中，marked.parse 不会解析它）
+          const calloutContents = contentDiv.querySelectorAll('.markdown-callout-content');
+          calloutContents.forEach(calloutContent => {
+            // 检查内容是否还是纯文本（未被解析）
+            const textContent = calloutContent.textContent.trim();
+            const innerHTML = calloutContent.innerHTML.trim();
+            // 如果内容看起来像 Markdown（包含换行但没有 HTML 标签），则解析它
+            if (textContent && !innerHTML.includes('<') && textContent.includes('\n')) {
+              calloutContent.innerHTML = marked.parse(textContent);
+            } else if (textContent && !innerHTML.includes('<p>') && !innerHTML.includes('<br>')) {
+              // 单行文本也需要解析（可能包含 Markdown 语法）
+              calloutContent.innerHTML = marked.parse(textContent);
+            }
+          });
+          
+          // 为标题添加 ID，用于目录锚点
+          const headings = contentDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
+          headings.forEach((heading, index) => {
+            if (!heading.id) {
+              const text = heading.textContent.trim();
+              const id = `heading-${stepIndex}-${index}-${text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\u4e00-\u9fa5-]/g, '')}`;
+              heading.id = id;
+            }
+          });
+          
+          // 添加样式类到渲染的内容
+          const highlightBlocks = contentDiv.querySelectorAll('blockquote');
+          highlightBlocks.forEach(block => {
+            if (block.textContent.includes('提示') || block.textContent.includes('安全提示') || block.textContent.includes('完成')) {
+              block.classList.add('tutorial-highlight');
+            }
+          });
+
+          const codeBlocks = contentDiv.querySelectorAll('pre');
+          codeBlocks.forEach(pre => {
+            pre.classList.add('tutorial-code-block');
+          });
+
+          const lists = contentDiv.querySelectorAll('ul, ol');
+          lists.forEach(list => {
+            list.classList.add('tutorial-list');
+          });
+          
+          contentDiv.dataset.loaded = 'true';
+          
+          // 如果当前步骤是激活的，更新目录
+          // 使用 setTimeout 确保 DOM 完全渲染后再生成目录
+          if (contentDiv.classList.contains('active')) {
+            setTimeout(() => {
+              updateTOC(stepIndex);
+            }, 100);
+          }
+        } else {
+          contentDiv.innerHTML = '<p>Markdown 解析器未加载，请刷新页面重试。</p>';
+        }
+      } catch (error) {
+        console.error('Error loading markdown:', error);
+        contentDiv.innerHTML = `<p>加载内容失败：${error.message}</p><p>请检查文件路径是否正确，或查看浏览器控制台获取更多信息。</p>`;
+      }
+    }
+
+    // 加载所有 markdown 内容
+    async function loadAllMarkdown() {
+      if (!tutorialConfig) {
+        await loadTutorialConfig();
+      }
+      
+      if (!tutorialConfig) {
+        return;
+      }
+      
+      // 先加载所有文件以获取元数据（如果 Markdown 文件中有 front-matter，会覆盖配置）
+      for (let i = 0; i < markdownFiles.length; i++) {
+        await loadMarkdownContent(i);
+      }
+      
+      // 确保所有步骤都已加载元数据后再加载内容
+      totalSteps = stepMetadata.length;
+      for (let i = 0; i < totalSteps; i++) {
+        await loadMarkdownContent(i);
+      }
+    }
+
+    // 绑定导航事件监听器
+    function attachNavEventListeners() {
+      // 重新获取元素引用
+      sidebarItems = document.querySelectorAll('.tutorial-sidebar-nav-item');
+      stepIndicators = document.querySelectorAll('.tutorial-step');
+      
+      // 侧边栏导航
+      sidebarItems.forEach((item, index) => {
+        item.addEventListener('click', () => {
+          updateStep(index);
+          // 移动端点击后关闭菜单
+          if (window.innerWidth <= 768 && sidebar) {
+            sidebar.classList.remove('open');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            if (sidebarOverlay) {
+              sidebarOverlay.classList.remove('show');
+            }
+          }
+        });
+      });
+
+      // 步骤指示器导航
+      stepIndicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+          updateStep(index);
+        });
+      });
+    }
+
+    // 生成并更新目录
+    function updateTOC(stepIndex) {
+      const tocNav = document.getElementById('tutorial-toc-nav');
+      if (!tocNav) return;
+      
+      const activeContent = stepContents[stepIndex];
+      
+      if (!activeContent) {
+        tocNav.innerHTML = '<div class="tutorial-toc-loading">正在生成目录...</div>';
+        return;
+      }
+      
+      // 如果内容还未加载，等待加载完成后再生成
+      if (activeContent.dataset.loaded !== 'true') {
+        tocNav.innerHTML = '<div class="tutorial-toc-loading">正在加载内容...</div>';
+        // 等待内容加载后再次尝试
+        const checkInterval = setInterval(() => {
+          if (activeContent.dataset.loaded === 'true') {
+            clearInterval(checkInterval);
+            updateTOC(stepIndex);
+          }
+        }, 100);
+        // 最多等待 5 秒
+        setTimeout(() => clearInterval(checkInterval), 5000);
+        return;
+      }
+
+      const headings = activeContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      
+      if (headings.length === 0) {
+        tocNav.innerHTML = '<div class="tutorial-toc-loading">暂无目录</div>';
+        return;
+      }
+
+      let tocHTML = '<ul>';
+      let stack = []; // 用于跟踪嵌套级别
+      
+      headings.forEach((heading) => {
+        const level = parseInt(heading.tagName.substring(1));
+        const id = heading.id || `heading-${stepIndex}-${Math.random().toString(36).substr(2, 9)}`;
+        heading.id = id;
+        const text = heading.textContent.trim();
+        
+        // 关闭之前的嵌套级别
+        while (stack.length > 0 && stack[stack.length - 1] >= level) {
+          tocHTML += '</ul></li>';
+          stack.pop();
+        }
+        
+        // 开始新的列表项
+        tocHTML += '<li><a href="#' + id + '">' + text + '</a>';
+        
+        // 如果有子标题，开始嵌套列表
+        if (level < 6) {
+          tocHTML += '<ul>';
+          stack.push(level);
+        } else {
+          tocHTML += '</li>';
+        }
+      });
+      
+      // 关闭所有未关闭的标签
+      while (stack.length > 0) {
+        tocHTML += '</ul></li>';
+        stack.pop();
+      }
+      
+      tocHTML += '</ul>';
+      tocNav.innerHTML = tocHTML;
+
+      // 添加平滑滚动
+      tocNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').substring(1);
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // 更新活动状态
+            tocNav.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+            link.classList.add('active');
+          }
+        });
+      });
+
+      // 监听滚动，高亮当前章节
+      const tutorialMain = document.querySelector('.tutorial-main');
+      if (tutorialMain) {
+        // 清理之前的 observer
+        if (window.tocObserver) {
+          window.tocObserver.disconnect();
+        }
+        
+        window.tocObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              if (id) {
+                tocNav.querySelectorAll('a').forEach(a => {
+                  a.classList.remove('active');
+                  if (a.getAttribute('href') === '#' + id) {
+                    a.classList.add('active');
+                  }
+                });
+              }
+            }
+          });
+        }, {
+          root: tutorialMain,
+          rootMargin: '-100px 0px -60% 0px',
+          threshold: 0
+        });
+
+        headings.forEach(heading => {
+          window.tocObserver.observe(heading);
+        });
+      }
+    }
+
+    function updateStep(step) {
+      if (step < 0 || step >= totalSteps) {
+        return;
+      }
+
+      currentStep = step;
+
+      // 更新内容显示
+      stepContents.forEach((content, index) => {
+        content.classList.toggle('active', index === step);
+      });
+      
+      // 如果当前步骤内容已加载，立即更新目录
+      const activeContent = stepContents[step];
+      if (activeContent && activeContent.dataset.loaded === 'true') {
+        setTimeout(() => {
+          updateTOC(step);
+        }, 100);
+      }
+
+      // 更新步骤指示器
+      if (stepIndicators.length > 0) {
+        stepIndicators.forEach((indicator, index) => {
+          indicator.classList.remove('active', 'completed');
+          if (index < step) {
+            indicator.classList.add('completed');
+          } else if (index === step) {
+            indicator.classList.add('active');
+          }
+        });
+      }
+
+      // 更新侧边栏
+      if (sidebarItems.length > 0) {
+        sidebarItems.forEach((item, index) => {
+          item.classList.toggle('active', index === step);
+        });
+      }
+
+      // 更新按钮状态
+      const prevBtnElement = document.getElementById('prev-btn');
+      const nextBtnElement = document.getElementById('next-btn');
+      
+      if (prevBtnElement) prevBtnElement.disabled = step === 0;
+      if (nextBtnElement) {
+        nextBtnElement.innerHTML = step === totalSteps - 1 
+          ? '完成 <i class="fas fa-check"></i>' 
+          : '下一步 <i class="fas fa-arrow-right"></i>';
+      }
+
+      // 加载当前步骤的内容
+      loadMarkdownContent(step).then(() => {
+        // 内容加载完成后，确保目录已更新
+        if (stepContents[step] && stepContents[step].dataset.loaded === 'true') {
+          setTimeout(() => {
+            updateTOC(step);
+          }, 150);
+        }
+      });
+    }
+
+    // 绑定按钮事件监听器（按钮是动态生成的，需要延迟绑定）
+    function bindButtonEvents() {
+      const prevBtnElement = document.getElementById('prev-btn');
+      const nextBtnElement = document.getElementById('next-btn');
+      
+      if (prevBtnElement) {
+        // 移除旧的事件监听器（通过克隆节点）
+        const newPrevBtn = prevBtnElement.cloneNode(true);
+        prevBtnElement.parentNode.replaceChild(newPrevBtn, prevBtnElement);
+        newPrevBtn.addEventListener('click', () => {
+          if (currentStep > 0) {
+            updateStep(currentStep - 1);
+          }
+        });
+      }
+
+      if (nextBtnElement) {
+        // 移除旧的事件监听器（通过克隆节点）
+        const newNextBtn = nextBtnElement.cloneNode(true);
+        nextBtnElement.parentNode.replaceChild(newNextBtn, nextBtnElement);
+        newNextBtn.addEventListener('click', () => {
+          if (currentStep < totalSteps - 1) {
+            updateStep(currentStep + 1);
+          } else {
+            // 完成教程，返回首页
+            window.location.href = 'index.html';
+          }
+        });
+      }
+    }
+
+    // 回到顶部按钮
+    const backToTopBtn = document.getElementById('back-to-top');
+    
+    if (backToTopBtn) {
+      // 监听滚动，显示/隐藏按钮
+      const handleScroll = () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        if (scrollTop > 300) {
+          backToTopBtn.classList.add('show');
+        } else {
+          backToTopBtn.classList.remove('show');
+        }
+      };
+      
+      // 监听窗口滚动
+      window.addEventListener('scroll', handleScroll);
+      
+      // 页面加载时检查一次
+      handleScroll();
+      
+      // 点击回到顶部
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    // 移动端菜单切换
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const sidebar = document.querySelector('.tutorial-sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    
+    if (mobileMenuToggle && sidebar) {
+      const toggleSidebar = () => {
+        sidebar.classList.toggle('open');
+        if (sidebarOverlay) {
+          sidebarOverlay.classList.toggle('show');
+        }
+      };
+
+      mobileMenuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleSidebar();
+      });
+
+      // 点击遮罩层关闭侧边栏
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', () => {
+          if (window.innerWidth <= 768) {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('show');
+          }
+        });
+      }
+
+      // 点击侧边栏外部时关闭侧边栏（移动端）
+      document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768) {
+          if (sidebar.classList.contains('open')) {
+            if (!sidebar.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+              sidebar.classList.remove('open');
+              if (sidebarOverlay) {
+                sidebarOverlay.classList.remove('show');
+              }
+            }
+          }
+        }
+      });
+
+      // 点击侧边栏导航项后关闭菜单（移动端）
+      if (sidebarItems && sidebarItems.length > 0) {
+        sidebarItems.forEach(item => {
+          item.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+              sidebar.classList.remove('open');
+              if (sidebarOverlay) {
+                sidebarOverlay.classList.remove('show');
+              }
+            }
+          });
+        });
+      }
+
+      // 窗口大小改变时，如果切换到桌面端，关闭移动端菜单
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+          sidebar.classList.remove('open');
+          if (sidebarOverlay) {
+            sidebarOverlay.classList.remove('show');
+          }
+        }
+      });
+    }
+
+    // 页面加载时先加载配置，然后加载所有 markdown 内容
+    // 确保 marked.js 和 DOM 都已加载
+    async function initializeTutorial() {
+      try {
+        // 先加载配置文件
+        await loadTutorialConfig();
+        
+        if (!tutorialConfig || stepMetadata.length === 0) {
+          console.error('配置文件加载失败或步骤元数据为空');
+          if (tutorialContent) {
+            tutorialContent.innerHTML = `<div class="tutorial-header"><h1>picx-images-hosting 部署教程</h1></div><p>配置文件加载失败或步骤元数据为空。请检查控制台获取更多信息。</p>`;
+          }
+          return;
+        }
+        
+        console.log('配置文件加载成功，步骤数量:', stepMetadata.length);
+        
+        // 生成导航（确保 stepMetadata 已填充）
+        if (stepMetadata.length > 0) {
+          generateSidebarNav();
+          generateStepIndicators();
+          attachNavEventListeners();
+        }
+        
+        // 等待 marked.js 加载
+        if (typeof marked !== 'undefined') {
+          await loadAllMarkdown();
+        } else {
+          // 如果 marked.js 还没加载，等待一下
+          setTimeout(async () => {
+            if (typeof marked !== 'undefined') {
+              await loadAllMarkdown();
+            } else {
+              console.error('marked.js 未加载');
+              if (stepContents.length > 0) {
+                stepContents.forEach(content => {
+                  if (content) {
+                    content.innerHTML = '<p>Markdown 解析器加载失败，请刷新页面重试。</p>';
+                  }
+                });
+              }
+            }
+          }, 500);
+        }
+      } catch (error) {
+        console.error('初始化教程失败:', error);
+        if (tutorialContent) {
+          tutorialContent.innerHTML = `<div class="tutorial-header"><h1>picx-images-hosting 部署教程</h1></div><p>初始化失败：${error.message}</p>`;
+        }
+      }
+    }
+
+    // 确保所有元素都已加载
+    function startInitialization() {
+      console.log('开始初始化教程...');
+      console.log('tutorialContent:', tutorialContent);
+      console.log('sidebarNav:', sidebarNav);
+      console.log('stepsContainer:', stepsContainer);
+      
+      if (!tutorialContent || !sidebarNav || !stepsContainer) {
+        console.error('必要的DOM元素未找到');
+        setTimeout(startInitialization, 100);
+        return;
+      }
+      
+      initializeTutorial();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startInitialization);
+    } else {
+      // DOM 已加载，但可能需要等待一下确保所有元素都准备好
+      setTimeout(startInitialization, 100);
+    }
+  </script>
+</body>
+</html>
+

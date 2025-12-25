@@ -1,0 +1,183 @@
+/* Tutorial Header and Step Indicator Styles */
+/* 修复导航栏错位问题 - 移除tutorial-header的margin-left */
+.tutorial-header {
+  background: #fff;
+  border-bottom: 1px solid #d0d7de;
+  padding: 12px 0;
+  /* 移除这行：margin-left: 280px; */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* 修复桌面端显示折叠图标的问题 */
+.tutorial-mobile-menu-toggle {
+  display: none; /* 只在移动端显示，所以默认隐藏 */
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1001;
+  background: #24292f;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 桌面端默认样式 - 内容区域和目录 */
+.tutorial-header-inner {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.tutorial-header h1 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+  color: #24292f;
+}
+
+.tutorial-steps {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  position: relative;
+  padding: 0;
+}
+
+.tutorial-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid #d0d7de;
+  color: #57606a;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+  margin: 0 10px;
+}
+
+/* 步骤圆圈图标 - 第一个span - 大圆圈显示序号 */
+.tutorial-step > span:first-child {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  background: #fff;
+  border: 2px solid #d0d7de;
+  color: #8c959f;
+  transition: all 0.2s ease;
+}
+
+/* 当前步骤 - 大圆圈，黑色数字，深色边框 */
+.tutorial-step.active > span:first-child {
+  background: #fff;
+  border-color: #24292f;
+  border-width: 2px;
+  color: #24292f;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* 已完成步骤 - 大绿色圆圈，白色对勾 */
+.tutorial-step.completed > span:first-child {
+  background: #1a7f37;
+  border-color: #1a7f37;
+  color: transparent;
+  font-size: 0;
+  position: relative;
+}
+
+.tutorial-step.completed > span:first-child::before {
+  content: '✓';
+  position: absolute;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 步骤文字 - 第二个span */
+.tutorial-step > span:last-child {
+  color: #57606a;
+  transition: all 0.2s ease;
+}
+
+/* 当前步骤文字 - 深色，加粗 */
+.tutorial-step.active > span:last-child {
+  color: #24292f;
+  font-weight: 600;
+}
+
+/* 已完成步骤文字 - 绿色 */
+.tutorial-step.completed > span:last-child {
+  color: #1a7f37;
+}
+
+/* 未完成步骤文字 - 浅灰色 */
+.tutorial-step:not(.active):not(.completed) > span:last-child {
+  color: #8c959f;
+}
+
+/* 步骤之间的连接线 - 从按钮右边缘开始 */
+.tutorial-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 20px;
+  height: 2px;
+  background: #d0d7de;
+  z-index: 0;
+  transform: translateY(-50%);
+}
+
+/* 已完成步骤后的连接线 - 绿色 */
+.tutorial-step.completed:not(:last-child)::after {
+  background: #1a7f37;
+}
+
+.tutorial-step:hover {
+  background: #f6f8fa;
+}
+
+.tutorial-step.active {
+  background: #f0f4ff;
+  border-color: #667eea;
+  border-width: 2px;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15), 0 2px 4px rgba(102, 126, 234, 0.1);
+}
+
+.tutorial-step.completed {
+  background: #fff;
+  border-color: #d0d7de;
+}
+

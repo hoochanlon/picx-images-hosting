@@ -52,6 +52,12 @@
         <i class="fas fa-sync"></i>
       </label>
       <button id="reload-btn" type="button" style="display: none;"></button>
+      <a href="tutorial.html" class="icon-label">
+        <i class="fas fa-book"></i>
+      </a>
+      <a id="github-link" href="#" target="_blank" rel="noopener noreferrer" class="icon-label">
+        <i class="fab fa-github"></i>
+      </a>
     </div>
   </header>
 
@@ -1136,6 +1142,12 @@
       applyFilter();
     });
     
+    // 设置 GitHub 链接
+    const githubLink = document.getElementById('github-link');
+    if (githubLink) {
+      githubLink.href = config.GITHUB_REPO_URL || 'https://github.com/hoochanlon/picx-images-hosting';
+    }
+
     // 标题点击完全刷新
     const brandTitle = document.getElementById('brand-title');
     brandTitle.addEventListener('click', async () => {

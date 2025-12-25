@@ -1,0 +1,345 @@
+/* Tutorial Responsive Styles */
+/* 响应式设计 - 中等屏幕 */
+@media (max-width: 1400px) {
+  .tutorial-content-wrapper {
+    max-width: 100%;
+    padding: 40px 20px;
+  }
+
+  .tutorial-toc {
+    width: 260px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .tutorial-content-wrapper {
+    padding: 30px 15px;
+    gap: 30px;
+  }
+
+  .tutorial-toc {
+    width: 240px;
+  }
+
+  .tutorial-content {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 968px) {
+  .tutorial-content-wrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .tutorial-toc {
+    display: none;
+  }
+
+  .tutorial-content {
+    max-width: 100%;
+  }
+}
+
+/* 在移动端媒体查询中才显示菜单按钮 */
+@media (max-width: 768px) {
+  .tutorial-mobile-menu-toggle {
+    display: flex;
+  }
+  
+  .tutorial-mobile-menu-toggle:hover {
+    background: #2d3339;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .tutorial-mobile-menu-toggle:active {
+    transform: scale(0.95);
+  }
+  
+  .tutorial-mobile-menu-toggle i {
+    font-size: 1.1rem;
+  }
+  
+  /* 移动端遮罩层 */
+  .tutorial-sidebar-overlay {
+    display: block;
+  }
+  
+  .tutorial-sidebar {
+    width: 280px;
+    max-width: 85vw;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .tutorial-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .tutorial-sidebar.open ~ .tutorial-sidebar-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  
+  .tutorial-sidebar-header h2 {
+    font-size: 1.1rem;
+  }
+  
+  .tutorial-sidebar-nav {
+    padding: 12px 8px;
+  }
+  
+  .tutorial-sidebar-nav-item {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    margin: 2px 4px;
+  }
+  
+  .tutorial-sidebar-footer {
+    padding: 16px;
+  }
+  
+  .tutorial-sidebar-footer a {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+  
+  .tutorial-main {
+    margin-left: 0;
+    width: 100%;
+    padding-bottom: 20px;
+  }
+  
+  .tutorial-header {
+    margin-left: 0;
+    padding: 60px 15px 20px;
+    position: relative;
+  }
+  
+  .tutorial-header h1 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .tutorial-steps {
+    flex-wrap: wrap;
+    gap: 0;
+    justify-content: center;
+    padding: 15px 0;
+  }
+  
+  .tutorial-step {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+    flex: 0 0 auto;
+    min-width: 0;
+    margin: 0 4px;
+    gap: 8px;
+  }
+  
+  .tutorial-step > span:first-child {
+    width: 32px;
+    height: 32px;
+    font-size: 0.95rem;
+  }
+  
+  .tutorial-step.active > span:first-child {
+    font-size: 1rem;
+  }
+  
+  .tutorial-step.completed > span:first-child::before {
+    font-size: 1.1rem;
+  }
+  
+  .tutorial-step:not(:last-child)::after {
+    left: 100%;
+    width: 8px;
+  }
+  
+  .tutorial-content-wrapper {
+    padding: 20px 15px;
+    margin: 0;
+  }
+  
+  .tutorial-content {
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .tutorial-step-content {
+    padding: 15px 0;
+    min-height: calc(100vh - 300px);
+  }
+  
+  .tutorial-step-content h1 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+  }
+  
+  .tutorial-step-content h2 {
+    font-size: 1.2rem;
+    margin: 15px 0 12px;
+  }
+  
+  .tutorial-step-content h3 {
+    font-size: 1.1rem;
+    margin: 12px 0 10px;
+  }
+  
+  .tutorial-step-content p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  .tutorial-actions {
+    margin-top: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    border-top: 1px solid #d0d7de;
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .tutorial-toc {
+    display: none;
+  }
+
+  .tutorial-back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tutorial-header {
+    padding: 60px 10px 15px;
+  }
+
+  .tutorial-header h1 {
+    font-size: 1rem;
+  }
+
+  .tutorial-steps {
+    gap: 0;
+    padding: 10px 0;
+  }
+
+  .tutorial-step {
+    font-size: 0.7rem;
+    padding: 5px 8px;
+    margin: 0 3px;
+    gap: 6px;
+  }
+
+  .tutorial-step > span:first-child {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+
+  .tutorial-step.active > span:first-child {
+    font-size: 0.9rem;
+  }
+
+  .tutorial-step.completed > span:first-child::before {
+    font-size: 1rem;
+  }
+
+  .tutorial-step:not(:last-child)::after {
+    left: 100%;
+    width: 6px;
+  }
+
+  .tutorial-step span:last-child {
+    display: none;
+  }
+
+  .tutorial-content-wrapper {
+    padding: 15px 10px;
+  }
+
+  .tutorial-step-content {
+    font-size: 0.9rem;
+  }
+
+  .tutorial-step-content h1 {
+    font-size: 1.3rem;
+  }
+
+  .tutorial-step-content h2 {
+    font-size: 1.1rem;
+  }
+
+  .tutorial-step-content h3 {
+    font-size: 1rem;
+  }
+
+  .tutorial-actions {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .tutorial-btn {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+/* 回到顶部按钮 */
+.tutorial-back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: #667eea;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.tutorial-back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.tutorial-back-to-top:hover {
+  background: #5568d3;
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+  transform: translateY(-2px);
+}
+
+.tutorial-back-to-top:active {
+  transform: translateY(0);
+}
+

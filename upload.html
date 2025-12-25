@@ -15,10 +15,18 @@
       <span>🖼️</span>
       <span id="upload-title" style="cursor: pointer;">上传管理</span>
     </h1>
-    <a href="index.html" class="back-link">
-      <i class="fas fa-arrow-left"></i>
-      返回首页
-    </a>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="tutorial.html" class="icon-label">
+        <i class="fas fa-book"></i>
+      </a>
+      <a id="github-link" href="#" target="_blank" rel="noopener noreferrer" class="icon-label">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        返回首页
+      </a>
+    </div>
   </header>
 
   <div class="upload-container">
@@ -157,8 +165,15 @@
     const config = window.APP_CONFIG || {
       VERCEL_API_BASE: 'https://picx-images-hosting-brown.vercel.app',
       CUSTOM_DOMAINS: ['blog.hoochanlon.moe'],
-      GITHUB_PAGES_PATTERN: /\.github\.io$/
+      GITHUB_PAGES_PATTERN: /\.github\.io$/,
+      GITHUB_REPO_URL: 'https://github.com/hoochanlon/picx-images-hosting'
     };
+    
+    // 设置 GitHub 链接
+    const githubLink = document.getElementById('github-link');
+    if (githubLink) {
+      githubLink.href = config.GITHUB_REPO_URL || 'https://github.com/hoochanlon/picx-images-hosting';
+    }
     
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const isVercelDev = isLocalhost && (window.location.port === '3000' || window.location.port === '3001');
