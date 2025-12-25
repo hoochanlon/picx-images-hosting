@@ -21,8 +21,8 @@ async function apiRequest(payload) {
   try {
     // 对于所有写操作（上传、删除），添加认证token
     if ((payload.action === 'delete' || payload.action === 'upload') && window.uploadAuth) {
-      // 优先使用 GitHub token
-      const githubToken = window.uploadAuth.getGitHubToken();
+      // 优先使用 GitHub token（如果存在该方法）
+      const githubToken = window.uploadAuth.getGitHubToken && window.uploadAuth.getGitHubToken();
       if (githubToken) {
         payload.githubToken = githubToken;
       } else {

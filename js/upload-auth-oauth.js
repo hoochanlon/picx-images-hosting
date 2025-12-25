@@ -211,10 +211,30 @@ function showAuthDialog(callback) {
           callback(true);
           return;
         }
+      } else if (response.status === 401) {
+        // 密码错误，不回退到本地验证
+        const errorData = await response.json().catch(() => ({}));
+        passwordInput.value = '';
+        passwordInput.style.borderColor = '#cf222e';
+        passwordInput.placeholder = errorData.error || '密码错误，请重试';
+        passwordInput.focus();
+        setTimeout(() => {
+          passwordInput.style.borderColor = isDark ? 'rgba(48, 54, 61, 0.8)' : '#d0d7de';
+          passwordInput.placeholder = '请输入密码';
+        }, 2000);
+        
+        // 恢复按钮
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = '确认';
+        return;
+      } else if (response.status === 500) {
+        // 服务器未配置密码，回退到本地验证
+        const errorData = await response.json().catch(() => ({}));
+        console.warn('Server password not configured, falling back to local config:', errorData.error);
+      } else {
+        // 其他错误，回退到本地验证
+        console.warn('API password verification failed, falling back to local config:', response.status);
       }
-      
-      // API 验证失败，回退到本地配置验证
-      console.warn('API password verification failed, falling back to local config');
     } catch (err) {
       // API 请求失败，回退到本地配置验证
       console.warn('API password verification error, falling back to local config:', err);
@@ -328,14 +348,20 @@ function getAuthStatus() {
 }
 
 // 导出到全局作用域
-window.uploadAuth = {
-  isAuthenticated: isAuthenticated,
-  requireAuth: requireAuth,
-  clearAuth: clearAuth,
-  getAuthToken: getAuthToken,
-  getAuthStatus: getAuthStatus,
-  showAuthDialog: showAuthDialog
-};
+// 如果 upload-auth-github.js 已经设置了 window.uploadAuth，则不再覆盖
+// 否则设置密码认证的 uploadAuth
+if (!window.uploadAuth || !window.uploadAuth.getGitHubToken) {
+  window.uploadAuth = {
+    isAuthenticated: isAuthenticated,
+    requireAuth: requireAuth,
+    clearAuth: clearAuth,
+    getAuthToken: getAuthToken,
+    getAuthStatus: getAuthStatus,
+    showAuthDialog: showAuthDialog,
+    // 添加一个空的 getGitHubToken 方法，避免调用错误
+    getGitHubToken: function() { return null; }
+  };
+}
 
 })();
 
