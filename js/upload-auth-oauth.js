@@ -231,6 +231,7 @@ function showAuthDialog(callback) {
         // 服务器未配置密码（404 表示未找到配置），允许回退到本地验证
         const errorData = await response.json().catch(() => ({}));
         console.log('Server password not configured, using local config:', errorData.error);
+        // 设置标志，表示可以使用本地验证
         // 继续执行后面的本地验证逻辑
       } else {
         // 其他错误（500等），可能是服务器错误，但如果有 Vercel 配置，不应该回退
