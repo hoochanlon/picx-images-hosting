@@ -22,8 +22,10 @@
   justify-content: space-between;
   margin-top: 40px;
   padding-top: 20px;
+  padding-bottom: 20px;
   border-top: 1px solid #d0d7de;
   flex-shrink: 0;
+  /* 保持页脚高度和间距不变 */
 }
 
 .tutorial-btn {

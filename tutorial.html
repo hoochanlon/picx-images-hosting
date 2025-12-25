@@ -19,7 +19,7 @@
       <nav class="tutorial-sidebar-nav" id="tutorial-sidebar-nav">
         <!-- 将从 front-matter 动态生成 -->
       </nav>
-      <div class="tutorial-sidebar-content markdown-body" id="tutorial-sidebar-content">
+      <div class="tutorial-sidebar-content" id="tutorial-sidebar-content">
         <!-- Markdown 内容将在这里渲染 -->
       </div>
       <div class="tutorial-sidebar-footer">
@@ -322,78 +322,126 @@
       stepIndicators = document.querySelectorAll('.tutorial-step');
     }
 
-    // 预处理 GitHub callout 语法
+    // 预处理 Docusaurus callout 语法
+    // 支持格式: :::note 或 :::note Title
     function preprocessCallouts(text) {
-      // 按行分割处理
       const lines = text.split('\n');
       const result = [];
-      let inCallout = false;
-      let calloutType = 'note';
-      let calloutContent = [];
+      let i = 0;
       
-      for (let i = 0; i < lines.length; i++) {
+      while (i < lines.length) {
         const line = lines[i];
         
-        // 检测 callout 开始: > [!type]（不区分大小写，允许前后空格）
-        const calloutStartMatch = line.match(/^>\s*\[!\s*([^\]]+)\s*\]\s*$/i);
+        // 检测 Docusaurus callout 开始: :::type 或 :::type Title（必须整行匹配）
+        const trimmedLine = line.trim();
+        const calloutStartMatch = trimmedLine.match(/^:::\s*([a-zA-Z]+)(?:\s+(.+))?$/);
+        
         if (calloutStartMatch) {
-          const typeStr = calloutStartMatch[1].trim().toLowerCase();
-          if (['note', 'tip', 'important', 'warning', 'caution'].includes(typeStr)) {
-            // 开始新的 callout
-            if (inCallout) {
-              // 先结束之前的 callout
-              result.push(renderCallout(calloutType, calloutContent.join('\n')));
-              calloutContent = [];
+          const calloutType = calloutStartMatch[1].trim().toLowerCase();
+          const customTitle = calloutStartMatch[2] ? calloutStartMatch[2].trim() : '';
+          
+          // 支持的 callout 类型（映射到现有样式）
+          const supportedTypes = {
+            'note': 'note',
+            'tip': 'tip',
+            'info': 'note',
+            'important': 'important',
+            'warning': 'warning',
+            'danger': 'caution',
+            'caution': 'caution'
+          };
+          
+          if (supportedTypes.hasOwnProperty(calloutType)) {
+            const mappedType = supportedTypes[calloutType];
+            const contentLines = [];
+            i++; // 跳过 callout 开始行
+            
+            // 收集内容直到遇到 ::: 结束标记
+            while (i < lines.length) {
+              const contentLine = lines[i];
+              const trimmedContentLine = contentLine.trim();
+              
+              // 检测 callout 结束: :::（必须整行匹配）
+              if (trimmedContentLine === ':::') {
+                i++; // 跳过结束标记
+                break;
+              }
+              
+              // 收集内容行（包括空行）
+              contentLines.push(contentLine);
+              i++;
             }
-            inCallout = true;
-            calloutType = typeStr;
+            
+            // 渲染 callout
+            const content = contentLines.join('\n').trim();
+            if (content) {
+              result.push(renderCallout(mappedType, content, customTitle));
+            }
+            
+            // 继续处理下一行（不添加当前行，因为已经处理完了）
             continue;
           }
         }
         
-        // 如果在 callout 中
-        if (inCallout) {
-          // 检测 callout 内容行: > content
-          const contentMatch = line.match(/^>\s*(.*)$/);
-          if (contentMatch) {
-            const contentLine = contentMatch[1];
-            calloutContent.push(contentLine);
-            continue;
-          } else if (line.trim() === '') {
-            // 空行：如果 callout 中已经有内容，保留空行；否则忽略
-            if (calloutContent.length > 0) {
-              calloutContent.push('');
-            }
-            continue;
-          } else {
-            // 遇到非 > 开头的非空行，callout 结束
-            result.push(renderCallout(calloutType, calloutContent.join('\n')));
-            calloutContent = [];
-            inCallout = false;
-            // 继续处理当前行
-            result.push(line);
-          }
-        } else {
-          result.push(line);
-        }
-      }
-      
-      // 处理最后一个 callout
-      if (inCallout) {
-        result.push(renderCallout(calloutType, calloutContent.join('\n')));
+        // 不是 callout，直接添加原行
+        result.push(line);
+        i++;
       }
       
       return result.join('\n');
     }
     
-    // 渲染 callout HTML（内容保持为 Markdown，稍后由 marked.parse 统一解析）
-    function renderCallout(type, content) {
-      const processedContent = content.trim();
-      // 内容保持为 Markdown 格式，让 marked.parse 统一解析
-      return `\n<div class="markdown-callout markdown-callout-${type}">\n<div class="markdown-callout-header">\n<span class="markdown-callout-icon"></span>\n<span class="markdown-callout-title">${getCalloutTitle(type)}</span>\n</div>\n<div class="markdown-callout-content">\n${processedContent}\n</div>\n</div>\n`;
+    // 存储 callout 数据，用于后续渲染
+    const calloutStore = [];
+    let calloutCounter = 0;
+    
+    // 渲染 callout HTML（使用占位符，避免 marked.js 解析）
+    function renderCallout(type, content, customTitle = '') {
+      if (!content || !content.trim()) {
+        return '';
+      }
+      
+      // 解析内容为 HTML
+      let contentHTML = content.trim();
+      if (typeof marked !== 'undefined') {
+        try {
+          contentHTML = marked.parse(content.trim());
+        } catch (e) {
+          console.warn('Failed to parse callout content:', e);
+          contentHTML = content.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+      }
+      
+      // 获取标题（自定义标题优先，否则使用默认标题）
+      const title = customTitle || getCalloutTitle(type);
+      
+      // 生成占位符
+      const placeholder = `<!-- CALLOUT_PLACEHOLDER_${calloutCounter} -->`;
+      calloutStore.push({
+        type,
+        title,
+        content: contentHTML
+      });
+      calloutCounter++;
+      
+      return placeholder;
     }
     
-    // 获取 callout 标题（使用英文，与 GitHub 一致）
+    // 替换占位符为实际 HTML
+    function replaceCalloutPlaceholders(html) {
+      let result = html;
+      calloutStore.forEach((callout, index) => {
+        const placeholder = `<!-- CALLOUT_PLACEHOLDER_${index} -->`;
+        const calloutHTML = `\n<div class="markdown-callout markdown-callout-${callout.type}">\n<div class="markdown-callout-header">\n<span class="markdown-callout-icon"></span>\n<span class="markdown-callout-title">${callout.title}</span>\n</div>\n<div class="markdown-callout-content">${callout.content}</div>\n</div>\n`;
+        result = result.replace(placeholder, calloutHTML);
+      });
+      // 清空存储，准备下次使用
+      calloutStore.length = 0;
+      calloutCounter = 0;
+      return result;
+    }
+    
+    // 获取 callout 默认标题
     function getCalloutTitle(type) {
       const titles = {
         note: 'Note',
@@ -409,7 +457,8 @@
     if (typeof marked !== 'undefined') {
       marked.setOptions({
         breaks: true,
-        gfm: true
+        gfm: true,
+        html: true
       });
     }
 
@@ -473,23 +522,12 @@
           // 预处理 callout 语法（在 marked.parse 之前）
           const processedContent = preprocessCallouts(markdownContent);
           // 解析 Markdown
-          const html = marked.parse(processedContent);
+          let html = marked.parse(processedContent);
+          // 替换 callout 占位符为实际 HTML
+          html = replaceCalloutPlaceholders(html);
           contentDiv.innerHTML = html;
           
-          // 对 callout 内容中的 Markdown 进行解析（因为 callout 内容在 HTML 中，marked.parse 不会解析它）
-          const calloutContents = contentDiv.querySelectorAll('.markdown-callout-content');
-          calloutContents.forEach(calloutContent => {
-            // 检查内容是否还是纯文本（未被解析）
-            const textContent = calloutContent.textContent.trim();
-            const innerHTML = calloutContent.innerHTML.trim();
-            // 如果内容看起来像 Markdown（包含换行但没有 HTML 标签），则解析它
-            if (textContent && !innerHTML.includes('<') && textContent.includes('\n')) {
-              calloutContent.innerHTML = marked.parse(textContent);
-            } else if (textContent && !innerHTML.includes('<p>') && !innerHTML.includes('<br>')) {
-              // 单行文本也需要解析（可能包含 Markdown 语法）
-              calloutContent.innerHTML = marked.parse(textContent);
-            }
-          });
+          // callout 内容已在 renderCallout 中解析，无需再次处理
           
           // 为标题添加 ID，用于目录锚点
           const headings = contentDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');

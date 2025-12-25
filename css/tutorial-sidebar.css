@@ -72,7 +72,7 @@
   text-decoration: none;
   border-radius: 8px;
   margin: 2px 8px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s ease, color 0.2s ease;
   cursor: pointer;
   position: relative;
   font-size: 0.95rem;
@@ -82,11 +82,6 @@
 .tutorial-sidebar-nav-item:hover {
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
-  transform: translateX(2px);
-}
-
-.tutorial-sidebar-nav-item:active {
-  transform: translateX(2px) scale(0.98);
 }
 
 .tutorial-sidebar-nav-item.active {
@@ -94,6 +89,8 @@
   color: #667eea;
   font-weight: 500;
   box-shadow: inset 0 0 0 1px rgba(102, 126, 234, 0.2);
+  /* 确保 active 状态也没有任何变换 */
+  transform: none;
 }
 
 .tutorial-sidebar-nav-item.active::before {
@@ -123,79 +120,81 @@
   text-overflow: ellipsis;
 }
 
-/* 侧边栏 Markdown 内容区域 */
+/* 侧边栏 Markdown 内容区域 - 容器样式 */
 .tutorial-sidebar-content {
-  flex: 0 0 auto;
-  padding: 16px 20px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 40vh;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 0;
+  display: none; /* 隐藏侧边栏内容区域，只显示导航项 */
 }
 
-/* 侧边栏 Markdown 渲染样式 - 类似 GitHub，适配深色背景 */
-.tutorial-sidebar .markdown-body {
+/* 侧边栏 Markdown 内容样式 - 类似 GitHub，适配深色背景 */
+.tutorial-sidebar-content > * {
   font-size: 0.875rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.85);
 }
 
-.tutorial-sidebar .markdown-body h1,
-.tutorial-sidebar .markdown-body h2,
-.tutorial-sidebar .markdown-body h3,
-.tutorial-sidebar .markdown-body h4,
-.tutorial-sidebar .markdown-body h5,
-.tutorial-sidebar .markdown-body h6 {
+/* 重置第一个子元素的 margin-top，避免与容器 padding 重叠 */
+.tutorial-sidebar-content > *:first-child {
+  margin-top: 0;
+}
+
+.tutorial-sidebar-content > *:last-child {
+  margin-bottom: 0;
+}
+
+.tutorial-sidebar-content h1,
+.tutorial-sidebar-content h2,
+.tutorial-sidebar-content h3,
+.tutorial-sidebar-content h4,
+.tutorial-sidebar-content h5,
+.tutorial-sidebar-content h6 {
   margin: 16px 0 8px;
   font-weight: 600;
   line-height: 1.25;
   color: #fff;
 }
 
-.tutorial-sidebar .markdown-body h1 {
+.tutorial-sidebar-content h1 {
   font-size: 1.25rem;
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.tutorial-sidebar .markdown-body h2 {
+.tutorial-sidebar-content h2 {
   font-size: 1.125rem;
   padding-bottom: 6px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.tutorial-sidebar .markdown-body h3 {
+.tutorial-sidebar-content h3 {
   font-size: 1rem;
 }
 
-.tutorial-sidebar .markdown-body h4 {
+.tutorial-sidebar-content h4 {
   font-size: 0.9375rem;
 }
 
-.tutorial-sidebar .markdown-body p {
+.tutorial-sidebar-content p {
   margin: 0 0 12px;
   color: rgba(255, 255, 255, 0.85);
 }
 
-.tutorial-sidebar .markdown-body ul,
-.tutorial-sidebar .markdown-body ol {
+.tutorial-sidebar-content ul,
+.tutorial-sidebar-content ol {
   margin: 0 0 12px;
   padding-left: 24px;
 }
 
-.tutorial-sidebar .markdown-body li {
+.tutorial-sidebar-content li {
   margin: 4px 0;
   color: rgba(255, 255, 255, 0.85);
 }
 
-.tutorial-sidebar .markdown-body li > p {
+.tutorial-sidebar-content li > p {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.tutorial-sidebar .markdown-body code {
+.tutorial-sidebar-content code {
   padding: 2px 6px;
   margin: 0 2px;
   font-size: 0.85em;
@@ -205,7 +204,7 @@
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 }
 
-.tutorial-sidebar .markdown-body pre {
+.tutorial-sidebar-content pre {
   padding: 12px;
   margin: 12px 0;
   overflow: auto;
@@ -214,7 +213,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.tutorial-sidebar .markdown-body pre code {
+.tutorial-sidebar-content pre code {
   display: block;
   padding: 0;
   margin: 0;
@@ -227,7 +226,7 @@
   overflow-wrap: normal;
 }
 
-.tutorial-sidebar .markdown-body blockquote {
+.tutorial-sidebar-content blockquote {
   padding: 0 16px;
   margin: 12px 0;
   color: rgba(255, 255, 255, 0.7);
@@ -236,20 +235,20 @@
   border-radius: 0 4px 4px 0;
 }
 
-.tutorial-sidebar .markdown-body blockquote p {
+.tutorial-sidebar-content blockquote p {
   margin: 8px 0;
 }
 
-.tutorial-sidebar .markdown-body a {
+.tutorial-sidebar-content a {
   color: #58a6ff;
   text-decoration: none;
 }
 
-.tutorial-sidebar .markdown-body a:hover {
+.tutorial-sidebar-content a:hover {
   text-decoration: underline;
 }
 
-.tutorial-sidebar .markdown-body table {
+.tutorial-sidebar-content table {
   border-collapse: collapse;
   margin: 12px 0;
   width: 100%;
@@ -257,39 +256,39 @@
   overflow-x: auto;
 }
 
-.tutorial-sidebar .markdown-body table th,
-.tutorial-sidebar .markdown-body table td {
+.tutorial-sidebar-content table th,
+.tutorial-sidebar-content table td {
   padding: 6px 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.2);
 }
 
-.tutorial-sidebar .markdown-body table th {
+.tutorial-sidebar-content table th {
   font-weight: 600;
   background: rgba(0, 0, 0, 0.3);
   color: #fff;
 }
 
-.tutorial-sidebar .markdown-body hr {
+.tutorial-sidebar-content hr {
   height: 1px;
   margin: 16px 0;
   background: rgba(255, 255, 255, 0.1);
   border: none;
 }
 
-.tutorial-sidebar .markdown-body img {
+.tutorial-sidebar-content img {
   max-width: 100%;
   height: auto;
   border-radius: 4px;
   margin: 8px 0;
 }
 
-.tutorial-sidebar .markdown-body strong {
+.tutorial-sidebar-content strong {
   font-weight: 600;
   color: #fff;
 }
 
-.tutorial-sidebar .markdown-body em {
+.tutorial-sidebar-content em {
   font-style: italic;
   color: rgba(255, 255, 255, 0.9);
 }
@@ -310,7 +309,7 @@
   text-decoration: none;
   padding: 10px 12px;
   border-radius: 8px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s ease, color 0.2s ease;
   font-size: 0.9rem;
   margin: 0 8px;
 }
@@ -318,7 +317,6 @@
 .tutorial-sidebar-footer a:hover {
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
-  transform: translateX(-2px);
 }
 
 /* 移动端遮罩层 */

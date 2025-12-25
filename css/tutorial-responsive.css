@@ -115,10 +115,24 @@
   
   .tutorial-header {
     margin-left: 0;
-    padding: 60px 15px 20px;
+    padding: 50px 15px 15px;
     position: relative;
+    /* 移动端恢复自适应高度 - 必须重置所有高度限制 */
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    display: block;
+    overflow: visible;
   }
   
+  .tutorial-header-inner {
+    /* 移动端恢复原有样式 */
+    display: block;
+    height: auto !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+  }
+
   .tutorial-header h1 {
     font-size: 1.2rem;
     margin-bottom: 15px;
@@ -129,7 +143,12 @@
     flex-wrap: wrap;
     gap: 0;
     justify-content: center;
-    padding: 15px 0;
+    padding: 10px 0;
+    /* 移动端恢复原有样式 - 重置所有高度限制 */
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible;
+    width: 100%;
   }
   
   .tutorial-step {
@@ -139,6 +158,9 @@
     min-width: 0;
     margin: 0 4px;
     gap: 8px;
+    /* 移动端重置高度限制 */
+    height: auto !important;
+    max-height: none !important;
   }
   
   .tutorial-step > span:first-child {
@@ -196,7 +218,7 @@
   }
   
   .tutorial-actions {
-    margin-top: 30px;
+    margin-top: 40px;
     padding-top: 20px;
     padding-bottom: 20px;
     position: sticky;
@@ -207,24 +229,34 @@
     margin-right: -15px;
     padding-left: 15px;
     padding-right: 15px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .tutorial-btn {
+    flex: 1;
+    max-width: none;
+  }
+  
+  /* 移动端隐藏回到顶部按钮 */
+  .tutorial-back-to-top {
+    display: none !important;
   }
   
   .tutorial-toc {
     display: none;
   }
-
-  .tutorial-back-to-top {
-    bottom: 20px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
-    font-size: 1rem;
-  }
 }
 
 @media (max-width: 480px) {
   .tutorial-header {
-    padding: 60px 10px 15px;
+    padding: 20px 10px 12px;
+    /* 小屏幕保持自适应高度 - 必须重置所有高度限制 */
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    display: block;
+    overflow: visible;
   }
 
   .tutorial-header h1 {
@@ -234,6 +266,9 @@
   .tutorial-steps {
     gap: 0;
     padding: 10px 0;
+    /* 小屏幕重置高度限制 */
+    height: auto !important;
+    max-height: none !important;
   }
 
   .tutorial-step {
@@ -241,6 +276,9 @@
     padding: 5px 8px;
     margin: 0 3px;
     gap: 6px;
+    /* 小屏幕重置高度限制 */
+    height: auto !important;
+    max-height: none !important;
   }
 
   .tutorial-step > span:first-child {
@@ -287,15 +325,16 @@
   }
 
   .tutorial-actions {
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
-    margin-top: 25px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    justify-content: space-between;
   }
 
   .tutorial-btn {
-    width: 100%;
+    flex: 1;
     padding: 12px 20px;
     font-size: 0.95rem;
   }
