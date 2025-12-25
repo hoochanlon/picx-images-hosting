@@ -122,6 +122,25 @@ async function deleteFolder(folderPath) {
 
 // 删除项目
 async function deleteItem(type, path) {
+  // 先进行身份验证
+  let authConfirmed = false;
+  await new Promise((resolve) => {
+    if (window.uploadAuth) {
+      window.uploadAuth.requireAuth((authenticated) => {
+        authConfirmed = authenticated;
+        resolve();
+      });
+    } else {
+      // 如果没有认证模块，直接确认（向后兼容）
+      authConfirmed = true;
+      resolve();
+    }
+  });
+  
+  if (!authConfirmed) {
+    return;
+  }
+  
   if (!confirm(`确定要删除${type === 'folder' ? '文件夹' : '文件'} "${path}" 吗？${type === 'folder' ? '\n\n注意：将删除文件夹及其所有内容！' : ''}`)) {
     return;
   }

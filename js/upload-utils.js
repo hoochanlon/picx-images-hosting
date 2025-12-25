@@ -19,6 +19,18 @@ async function toBase64(file) {
 // API 请求
 async function apiRequest(payload) {
   try {
+    // 对于所有写操作（上传、删除），添加认证token
+    if ((payload.action === 'delete' || payload.action === 'upload') && window.uploadAuth) {
+      const authToken = window.uploadAuth.getAuthToken();
+      if (authToken) {
+        payload.authToken = authToken;
+      }
+      // 如果设置了API_SECRET，使用密码hash作为token
+      if (window.APP_CONFIG?.API_SECRET) {
+        payload.authToken = window.APP_CONFIG.API_SECRET;
+      }
+    }
+    
     const res = await fetch(state.API_ENDPOINT(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

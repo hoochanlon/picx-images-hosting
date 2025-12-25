@@ -20,6 +20,25 @@ function saveUploadPath(path) {
 
 // 上传文件（支持单文件和多文件上传）
 async function uploadFiles(fileList, basePath = '') {
+  // 先进行身份验证
+  let authConfirmed = false;
+  await new Promise((resolve) => {
+    if (window.uploadAuth) {
+      window.uploadAuth.requireAuth((authenticated) => {
+        authConfirmed = authenticated;
+        resolve();
+      });
+    } else {
+      // 如果没有认证模块，直接确认（向后兼容）
+      authConfirmed = true;
+      resolve();
+    }
+  });
+  
+  if (!authConfirmed) {
+    return;
+  }
+  
   // 优先级：basePath > 设置的上传目录 > 当前浏览目录 > 默认目录
   let targetPath = basePath || getUploadPath() || state.currentPath() || 'imgs/uploads/kate/';
   // 确保路径格式正确
@@ -112,15 +131,28 @@ async function uploadFiles(fileList, basePath = '') {
               const retryContent = await toBase64(file);
               const retryFilePath = buildPath(targetPath, file.name);
               
+              const retryPayload = {
+                action: 'upload',
+                path: retryFilePath,
+                content: retryContent,
+                message: `Upload: ${retryFilePath}`
+              };
+              
+              // 添加认证token
+              if (window.uploadAuth) {
+                const authToken = window.uploadAuth.getAuthToken();
+                if (authToken) {
+                  retryPayload.authToken = authToken;
+                }
+                if (window.APP_CONFIG?.API_SECRET) {
+                  retryPayload.authToken = window.APP_CONFIG.API_SECRET;
+                }
+              }
+              
               const retryRes = await fetch(state.API_ENDPOINT(), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  action: 'upload',
-                  path: retryFilePath,
-                  content: retryContent,
-                  message: `Upload: ${retryFilePath}`
-                }),
+                body: JSON.stringify(retryPayload),
               });
               
               if (retryRes.ok) {

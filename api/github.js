@@ -10,9 +10,17 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { action, path, content, message, sha } = req.body || {};
+  const { action, path, content, message, sha, authToken } = req.body || {};
   if (!action || !path || !message) {
     return res.status(400).json({ error: 'missing params: action/path/message' });
+  }
+
+  // 对于所有写操作（上传、删除），验证API密钥（可选，如果设置了API_SECRET环境变量）
+  if ((action === 'delete' || action === 'upload') && process.env.API_SECRET) {
+    const expectedToken = process.env.API_SECRET;
+    if (!authToken || authToken !== expectedToken) {
+      return res.status(401).json({ error: 'Unauthorized: Invalid authentication token' });
+    }
   }
 
   const owner = 'hoochanlon';

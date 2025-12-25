@@ -25,6 +25,17 @@ window.APP_CONFIG = {
   INCLUDED_DIRS: ['imgs'],
   
   // GitHub 仓库地址（用于导航栏的 GitHub 按钮）
-  GITHUB_REPO_URL: 'https://github.com/hoochanlon/picx-images-hosting'
+  GITHUB_REPO_URL: 'https://github.com/hoochanlon/picx-images-hosting',
+  
+  // 删除操作密码（请修改为您的安全密码）
+  // 注意：此密码存储在客户端，仅作为基础防护
+  // 建议在生产环境中使用更安全的认证方式（如后端API密钥验证）
+  DELETE_PASSWORD: 'admin123',
+  
+  // API密钥（可选，用于后端验证）
+  // 如果设置了此值，后端API会验证此密钥
+  // 请在Vercel环境变量中设置相同的API_SECRET值
+  // 注意：此值存储在客户端，仅作为额外防护层
+  API_SECRET: ''
 };
 

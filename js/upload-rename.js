@@ -17,6 +17,25 @@ function showRenameModal(type, path, currentName) {
 
 // 重命名项目
 async function renameItem(type, oldPath, newName) {
+  // 先进行身份验证
+  let authConfirmed = false;
+  await new Promise((resolve) => {
+    if (window.uploadAuth) {
+      window.uploadAuth.requireAuth((authenticated) => {
+        authConfirmed = authenticated;
+        resolve();
+      });
+    } else {
+      // 如果没有认证模块，直接确认（向后兼容）
+      authConfirmed = true;
+      resolve();
+    }
+  });
+  
+  if (!authConfirmed) {
+    return;
+  }
+  
   if (!newName || !newName.trim()) {
     alert('请输入新名称');
     return;

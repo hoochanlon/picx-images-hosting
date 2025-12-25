@@ -69,6 +69,25 @@ async function loadFiles() {
 
 // 创建文件夹
 async function createFolder(nameOrPath) {
+  // 先进行身份验证
+  let authConfirmed = false;
+  await new Promise((resolve) => {
+    if (window.uploadAuth) {
+      window.uploadAuth.requireAuth((authenticated) => {
+        authConfirmed = authenticated;
+        resolve();
+      });
+    } else {
+      // 如果没有认证模块，直接确认（向后兼容）
+      authConfirmed = true;
+      resolve();
+    }
+  });
+  
+  if (!authConfirmed) {
+    return;
+  }
+  
   if (!nameOrPath || !nameOrPath.trim()) {
     alert('请输入文件夹名称或路径');
     return;
