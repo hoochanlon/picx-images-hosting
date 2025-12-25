@@ -18,6 +18,7 @@
   <script src="./js/upload-rename.js"></script>
   <script src="./js/upload-delete.js"></script>
   <script src="./js/upload-modal.js"></script>
+  <script src="./js/upload-select.js"></script>
   <script src="./js/upload-init.js"></script>
 </head>
 <body class="upload-page">
@@ -56,6 +57,24 @@
         <i class="fas fa-cog"></i>
         设置上传目录
       </button>
+      <button id="toggle-select-mode-btn" title="进入复选模式">
+        <i class="fas fa-check-square"></i>
+        复选模式
+      </button>
+      <div class="select-controls" id="select-controls" style="display: none;">
+        <label class="select-all-label">
+          <input type="checkbox" id="select-all-checkbox" />
+          <span>全选</span>
+        </label>
+        <button id="batch-delete-btn" class="btn-danger" disabled title="删除选中项">
+          <i class="fas fa-trash"></i>
+          批量删除
+        </button>
+        <button id="exit-select-mode-btn" title="退出选择模式">
+          <i class="fas fa-times"></i>
+          取消
+        </button>
+      </div>
       <input type="file" id="file-input" multiple style="display: none;" />
     </div>
 
@@ -64,6 +83,8 @@
       <div class="upload-area-text">拖拽文件或文件夹到这里上传</div>
       <div class="upload-area-hint">支持多文件上传</div>
     </div>
+
+    <div class="upload-progress" id="upload-progress" style="display: none;"></div>
 
     <div class="breadcrumb" id="breadcrumb">
       <div class="breadcrumb-item">
@@ -79,8 +100,6 @@
         </li>
       </ul>
     </div>
-
-    <div class="upload-progress" id="upload-progress" style="display: none;"></div>
   </div>
 
   <!-- 创建文件夹模态框 -->
@@ -94,9 +113,9 @@
         <div class="form-group">
           <label>文件夹路径：</label>
           <input type="text" id="folder-name-input" placeholder="例如: folder 或 path/to/folder" />
-          <div style="margin-top: 8px; font-size: 12px; color: #666;">
+          <div class="form-tips">
             <p>提示：</p>
-            <ul style="margin: 5px 0; padding-left: 20px;">
+            <ul>
               <li>可以输入单个文件夹名称，将在当前目录下创建</li>
               <li>可以输入路径（如 path/to/folder），将创建嵌套文件夹结构</li>
               <li>路径中的斜杠使用 "/" 分隔</li>
@@ -122,17 +141,17 @@
         <div class="form-group">
           <label>上传目录路径：</label>
           <input type="text" id="upload-path-input" placeholder="例如: imgs/uploads/kate/" />
-          <div style="margin-top: 10px; font-size: 12px; color: #666;">
+          <div class="form-tips">
             <p>提示：</p>
-            <ul style="margin: 5px 0; padding-left: 20px;">
+            <ul>
               <li>留空则使用当前浏览的目录</li>
               <li>路径会自动添加末尾斜杠</li>
               <li>可以使用面包屑导航选择目录后设置</li>
             </ul>
           </div>
         </div>
-        <div class="form-group" style="margin-top: 15px;">
-          <button class="btn-secondary" id="use-current-path-btn" style="margin-right: 10px;">使用当前目录</button>
+        <div class="form-group form-actions">
+          <button class="btn-secondary" id="use-current-path-btn">使用当前目录</button>
           <button class="btn-secondary" id="clear-upload-path-btn">清除设置</button>
         </div>
       </div>

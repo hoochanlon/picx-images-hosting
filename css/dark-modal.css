@@ -3,54 +3,195 @@
 
 [data-theme="dark"] .modal {
   background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
 }
 
 [data-theme="dark"] .modal-content {
   background: #161b22;
   border: 1px solid rgba(48, 54, 61, 0.8);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+  border-radius: 12px;
+  overflow: hidden;
   transition: all var(--transition-speed) ease;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
 }
 
 [data-theme="dark"] .modal-header {
+  background: rgba(13, 17, 23, 0.95);
   border-bottom: 1px solid rgba(48, 54, 61, 0.8);
+  padding: 20px 24px;
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 [data-theme="dark"] .modal-header h2 {
   color: #f0f6fc;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 [data-theme="dark"] .modal-close {
   color: #8b949e;
   background: transparent;
   border: none;
+  font-size: 1.8rem;
+  padding: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
   transition: all var(--transition-speed) ease;
 }
 
 [data-theme="dark"] .modal-close:hover {
-  color: #f0f6fc;
   background: rgba(48, 54, 61, 0.5);
+  color: #f0f6fc;
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .modal-body {
+  background: #161b22;
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+  margin-bottom: 0;
+}
+
+[data-theme="dark"] .form-group {
+  margin-bottom: 20px;
+}
+
+[data-theme="dark"] .form-group:last-child {
+  margin-bottom: 0;
 }
 
 [data-theme="dark"] .form-group label {
   color: #f0f6fc;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  display: block;
 }
 
 [data-theme="dark"] .form-group input {
+  width: 100%;
+  padding: 10px 12px;
   background: rgba(13, 17, 23, 0.9);
   border: 1px solid rgba(48, 54, 61, 0.8);
+  border-radius: 6px;
   color: #f0f6fc;
+  font-size: 0.95rem;
+  transition: all var(--transition-speed) ease;
+  outline: none;
 }
 
 [data-theme="dark"] .form-group input:focus {
   border-color: rgba(88, 166, 255, 0.6);
   box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+  background: rgba(13, 17, 23, 0.95);
+}
+
+[data-theme="dark"] .form-tips {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #8b949e;
+}
+
+[data-theme="dark"] .form-tips p {
+  color: #8b949e;
+  margin: 0 0 5px 0;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .form-tips ul {
+  margin: 5px 0;
+  padding-left: 20px;
+}
+
+[data-theme="dark"] .form-tips li {
+  color: #8b949e;
+  margin: 4px 0;
+}
+
+[data-theme="dark"] .form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+[data-theme="dark"] .form-actions .btn-secondary {
+  background: rgba(48, 54, 61, 0.8);
+  border: 1px solid rgba(64, 71, 80, 0.8);
+  color: #f0f6fc;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  font-size: 0.95rem;
+}
+
+[data-theme="dark"] .form-actions .btn-secondary:hover {
+  background: rgba(64, 71, 80, 0.8);
+  border-color: rgba(88, 166, 255, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .modal-footer {
+  background: rgba(13, 17, 23, 0.95);
   border-top: 1px solid rgba(48, 54, 61, 0.8);
-  background: rgba(13, 17, 23, 0.9);
+  padding: 20px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 0;
+}
+
+[data-theme="dark"] .modal-footer .btn-primary {
+  background: #238636;
+  border: 1px solid #238636;
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  font-size: 1rem;
+}
+
+[data-theme="dark"] .modal-footer .btn-primary:hover {
+  background: #2ea043;
+  border-color: #2ea043;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+}
+
+[data-theme="dark"] .modal-footer .btn-secondary {
+  background: rgba(48, 54, 61, 0.8);
+  border: 1px solid rgba(64, 71, 80, 0.8);
+  color: #f0f6fc;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  font-size: 1rem;
+}
+
+[data-theme="dark"] .modal-footer .btn-secondary:hover {
+  background: rgba(64, 71, 80, 0.8);
+  border-color: rgba(88, 166, 255, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .btn-danger {

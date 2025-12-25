@@ -96,6 +96,9 @@ function renderFiles() {
     const li = document.createElement('li');
     li.className = 'file-item';
     li.innerHTML = `
+      <label class="file-checkbox-label">
+        <input type="checkbox" class="file-checkbox" data-type="folder" data-path="${folder.path}" />
+      </label>
       <div class="file-icon"><i class="fas fa-folder"></i></div>
       <div class="file-name">${folder.name}</div>
       <div class="file-actions">
@@ -134,6 +137,9 @@ function renderFiles() {
     const cdnUrl = `${state.CDN_BASE()}/${file.path}`;
     
     li.innerHTML = `
+      <label class="file-checkbox-label">
+        <input type="checkbox" class="file-checkbox" data-type="file" data-path="${file.path}" />
+      </label>
       <div class="file-icon">
         <i class="fas ${isImage ? 'fa-image' : 'fa-file'}"></i>
       </div>
