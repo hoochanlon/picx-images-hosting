@@ -22,8 +22,8 @@ export default async function handler(req, res) {
     const envPassword = process.env.DELETE_PASSWORD;
     
     if (!envPassword) {
-      // 如果环境变量中没有设置密码，返回错误
-      return res.status(500).json({ error: 'Password not configured on server' });
+      // 如果环境变量中没有设置密码，返回特殊状态码，让前端知道可以使用本地配置
+      return res.status(404).json({ error: 'Password not configured on server, use local config' });
     }
 
     // 验证密码

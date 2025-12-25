@@ -227,20 +227,62 @@ function showAuthDialog(callback) {
         confirmBtn.disabled = false;
         confirmBtn.textContent = '确认';
         return;
-      } else if (response.status === 500) {
-        // 服务器未配置密码，回退到本地验证
+      } else if (response.status === 404) {
+        // 服务器未配置密码（404 表示未找到配置），允许回退到本地验证
         const errorData = await response.json().catch(() => ({}));
-        console.warn('Server password not configured, falling back to local config:', errorData.error);
+        console.log('Server password not configured, using local config:', errorData.error);
+        // 继续执行后面的本地验证逻辑
       } else {
-        // 其他错误，回退到本地验证
-        console.warn('API password verification failed, falling back to local config:', response.status);
+        // 其他错误（500等），可能是服务器错误，但如果有 Vercel 配置，不应该回退
+        // 检查是否是网络错误还是服务器错误
+        const errorData = await response.json().catch(() => ({}));
+        console.warn('API password verification error:', response.status, errorData);
+        // 如果是服务器错误且有配置，不应该回退
+        // 只有网络错误或明确未配置时才回退
+        if (response.status >= 500) {
+          // 服务器错误，可能是临时问题，不回退到本地验证
+          passwordInput.value = '';
+          passwordInput.style.borderColor = '#cf222e';
+          passwordInput.placeholder = '服务器错误，请稍后重试';
+          passwordInput.focus();
+          setTimeout(() => {
+            passwordInput.style.borderColor = isDark ? 'rgba(48, 54, 61, 0.8)' : '#d0d7de';
+            passwordInput.placeholder = '请输入密码';
+          }, 2000);
+          
+          // 恢复按钮
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = '确认';
+          return;
+        }
       }
     } catch (err) {
-      // API 请求失败，回退到本地配置验证
-      console.warn('API password verification error, falling back to local config:', err);
+      // API 请求失败（网络错误等）
+      // 如果是网络错误，可能是 CORS 或连接问题
+      // 这种情况下，如果 Vercel 配置了密码，不应该回退到本地验证
+      // 只有明确知道服务器未配置密码时，才回退
+      console.warn('API password verification network error:', err);
+      
+      // 检查是否是 CORS 错误或网络错误
+      // 如果是，可能是开发环境或配置问题，不回退到本地验证
+      passwordInput.value = '';
+      passwordInput.style.borderColor = '#cf222e';
+      passwordInput.placeholder = '无法连接到服务器，请检查网络';
+      passwordInput.focus();
+      setTimeout(() => {
+        passwordInput.style.borderColor = isDark ? 'rgba(48, 54, 61, 0.8)' : '#d0d7de';
+        passwordInput.placeholder = '请输入密码';
+      }, 2000);
+      
+      // 恢复按钮
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = '确认';
+      return;
     }
     
-    // 回退到本地配置验证（兼容旧版本）
+    // 只有在服务器明确返回 404（未配置密码）时，才回退到本地配置验证
+    // 这是为了兼容旧版本或开发环境
+    // 如果 API 返回了其他状态码（如 401、500），说明服务器已配置密码，不应该回退
     const correctPassword = window.APP_CONFIG?.DELETE_PASSWORD || 'admin123';
     if (password !== correctPassword) {
       passwordInput.value = '';
