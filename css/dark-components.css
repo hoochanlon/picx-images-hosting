@@ -5,6 +5,7 @@
 [data-theme="dark"] .controls a.icon-label,
 [data-theme="dark"] .controls button.icon-label {
   color: #8b949e;
+  transform: none !important;
 }
 
 [data-theme="dark"] .controls label.icon-label:hover,
@@ -12,6 +13,21 @@
 [data-theme="dark"] .controls button.icon-label:hover {
   background: rgba(48, 54, 61, 0.5);
   color: #e6edf3;
+  transform: none !important;
+}
+
+/* 确保夜间模式下图标本身不会放大 */
+[data-theme="dark"] .controls label.icon-label i,
+[data-theme="dark"] .controls a.icon-label i,
+[data-theme="dark"] .controls button.icon-label i {
+  transform: none !important;
+  transition: none !important;
+}
+
+[data-theme="dark"] .controls label.icon-label:hover i,
+[data-theme="dark"] .controls a.icon-label:hover i,
+[data-theme="dark"] .controls button.icon-label:hover i {
+  transform: none !important;
 }
 
 [data-theme="dark"] .custom-select-trigger {

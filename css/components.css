@@ -43,10 +43,11 @@
   height: 36px;
   color: #57606a;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
   border-radius: 6px;
   flex-shrink: 0;
   text-decoration: none;
+  transform: none !important;
 }
 
 .controls label.icon-label:hover,
@@ -55,13 +56,24 @@
   background: rgba(102, 126, 234, 0.1);
   color: #667eea;
   text-decoration: none;
+  transform: none !important;
 }
 
+/* 确保图标本身不会放大 */
 .controls label.icon-label i,
 .controls a.icon-label i,
 .controls button.icon-label i {
   font-size: 1rem;
+  transform: none !important;
+  transition: none !important;
 }
+
+.controls label.icon-label:hover i,
+.controls a.icon-label:hover i,
+.controls button.icon-label:hover i {
+  transform: none !important;
+}
+
 
 /* 登录图标已登录状态 - 使用绿色，但保持与其他图标一致的样式 */
 .controls button.icon-label.auth-authenticated {
@@ -75,11 +87,13 @@
 .controls button.icon-label.auth-authenticated:hover {
   color: #238636;
   background: rgba(35, 134, 54, 0.1);
+  transform: none !important;
 }
 
 [data-theme="dark"] .controls button.icon-label.auth-authenticated:hover {
   color: #3fb950;
   background: rgba(63, 185, 80, 0.1);
+  transform: none !important;
 }
 
 .controls button.icon-label {

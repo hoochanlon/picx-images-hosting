@@ -11,25 +11,45 @@
   border-radius: 6px;
   background: transparent;
   border: none;
-  transition: all var(--transition-speed) ease;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  transform: none !important;
 }
 
 .tutorial-header .dark-mode-toggle:hover {
   background: rgba(102, 126, 234, 0.1);
   color: #667eea;
-  transition: all var(--transition-speed) ease;
+  transform: none !important;
+}
+
+.tutorial-header .dark-mode-toggle i {
+  transform: none !important;
+  transition: none !important;
+}
+
+.tutorial-header .dark-mode-toggle:hover i {
+  transform: none !important;
 }
 
 [data-theme="dark"] .tutorial-header .dark-mode-toggle {
   background: transparent;
   border: none;
   color: #8b949e;
-  transition: all var(--transition-speed) ease;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  transform: none !important;
 }
 
 [data-theme="dark"] .tutorial-header .dark-mode-toggle:hover {
   background: rgba(48, 54, 61, 0.5);
   color: #e6edf3;
-  transition: all var(--transition-speed) ease;
+  transform: none !important;
+}
+
+[data-theme="dark"] .tutorial-header .dark-mode-toggle i {
+  transform: none !important;
+  transition: none !important;
+}
+
+[data-theme="dark"] .tutorial-header .dark-mode-toggle:hover i {
+  transform: none !important;
 }
 
