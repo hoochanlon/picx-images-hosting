@@ -1,0 +1,41 @@
+/* Dark Mode Styles */
+/* 夜间模式样式 - 集成所有拆分文件 */
+
+/* 基础样式和变量 */
+@import url('dark-base.css');
+
+/* 布局样式 */
+@import url('dark-layout.css');
+
+/* 通用组件样式 */
+@import url('dark-components.css');
+
+/* 灯箱样式 */
+@import url('dark-lightbox.css');
+
+/* 模态框样式 */
+@import url('dark-modal.css');
+
+/* 上传页面样式 */
+@import url('dark-upload.css');
+
+/* 教程页面基础样式 */
+@import url('dark-tutorial.css');
+
+/* 教程侧边栏样式 */
+@import url('dark-tutorial-sidebar.css');
+
+/* 教程头部样式 */
+@import url('dark-tutorial-header.css');
+
+/* 教程内容样式 */
+@import url('dark-tutorial-content.css');
+
+/* 教程目录样式 */
+@import url('dark-tutorial-toc.css');
+
+/* 教程 Callout 组件样式 */
+@import url('dark-tutorial-callout.css');
+
+/* 切换按钮样式 */
+@import url('dark-toggle.css');

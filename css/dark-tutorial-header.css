@@ -1,0 +1,64 @@
+/* Dark Mode Tutorial Header Styles */
+/* 夜间模式教程头部和步骤指示器样式 */
+
+[data-theme="dark"] .tutorial-header {
+  background: rgba(13, 17, 23, 0.98);
+  border-bottom: 1px solid rgba(48, 54, 61, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .tutorial-steps {
+  background: transparent;
+}
+
+[data-theme="dark"] .tutorial-step {
+  color: #f0f6fc;
+  background: rgba(13, 17, 23, 0.8);
+  border: 2px solid rgba(48, 54, 61, 0.6);
+  border-radius: 6px;
+  padding: 8px 16px;
+  margin-right: 8px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-weight: 500;
+}
+
+[data-theme="dark"] .tutorial-step:hover {
+  background: rgba(48, 54, 61, 0.4);
+  color: #f0f6fc;
+  border-color: rgba(88, 166, 255, 0.5);
+}
+
+[data-theme="dark"] .tutorial-step.active {
+  color: #f0f6fc;
+  background: rgba(88, 166, 255, 0.25);
+  border-color: #58a6ff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
+}
+
+/* 确保激活步骤的最后一个 span 元素显示为白色并加粗 */
+[data-theme="dark"] .tutorial-step.active > span:last-child {
+  color: #fbfbfb;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .tutorial-step.completed {
+  color: #3fb950;
+  background: rgba(26, 127, 55, 0.25);
+  border-color: #3fb950;
+  box-shadow: 0 4px 12px rgba(26, 127, 55, 0.3);
+}
+
+/* 教程页面图标按钮的夜间模式样式 - 与主页按钮保持一致 */
+[data-theme="dark"] .tutorial-header .icon-label,
+[data-theme="dark"] .tutorial-header button.icon-label {
+  color: #8b949e;
+}
+
+[data-theme="dark"] .tutorial-header .icon-label:hover,
+[data-theme="dark"] .tutorial-header button.icon-label:hover {
+  background: rgba(48, 54, 61, 0.5);
+  color: #e6edf3;
+}
+

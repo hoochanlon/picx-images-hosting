@@ -1,0 +1,179 @@
+/* Dark Mode Base Styles */
+/* 夜间模式基础样式 - 变量定义和全局过渡效果 */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --transition-speed: 0.4s;
+}
+
+/* 全局过渡效果 - 确保所有主题相关元素都有平滑过渡 */
+body,
+.tutorial-main,
+.tutorial-sidebar,
+.tutorial-content,
+.tutorial-header,
+.tutorial-toc,
+.card,
+.markdown-callout,
+button,
+input,
+select,
+textarea,
+.custom-select-trigger,
+.custom-select-options,
+.lightbox-backdrop,
+.lightbox-body,
+.upload-modal-backdrop,
+.upload-modal-content,
+.modal-content,
+.tutorial-step,
+.tutorial-sidebar-nav-item,
+.tutorial-toc-nav a {
+  transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* 确保背景色和颜色有单独的过渡效果 */
+body {
+  transition: background-color var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1),
+              color var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* 为深色模式添加背景色过渡 */
+[data-theme="dark"] body,
+[data-theme="dark"] .tutorial-main,
+[data-theme="dark"] .tutorial-sidebar,
+[data-theme="dark"] .tutorial-content {
+  transition: background-color var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1),
+              color var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Base Styles */
+[data-theme="dark"] body {
+  background: linear-gradient(135deg, #0a1a2e 0%, #0d1b2a 50%, #0a1929 100%);
+  color: #e6edf3;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+/* 修复基础文本和链接样式 */
+[data-theme="dark"] h1, 
+[data-theme="dark"] h2, 
+[data-theme="dark"] h3, 
+[data-theme="dark"] h4, 
+[data-theme="dark"] h5, 
+[data-theme="dark"] h6 {
+  color: #f0f6fc;
+  transition: color var(--transition-speed) ease;
+}
+
+[data-theme="dark"] p {
+  color: #e6edf3;
+  transition: color var(--transition-speed) ease;
+}
+
+[data-theme="dark"] ul, 
+[data-theme="dark"] ol {
+  color: #e6edf3;
+  transition: color var(--transition-speed) ease;
+}
+
+[data-theme="dark"] li {
+  color: #e6edf3;
+  transition: color var(--transition-speed) ease;
+}
+
+/* 修复 span 元素颜色 */
+[data-theme="dark"] span {
+  color: #f0f6fc;
+  transition: color var(--transition-speed) ease;
+}
+
+/* 确保特定 span 元素保持正确颜色 */
+[data-theme="dark"] .markdown-callout-title, 
+[data-theme="dark"] .markdown-callout-icon, 
+[data-theme="dark"] .tutorial-step, 
+[data-theme="dark"] .tutorial-toc-nav a {
+  color: inherit;
+}
+
+[data-theme="dark"] a {
+  color: #58a6ff;
+  transition: color var(--transition-speed) ease;
+}
+
+[data-theme="dark"] a:hover {
+  color: #79c0ff;
+  transition: color var(--transition-speed) ease;
+}
+
+/* 优化按钮样式 */
+[data-theme="dark"] button {
+  transition: all var(--transition-speed) ease;
+}
+
+/* 优化输入框和选择器样式 */
+[data-theme="dark"] input, 
+[data-theme="dark"] select, 
+[data-theme="dark"] textarea {
+  transition: all var(--transition-speed) ease;
+  outline: none;
+}
+
+/* 优化代码块样式 */
+[data-theme="dark"] pre, 
+[data-theme="dark"] code {
+  background: rgba(13, 17, 23, 0.95) !important;
+  color: #f0f6fc !important;
+  border-color: rgba(48, 54, 61, 0.8) !important;
+}
+
+/* 优化表格样式 */
+[data-theme="dark"] table {
+  border-color: rgba(48, 54, 61, 0.8) !important;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] table th, 
+[data-theme="dark"] table td {
+  border-color: rgba(48, 54, 61, 0.6) !important;
+  transition: all var(--transition-speed) ease;
+}
+
+/* 优化分隔线样式 */
+[data-theme="dark"] hr {
+  border-color: rgba(48, 54, 61, 0.6);
+  border-top: 1px solid rgba(48, 54, 61, 0.6);
+  transition: all var(--transition-speed) ease;
+}
+
+/* 优化加载指示器样式 */
+[data-theme="dark"] .loading {
+  color: #58a6ff;
+}
+
+/* 优化复选框和单选按钮样式 */
+[data-theme="dark"] input[type="checkbox"], 
+[data-theme="dark"] input[type="radio"] {
+  accent-color: #58a6ff;
+}
+
+/* 优化滚动条样式 */
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: rgba(13, 17, 23, 0.8);
+  border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(48, 54, 61, 0.8);
+  border-radius: 4px;
+  transition: background var(--transition-speed) ease;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(64, 71, 80, 0.8);
+}
+

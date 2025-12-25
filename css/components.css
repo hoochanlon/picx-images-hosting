@@ -34,7 +34,8 @@
 }
 
 .controls label.icon-label,
-.controls a.icon-label {
+.controls a.icon-label,
+.controls button.icon-label {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,15 +50,23 @@
 }
 
 .controls label.icon-label:hover,
-.controls a.icon-label:hover {
+.controls a.icon-label:hover,
+.controls button.icon-label:hover {
   background: rgba(102, 126, 234, 0.1);
   color: #667eea;
   text-decoration: none;
 }
 
 .controls label.icon-label i,
-.controls a.icon-label i {
+.controls a.icon-label i,
+.controls button.icon-label i {
   font-size: 1rem;
+}
+
+.controls button.icon-label {
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .collapsible {

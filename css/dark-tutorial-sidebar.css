@@ -1,0 +1,102 @@
+/* Dark Mode Tutorial Sidebar Styles */
+/* 夜间模式教程侧边栏样式 */
+
+[data-theme="dark"] .tutorial-sidebar {
+  background: #010409;
+  border-right: 1px solid rgba(48, 54, 61, 0.8);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .tutorial-sidebar-header {
+  background: rgba(13, 17, 23, 0.95);
+  border-bottom: 1px solid rgba(48, 54, 61, 0.8);
+  padding: 28px 20px 28px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .tutorial-sidebar-header h2 {
+  color: #f0f6fc;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 0;
+  letter-spacing: -0.01em;
+}
+
+[data-theme="dark"] .tutorial-sidebar-nav {
+  background: #010409;
+  padding: 16px 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  margin: 0;
+}
+
+[data-theme="dark"] .tutorial-sidebar-nav-item {
+  color: #8b949e;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  margin: 2px 8px;
+  border-left: 3px solid transparent;
+  transition: all var(--transition-speed) ease;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+[data-theme="dark"] .tutorial-sidebar-nav-item:hover {
+  background: rgba(48, 54, 61, 0.3);
+  color: #f0f6fc;
+  border-left-color: rgba(88, 166, 255, 0.5);
+}
+
+[data-theme="dark"] .tutorial-sidebar-nav-item.active {
+  background: rgba(88, 166, 255, 0.15);
+  color: #58a6ff;
+  border-left-color: #58a6ff;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .tutorial-sidebar-footer {
+  background: rgba(13, 17, 23, 0.95);
+  border-top: 1px solid rgba(48, 54, 61, 0.8);
+  padding: 20px;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .tutorial-sidebar-footer a {
+  color: #8b949e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: all var(--transition-speed) ease;
+  font-size: 0.9rem;
+  margin: 0 8px;
+}
+
+[data-theme="dark"] .tutorial-sidebar-footer a:hover {
+  color: #58a6ff;
+  background: rgba(48, 54, 61, 0.5);
+}
+
+/* 侧边栏图标按钮的夜间模式样式 - 与主页按钮保持一致 */
+[data-theme="dark"] .tutorial-sidebar-footer .icon-label,
+[data-theme="dark"] .tutorial-sidebar-footer button.icon-label {
+  color: #8b949e;
+}
+
+[data-theme="dark"] .tutorial-sidebar-footer .icon-label:hover,
+[data-theme="dark"] .tutorial-sidebar-footer button.icon-label:hover {
+  background: rgba(48, 54, 61, 0.5);
+  color: #e6edf3;
+}
+

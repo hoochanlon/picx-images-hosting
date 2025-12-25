@@ -102,9 +102,22 @@
     padding: 16px;
   }
   
-  .tutorial-sidebar-footer a {
+  .tutorial-sidebar-footer a:not(.icon-label) {
     font-size: 0.85rem;
     padding: 6px 10px;
+  }
+  
+  /* 移动端图标按钮样式 */
+  .tutorial-sidebar-footer .icon-label,
+  .tutorial-sidebar-footer button.icon-label {
+    width: 32px;
+    height: 32px;
+    margin: 0 4px;
+  }
+  
+  .tutorial-sidebar-footer .icon-label i,
+  .tutorial-sidebar-footer button.icon-label i {
+    font-size: 0.9rem;
   }
   
   .tutorial-main {
@@ -337,6 +350,23 @@
     flex: 1;
     padding: 12px 20px;
     font-size: 0.95rem;
+  }
+  
+  /* 小屏幕侧边栏底部图标按钮 */
+  .tutorial-sidebar-footer {
+    padding: 12px;
+  }
+  
+  .tutorial-sidebar-footer .icon-label,
+  .tutorial-sidebar-footer button.icon-label {
+    width: 30px;
+    height: 30px;
+    margin: 0 3px;
+  }
+  
+  .tutorial-sidebar-footer .icon-label i,
+  .tutorial-sidebar-footer button.icon-label i {
+    font-size: 0.85rem;
   }
 }
 

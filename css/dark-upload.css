@@ -1,0 +1,152 @@
+/* Dark Mode Upload Page Styles */
+/* 夜间模式上传页面样式 */
+
+[data-theme="dark"] .upload-header {
+  background: rgba(13, 17, 23, 0.95);
+  border-bottom: 1px solid rgba(48, 54, 61, 0.8);
+}
+
+[data-theme="dark"] .upload-header h1 {
+  color: #f0f6fc;
+}
+
+/* 上传页面图标按钮的夜间模式样式 */
+[data-theme="dark"] .upload-header .icon-label,
+[data-theme="dark"] .upload-header button.icon-label {
+  color: #8b949e;
+}
+
+[data-theme="dark"] .upload-header .icon-label:hover,
+[data-theme="dark"] .upload-header button.icon-label:hover {
+  background: rgba(48, 54, 61, 0.5);
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .upload-container {
+  background: #0d1117;
+}
+
+[data-theme="dark"] .upload-toolbar {
+  background: rgba(13, 17, 23, 0.9);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+}
+
+[data-theme="dark"] .upload-toolbar button {
+  background: rgba(33, 38, 45, 0.8);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .upload-toolbar button:hover {
+  background: rgba(48, 54, 61, 0.8);
+  border-color: rgba(88, 166, 255, 0.6);
+}
+
+[data-theme="dark"] .upload-area {
+  border: 2px dashed rgba(48, 54, 61, 0.8);
+  background: rgba(13, 17, 23, 0.7);
+  color: #8b949e;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .upload-area.dragover {
+  border-color: #0969da;
+  background: rgba(9, 105, 218, 0.15);
+  color: #58a6ff;
+}
+
+[data-theme="dark"] .upload-area-icon {
+  color: #8b949e;
+}
+
+[data-theme="dark"] .upload-area-text {
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .upload-area-hint {
+  color: #8b949e;
+}
+
+[data-theme="dark"] .breadcrumb {
+  background: rgba(13, 17, 23, 0.9);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .breadcrumb-item a {
+  color: #58a6ff;
+}
+
+[data-theme="dark"] .breadcrumb-item a:hover {
+  color: #79c0ff;
+}
+
+[data-theme="dark"] .breadcrumb-separator {
+  color: #6e7681;
+}
+
+[data-theme="dark"] .file-browser {
+  background: rgba(13, 17, 23, 0.9);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+}
+
+[data-theme="dark"] .file-list {
+  background: transparent;
+}
+
+[data-theme="dark"] .file-item {
+  background: rgba(13, 17, 23, 0.7);
+  border-bottom: 1px solid rgba(48, 54, 61, 0.6);
+  color: #f0f6fc;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .file-item:hover {
+  background: rgba(48, 54, 61, 0.4);
+  border-bottom-color: rgba(88, 166, 255, 0.6);
+}
+
+[data-theme="dark"] .file-item.selected {
+  background: rgba(88, 166, 255, 0.15);
+  border-bottom-color: rgba(88, 166, 255, 0.6);
+}
+
+[data-theme="dark"] .file-icon {
+  color: #8b949e;
+}
+
+[data-theme="dark"] .file-name {
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .file-actions button {
+  color: #8b949e;
+  background: transparent;
+  border: none;
+}
+
+[data-theme="dark"] .file-actions button:hover {
+  color: #58a6ff;
+  background: rgba(48, 54, 61, 0.3);
+}
+
+[data-theme="dark"] .upload-progress {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+}
+
+[data-theme="dark"] .progress-item {
+  background: rgba(33, 38, 45, 0.6);
+  border: 1px solid rgba(48, 54, 61, 0.6);
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .progress-bar {
+  background: rgba(48, 54, 61, 0.8);
+}
+
+[data-theme="dark"] .progress-fill {
+  background: #238636;
+  transition: width var(--transition-speed) ease;
+}
+

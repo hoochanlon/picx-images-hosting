@@ -1,0 +1,102 @@
+/* Dark Mode Components Styles */
+/* 夜间模式通用组件样式 */
+
+[data-theme="dark"] .controls label.icon-label,
+[data-theme="dark"] .controls a.icon-label,
+[data-theme="dark"] .controls button.icon-label {
+  color: #8b949e;
+}
+
+[data-theme="dark"] .controls label.icon-label:hover,
+[data-theme="dark"] .controls a.icon-label:hover,
+[data-theme="dark"] .controls button.icon-label:hover {
+  background: rgba(48, 54, 61, 0.5);
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .custom-select-trigger {
+  background: rgba(10, 26, 46, 0.9);
+  border: 1px solid rgba(33, 38, 45, 0.6);
+  color: #e6edf3;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .custom-select-trigger:hover {
+  background: rgba(10, 26, 46, 0.9);
+  border-color: rgba(88, 166, 255, 0.6);
+}
+
+[data-theme="dark"] .custom-select-options {
+  background: #0a1a2e;
+  border: 1px solid rgba(33, 38, 45, 0.8);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .custom-select-option {
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .custom-select-option:hover {
+  background: rgba(48, 54, 61, 0.5);
+}
+
+[data-theme="dark"] .custom-select-option.selected {
+  background: rgba(88, 166, 255, 0.2);
+  color: #58a6ff;
+}
+
+[data-theme="dark"] input[type="search"],
+[data-theme="dark"] input[type="text"] {
+  background: rgba(10, 26, 46, 0.9);
+  border: 1px solid rgba(33, 38, 45, 0.6);
+  color: #e6edf3;
+}
+
+[data-theme="dark"] input[type="search"]:focus,
+[data-theme="dark"] input[type="text"]:focus {
+  background: rgba(10, 26, 46, 0.9);
+  border-color: rgba(88, 166, 255, 0.6);
+  color: #e6edf3;
+}
+
+[data-theme="dark"] input[type="search"]::placeholder,
+[data-theme="dark"] input[type="text"]::placeholder {
+  color: #7d8590;
+}
+
+/* Card Styles */
+[data-theme="dark"] .card {
+  background: rgba(13, 17, 23, 0.9);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  border-color: rgba(88, 166, 255, 0.4);
+}
+
+[data-theme="dark"] .card .path {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .card .btn {
+  background: rgba(13, 17, 23, 0.9);
+  border: 1px solid rgba(33, 38, 45, 0.6);
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .card .btn:hover {
+  background: rgba(33, 38, 45, 0.9);
+  border-color: rgba(88, 166, 255, 0.6);
+  color: #58a6ff;
+}
+
+[data-theme="dark"] .card .btn.danger:hover {
+  background: rgba(248, 81, 73, 0.2);
+  border-color: rgba(248, 81, 73, 0.5);
+  color: #f85149;
+}
+

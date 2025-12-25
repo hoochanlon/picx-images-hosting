@@ -319,6 +319,38 @@
   color: #fff;
 }
 
+/* 侧边栏图标按钮样式 - 与主页按钮保持一致 */
+.tutorial-sidebar-footer .icon-label,
+.tutorial-sidebar-footer button.icon-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  flex-shrink: 0;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tutorial-sidebar-footer .icon-label:hover,
+.tutorial-sidebar-footer button.icon-label:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  text-decoration: none;
+}
+
+.tutorial-sidebar-footer .icon-label i,
+.tutorial-sidebar-footer button.icon-label i {
+  font-size: 1rem;
+}
+
 /* 移动端遮罩层 */
 .tutorial-sidebar-overlay {
   display: none;

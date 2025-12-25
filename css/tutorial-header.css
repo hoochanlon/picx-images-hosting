@@ -1,9 +1,6 @@
 /* Tutorial Header and Step Indicator Styles */
 /* 修复导航栏错位问题 - 移除tutorial-header的margin-left */
 .tutorial-header {
-  background: #fff;
-  border-bottom: 1px solid #d0d7de;
-  padding: 0;
   /* 移除这行：margin-left: 280px; */
   position: sticky;
   top: 0;
@@ -11,6 +8,8 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid #d0d7de;
+  padding: 0;
   /* 固定高度，防止随内容变化 - 保持此高度不变 */
   height: 85px;
   display: flex;
@@ -18,6 +17,37 @@
   overflow: hidden;
   min-height: 85px;
   max-height: 85px;
+}
+
+/* 教程页面图标按钮样式 - 与主页按钮保持一致 */
+.tutorial-header .icon-label,
+.tutorial-header button.icon-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: #57606a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  flex-shrink: 0;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.tutorial-header .icon-label:hover,
+.tutorial-header button.icon-label:hover {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  text-decoration: none;
+}
+
+.tutorial-header .icon-label i,
+.tutorial-header button.icon-label i {
+  font-size: 1rem;
 }
 
 /* 修复桌面端显示折叠图标的问题 */

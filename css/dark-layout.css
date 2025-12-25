@@ -1,0 +1,39 @@
+/* Dark Mode Layout Styles */
+/* 夜间模式布局样式 */
+
+[data-theme="dark"] .topbar {
+  background: rgba(10, 26, 46, 0.95);
+  border-bottom: 1px solid rgba(33, 38, 45, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .status {
+  color: #e6edf3;
+  background: rgba(13, 17, 23, 0.8);
+  border: 1px solid rgba(33, 38, 45, 0.6);
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .status.error {
+  color: #f85149;
+  background: rgba(248, 81, 73, 0.1);
+  border-color: rgba(248, 81, 73, 0.3);
+}
+
+[data-theme="dark"] .load-more-indicator {
+  color: #8b949e;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .back-to-top {
+  background: #21262d;
+  color: #e6edf3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .back-to-top:hover {
+  background: #30363d;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+

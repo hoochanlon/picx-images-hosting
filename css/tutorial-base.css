@@ -5,7 +5,39 @@ body.tutorial-page {
   padding: 0 !important;
   background: #f6f8fa !important;
   background-attachment: initial !important;
-  font-family: "OPPO Sans 4.0", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-family: "OPPO Sans 4.0", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* 应用字体到所有子元素，但排除 Font Awesome 图标 */
+body.tutorial-page * {
+  font-family: "OPPO Sans 4.0", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif !important;
+}
+
+/* 为教程页面主要容器添加过渡效果 */
+.tutorial-main {
+  margin-left: 280px;
+  flex: 1;
+  background: #fff;
+  min-height: 100vh;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* 为教程容器添加过渡效果 */
+.tutorial-container {
+  display: flex;
+  min-height: 100vh;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* 确保 Font Awesome 图标使用自己的字体（优先级更高） */
+body.tutorial-page i[class*="fa-"],
+body.tutorial-page .fas,
+body.tutorial-page .far,
+body.tutorial-page .fal,
+body.tutorial-page .fab,
+body.tutorial-page .fa {
+  font-family: "Font Awesome 6 Free", "Font Awesome 6 Pro", "Font Awesome 6 Brands", "FontAwesome" !important;
 }
 
 .tutorial-container {

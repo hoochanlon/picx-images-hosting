@@ -1,0 +1,47 @@
+/* Dark Mode Lightbox Styles */
+/* 夜间模式灯箱样式 */
+
+[data-theme="dark"] .lightbox-backdrop {
+  background: rgba(0, 0, 0, 0.95);
+}
+
+[data-theme="dark"] .lightbox-body {
+  background: #010409;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .lightbox-close,
+[data-theme="dark"] .lightbox-control-btn {
+  color: #e6edf3;
+  background: rgba(13, 17, 23, 0.9);
+  border: 1px solid rgba(33, 38, 45, 0.6);
+}
+
+[data-theme="dark"] .lightbox-close:hover,
+[data-theme="dark"] .lightbox-control-btn:hover {
+  background: rgba(33, 38, 45, 0.9);
+  color: #58a6ff;
+}
+
+[data-theme="dark"] .lightbox-info {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(33, 38, 45, 0.6);
+  color: #e6edf3;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .lightbox-info a {
+  color: #58a6ff;
+}
+
+[data-theme="dark"] .info-copy-btn {
+  background: rgba(33, 38, 45, 0.8);
+  border: 1px solid rgba(48, 54, 61, 0.5);
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .info-copy-btn:hover {
+  background: rgba(48, 54, 61, 0.8);
+  color: #58a6ff;
+}
+

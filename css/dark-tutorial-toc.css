@@ -1,0 +1,63 @@
+/* Dark Mode Tutorial TOC Styles */
+/* 夜间模式教程目录样式 */
+
+[data-theme="dark"] .tutorial-toc {
+  background: rgba(13, 17, 23, 0.9);
+  border: 1px solid rgba(48, 54, 61, 0.6);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  max-width: 280px;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .tutorial-toc-header {
+  background: rgba(13, 17, 23, 0.98);
+  border-bottom: 1px solid rgba(48, 54, 61, 0.8);
+  padding: 16px;
+}
+
+[data-theme="dark"] .tutorial-toc-header h3 {
+  color: #f0f6fc;
+  margin: 0;
+  font-size: 1rem;
+}
+
+[data-theme="dark"] .tutorial-toc-nav {
+  background: transparent;
+  padding: 8px 0;
+}
+
+[data-theme="dark"] .tutorial-toc-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+[data-theme="dark"] .tutorial-toc-nav li {
+  margin: 0;
+  padding: 0;
+}
+
+[data-theme="dark"] .tutorial-toc-nav a {
+  color: #8b949e;
+  padding: 6px 16px;
+  display: block;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all var(--transition-speed) ease;
+  border-left: 3px solid transparent;
+}
+
+[data-theme="dark"] .tutorial-toc-nav a:hover,
+[data-theme="dark"] .tutorial-toc-nav a.active {
+  color: #58a6ff;
+  background: rgba(48, 54, 61, 0.3);
+  border-left-color: rgba(88, 166, 255, 0.5);
+}
+
+[data-theme="dark"] .tutorial-toc-nav ul ul a {
+  padding-left: 28px;
+  font-size: 0.8125rem;
+  color: #7d8590;
+}
+

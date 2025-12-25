@@ -1,0 +1,35 @@
+/* Dark Mode Toggle Button Styles */
+/* 夜间模式切换按钮样式 - 与搜索按钮等图标按钮完全一致 */
+
+/* 在 .controls 容器内，夜间模式切换按钮已通过 button.icon-label 使用与搜索按钮完全相同的样式 */
+/* 样式定义在 components.css 和 dark-components.css 中 */
+
+/* Tutorial page specific toggle button - 与其他图标保持一致 */
+.tutorial-header .dark-mode-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  transition: all var(--transition-speed) ease;
+}
+
+.tutorial-header .dark-mode-toggle:hover {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .tutorial-header .dark-mode-toggle {
+  background: transparent;
+  border: none;
+  color: #8b949e;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .tutorial-header .dark-mode-toggle:hover {
+  background: rgba(48, 54, 61, 0.5);
+  color: #e6edf3;
+  transition: all var(--transition-speed) ease;
+}
+

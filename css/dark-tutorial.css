@@ -1,0 +1,94 @@
+/* Dark Mode Tutorial Page Base Styles */
+/* 夜间模式教程页面基础样式 */
+
+[data-theme="dark"] body.tutorial-page {
+  background: #010409 !important;
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .tutorial-main {
+  background: #0d1117;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .tutorial-content-wrapper {
+  background: #0d1117;
+}
+
+[data-theme="dark"] .tutorial-mobile-menu-toggle {
+  background: rgba(33, 38, 45, 0.8);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #e6edf3;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .tutorial-mobile-menu-toggle:hover {
+  background: rgba(48, 54, 61, 0.8);
+  border-color: rgba(88, 166, 255, 0.6);
+}
+
+[data-theme="dark"] .tutorial-back-to-top {
+  background: rgba(13, 17, 23, 0.95);
+  color: #e6edf3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .tutorial-back-to-top:hover {
+  background: rgba(33, 38, 45, 0.95);
+  border-color: rgba(88, 166, 255, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .tutorial-sidebar-overlay {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+[data-theme="dark"] .tutorial-actions {
+  background: rgba(13, 17, 23, 0.95);
+  border-top: 1px solid rgba(48, 54, 61, 0.8);
+  padding: 16px 24px;
+  margin-top: 24px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .tutorial-loading {
+  color: #8b949e;
+  text-align: center;
+  padding: 40px;
+  font-style: italic;
+}
+
+[data-theme="dark"] .tutorial-highlight {
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  border-radius: 6px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+[data-theme="dark"] .tutorial-code-block {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .tutorial-list {
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .tutorial-list li {
+  color: #e6edf3;
+  margin-bottom: 8px;
+}
+

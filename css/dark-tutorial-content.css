@@ -1,0 +1,173 @@
+/* Dark Mode Tutorial Content Styles */
+/* 夜间模式教程内容区域样式 */
+
+[data-theme="dark"] .tutorial-content {
+  color: #e6edf3;
+  background: #0d1117;
+  padding: 24px;
+  line-height: 1.7;
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .tutorial-content h1,
+[data-theme="dark"] .tutorial-content h2,
+[data-theme="dark"] .tutorial-content h3,
+[data-theme="dark"] .tutorial-content h4,
+[data-theme="dark"] .tutorial-content h5,
+[data-theme="dark"] .tutorial-content h6 {
+  color: #f0f6fc;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .tutorial-content h1 {
+  font-size: 2rem;
+  border-bottom: 1px solid rgba(48, 54, 61, 0.8);
+  padding-bottom: 12px;
+}
+
+[data-theme="dark"] .tutorial-content h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(48, 54, 61, 0.6);
+  padding-bottom: 8px;
+}
+
+[data-theme="dark"] .tutorial-content p {
+  color: #e6edf3;
+  margin-bottom: 16px;
+  line-height: 1.7;
+}
+
+[data-theme="dark"] .tutorial-content code {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #f0f6fc;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+}
+
+[data-theme="dark"] .tutorial-content pre {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #f0f6fc;
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  margin: 16px 0;
+}
+
+[data-theme="dark"] .tutorial-content pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+[data-theme="dark"] .tutorial-content blockquote {
+  border-left: 4px solid rgba(88, 166, 255, 0.6);
+  background: rgba(88, 166, 255, 0.05);
+  color: #e6edf3;
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+}
+
+[data-theme="dark"] .tutorial-content ul,
+[data-theme="dark"] .tutorial-content ol {
+  color: #e6edf3;
+  margin: 16px 0;
+  padding-left: 24px;
+}
+
+[data-theme="dark"] .tutorial-content li {
+  color: #e6edf3;
+  margin-bottom: 8px;
+}
+
+[data-theme="dark"] .tutorial-content a {
+  color: #58a6ff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(88, 166, 255, 0.3);
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .tutorial-content a:hover {
+  color: #79c0ff;
+  border-bottom-color: rgba(88, 166, 255, 0.8);
+}
+
+[data-theme="dark"] .tutorial-content table {
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 16px 0;
+  width: 100%;
+}
+
+[data-theme="dark"] .tutorial-content th,
+[data-theme="dark"] .tutorial-content td {
+  border: 1px solid rgba(48, 54, 61, 0.6);
+  padding: 12px 16px;
+  text-align: left;
+}
+
+[data-theme="dark"] .tutorial-content th {
+  background: rgba(13, 17, 23, 0.9);
+  font-weight: 600;
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .tutorial-content td {
+  background: rgba(13, 17, 23, 0.7);
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .tutorial-content tr:nth-child(even) td {
+  background: rgba(13, 17, 23, 0.8);
+}
+
+[data-theme="dark"] .tutorial-btn {
+  background: rgba(33, 38, 45, 0.8);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #e6edf3;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all var(--transition-speed) ease;
+  cursor: pointer;
+  outline: none;
+}
+
+[data-theme="dark"] .tutorial-btn:hover {
+  background: rgba(48, 54, 61, 0.8);
+  border-color: rgba(88, 166, 255, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .tutorial-btn-primary {
+  background: #238636;
+  color: #fff;
+  border-color: #238636;
+}
+
+[data-theme="dark"] .tutorial-btn-primary:hover {
+  background: #2ea043;
+  border-color: #2ea043;
+  box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+}
+
+[data-theme="dark"] .tutorial-btn-secondary {
+  background: rgba(33, 38, 45, 0.8);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .tutorial-btn-secondary:hover {
+  background: rgba(48, 54, 61, 0.8);
+  border-color: rgba(88, 166, 255, 0.6);
+}
+
