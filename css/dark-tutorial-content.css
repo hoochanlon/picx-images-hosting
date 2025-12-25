@@ -99,34 +99,54 @@
   border-bottom-color: rgba(88, 166, 255, 0.8);
 }
 
-[data-theme="dark"] .tutorial-content table {
-  border: 1px solid rgba(48, 54, 61, 0.8);
+[data-theme="dark"] .tutorial-content table,
+[data-theme="dark"] .tutorial-step-content table {
+  border: 2px solid rgba(48, 54, 61, 0.8);
   border-radius: 6px;
   overflow: hidden;
   margin: 16px 0;
   width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .tutorial-content th,
-[data-theme="dark"] .tutorial-content td {
-  border: 1px solid rgba(48, 54, 61, 0.6);
+[data-theme="dark"] .tutorial-content td,
+[data-theme="dark"] .tutorial-step-content th,
+[data-theme="dark"] .tutorial-step-content td {
+  border-right: 1px solid rgba(48, 54, 61, 0.6);
+  border-bottom: 1px solid rgba(48, 54, 61, 0.6);
   padding: 12px 16px;
   text-align: left;
 }
 
-[data-theme="dark"] .tutorial-content th {
-  background: rgba(13, 17, 23, 0.9);
+[data-theme="dark"] .tutorial-content th:last-child,
+[data-theme="dark"] .tutorial-content td:last-child,
+[data-theme="dark"] .tutorial-step-content th:last-child,
+[data-theme="dark"] .tutorial-step-content td:last-child {
+  border-right: none;
+}
+
+[data-theme="dark"] .tutorial-content tr:last-child td,
+[data-theme="dark"] .tutorial-step-content tr:last-child td {
+  border-bottom: none;
+}
+
+[data-theme="dark"] .tutorial-content th,
+[data-theme="dark"] .tutorial-step-content th {
+  background: rgba(33, 38, 45, 0.95);
   font-weight: 600;
   color: #f0f6fc;
 }
 
-[data-theme="dark"] .tutorial-content td {
-  background: rgba(13, 17, 23, 0.7);
+[data-theme="dark"] .tutorial-content td,
+[data-theme="dark"] .tutorial-step-content td {
+  background: rgba(13, 17, 23, 0.9);
   color: #e6edf3;
 }
 
-[data-theme="dark"] .tutorial-content tr:nth-child(even) td {
-  background: rgba(13, 17, 23, 0.8);
+[data-theme="dark"] .tutorial-content tr:nth-child(even) td,
+[data-theme="dark"] .tutorial-step-content tr:nth-child(even) td {
+  background: rgba(13, 17, 23, 0.9);
 }
 
 [data-theme="dark"] .tutorial-btn {

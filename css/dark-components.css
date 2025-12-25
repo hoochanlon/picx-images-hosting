@@ -26,6 +26,13 @@
   border-color: rgba(88, 166, 255, 0.6);
 }
 
+[data-theme="dark"] .custom-select.active .custom-select-trigger {
+  background: rgba(10, 26, 46, 0.9);
+  border-color: rgba(88, 166, 255, 0.6);
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+  color: #e6edf3;
+}
+
 [data-theme="dark"] .custom-select-options {
   background: #0a1a2e;
   border: 1px solid rgba(33, 38, 45, 0.8);
