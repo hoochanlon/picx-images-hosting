@@ -169,7 +169,7 @@ function showAuthDialog(callback) {
   });
   
   // 确认按钮
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const password = passwordInput.value.trim();
     
     if (!password) {
@@ -181,7 +181,46 @@ function showAuthDialog(callback) {
       return;
     }
     
-    // 验证密码
+    // 禁用按钮，显示加载状态
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = '验证中...';
+    
+    try {
+      // 优先使用 API 验证（从 Vercel 环境变量读取）
+      const apiBase = window.APP_CONFIG?.VERCEL_API_BASE || 
+                     (window.location.hostname === 'localhost' 
+                       ? 'http://localhost:3000' 
+                       : window.location.origin);
+      
+      const response = await fetch(`${apiBase}/api/verify-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.valid && data.token) {
+          // 保存服务器返回的 token
+          localStorage.setItem(AUTH_TOKEN_KEY, data.token);
+          localStorage.setItem(AUTH_EXPIRES_KEY, data.expiresAt.toString());
+          
+          document.body.removeChild(modal);
+          callback(true);
+          return;
+        }
+      }
+      
+      // API 验证失败，回退到本地配置验证
+      console.warn('API password verification failed, falling back to local config');
+    } catch (err) {
+      // API 请求失败，回退到本地配置验证
+      console.warn('API password verification error, falling back to local config:', err);
+    }
+    
+    // 回退到本地配置验证（兼容旧版本）
     const correctPassword = window.APP_CONFIG?.DELETE_PASSWORD || 'admin123';
     if (password !== correctPassword) {
       passwordInput.value = '';
@@ -192,10 +231,14 @@ function showAuthDialog(callback) {
         passwordInput.style.borderColor = isDark ? 'rgba(48, 54, 61, 0.8)' : '#d0d7de';
         passwordInput.placeholder = '请输入密码';
       }, 2000);
+      
+      // 恢复按钮
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = '确认';
       return;
     }
     
-    // 生成token并保存
+    // 生成token并保存（本地验证成功）
     const token = generateAuthToken(password);
     const expiresAt = Date.now() + (24 * 60 * 60 * 1000);
     

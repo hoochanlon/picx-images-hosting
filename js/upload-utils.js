@@ -21,13 +21,20 @@ async function apiRequest(payload) {
   try {
     // 对于所有写操作（上传、删除），添加认证token
     if ((payload.action === 'delete' || payload.action === 'upload') && window.uploadAuth) {
-      const authToken = window.uploadAuth.getAuthToken();
-      if (authToken) {
-        payload.authToken = authToken;
-      }
-      // 如果设置了API_SECRET，使用密码hash作为token
-      if (window.APP_CONFIG?.API_SECRET) {
-        payload.authToken = window.APP_CONFIG.API_SECRET;
+      // 优先使用 GitHub token
+      const githubToken = window.uploadAuth.getGitHubToken();
+      if (githubToken) {
+        payload.githubToken = githubToken;
+      } else {
+        // 回退到密码认证
+        const authToken = window.uploadAuth.getAuthToken && window.uploadAuth.getAuthToken();
+        if (authToken) {
+          payload.authToken = authToken;
+        }
+        // 如果设置了API_SECRET，使用密码hash作为token
+        if (window.APP_CONFIG?.API_SECRET) {
+          payload.authToken = window.APP_CONFIG.API_SECRET;
+        }
       }
     }
     

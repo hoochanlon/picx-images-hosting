@@ -30,6 +30,13 @@
 
 fork 这个仓库
 
+:::warning 安全提示
+部署前请务必配置安全设置，否则任何人都可以操作你的仓库！
+- 修改 `config.js` 中的 `DELETE_PASSWORD`（默认值不安全）
+- 在 Vercel 环境变量中设置 `API_SECRET`（强烈推荐）
+- 详细说明请查看 [安全配置指南](./docs/security-config.md)
+:::
+
 ### 快速克隆（排除图片目录）
 
 如果仓库图片很多，克隆会很慢。可以使用以下方法：
@@ -92,22 +99,78 @@ pnpm i -g vercel
 vercel dev
 ```
 
-vercel 变量
+### Vercel 环境变量配置
 
-* `GH_TOKEN`:`YOUR-PERSONAL-ACCESS-TOKEN` (必需)
-* `ALLOWED_ORIGINS`:`https://your-domain.com,https://another-domain.com` (可选，用逗号分隔多个域名，如果不设置则从 `api-config.json` 读取)
+在 Vercel 项目设置中添加以下环境变量：
 
-配置文件
+| 变量名 | 值 | 说明 | 必需 |
+|--------|-----|------|------|
+| `GH_TOKEN` | 你的 GitHub Token | GitHub Personal Access Token，需要 `repo` 权限 | ✅ 必需 |
+| `GITHUB_OAUTH_CLIENT_ID` | GitHub OAuth Client ID | GitHub OAuth App 的 Client ID（推荐使用） | ⚠️ 推荐 |
+| `GITHUB_OAUTH_CLIENT_SECRET` | GitHub OAuth Client Secret | GitHub OAuth App 的 Client Secret（推荐使用） | ⚠️ 推荐 |
+| `API_SECRET` | 强密码（至少32字符） | API 密钥，用于后端验证写操作（备用方案） | 可选 |
+| `ALLOWED_ORIGINS` | 允许的域名（逗号分隔） | CORS 配置，如果不设置则从 `api-config.json` 读取 | 可选 |
 
-* `config.js`: 前端配置
-  - `VERCEL_API_BASE`: Vercel API 基础地址
-  - `CUSTOM_DOMAINS`: 自定义域名列表（需要使用 Vercel API 的域名）
-  - `GITHUB_PAGES_PATTERN`: GitHub Pages 域名匹配模式
-  - `DEFAULT_UPLOAD_DIR`: 默认上传目录（例如：`'imgs/uploads/kate/'`），如果用户没有在 UI 中设置默认路径，将使用此值
-  - `INCLUDED_DIRS`: 允许显示的图片目录列表（例如：`['imgs']` 只显示 imgs 目录下的图片，`['imgs', 'example']` 显示多个目录，`[]` 显示所有目录）
-* `api-config.json`: API CORS 配置（允许的域名列表）
-  - 优先级：环境变量 `ALLOWED_ORIGINS` > `api-config.json` > 默认值
-  - 可以复制 `api-config.example.json` 为 `api-config.json` 并修改
+:::tip 认证方式选择
+- **GitHub OAuth**（推荐）：更安全、更专业，使用 GitHub 官方 OAuth
+- **密码认证**（备用）：简单但不安全，密码会暴露在代码中
+
+详细配置指南请查看：[GitHub OAuth 配置指南](./docs/github-oauth-setup.md)
+:::
+
+**配置步骤：**
+1. 进入 Vercel 项目 → **Settings** → **Environment Variables**
+2. 添加上述环境变量
+3. 选择环境：**Production**、**Preview**、**Development**（建议全选）
+4. 点击 **Save** 保存
+5. 进入 **Deployments** 标签，点击 **Redeploy** 重新部署
+
+:::warning 安全提示
+- **推荐使用 GitHub OAuth**：更安全，密码不会暴露，详细配置见 [GitHub OAuth 配置指南](./docs/github-oauth-setup.md)
+- 如果使用密码认证：`API_SECRET` 用于保护写操作，强烈建议设置
+- 生成强密码：可以使用在线工具或运行 `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+- 修改环境变量后必须重新部署才能生效
+:::
+
+**本地开发：**
+- 创建 `.env.local` 文件（参考 `env.example`）
+- 注意：前端 `config.js` 中的 `DELETE_PASSWORD` 也需要配置（见下方说明）
+
+### 配置文件说明
+
+#### `config.js` - 前端配置
+
+**基础配置：**
+- `VERCEL_API_BASE`: Vercel API 基础地址
+- `CUSTOM_DOMAINS`: 自定义域名列表（需要使用 Vercel API 的域名）
+- `GITHUB_PAGES_PATTERN`: GitHub Pages 域名匹配模式
+- `DEFAULT_UPLOAD_DIR`: 默认上传目录（例如：`'imgs/uploads/kate/'`），如果用户没有在 UI 中设置默认路径，将使用此值
+- `INCLUDED_DIRS`: 允许显示的图片目录列表（例如：`['imgs']` 只显示 imgs 目录下的图片，`['imgs', 'example']` 显示多个目录，`[]` 显示所有目录）
+
+**安全配置（重要）：**
+- `DELETE_PASSWORD`: 删除操作密码，用于前端验证
+  - ⚠️ **必须修改**：默认值为 `'admin123'`，请修改为强密码
+  - 此密码用于所有写操作（上传、删除、重命名、创建文件夹）的前端验证
+  - 授权后 24 小时内无需重复输入
+  - 注意：此密码存储在客户端代码中，仅作为基础防护
+- `API_SECRET`: API 密钥（可选）
+  - 如果设置了此值，需要与 Vercel 环境变量 `API_SECRET` 保持一致
+  - 用于后端 API 验证，提供额外的安全层
+  - 建议留空，仅在后端环境变量中配置
+
+#### `api-config.json` - API CORS 配置
+
+- 允许的域名列表
+- 优先级：环境变量 `ALLOWED_ORIGINS` > `api-config.json` > 默认值
+- 可以复制 `api-config.example.json` 为 `api-config.json` 并修改
+
+:::important 安全配置检查清单
+部署前请确认：
+- [ ] 已修改 `config.js` 中的 `DELETE_PASSWORD` 为强密码
+- [ ] 已在 Vercel 环境变量中设置 `GH_TOKEN`
+- [ ] 已在 Vercel 环境变量中设置 `API_SECRET`（强烈推荐）
+- [ ] 已重新部署项目使配置生效
+:::
 
 默认图片文件夹
 

@@ -138,14 +138,19 @@ async function uploadFiles(fileList, basePath = '') {
                 message: `Upload: ${retryFilePath}`
               };
               
-              // 添加认证token
+              // 添加认证token（优先使用 GitHub token）
               if (window.uploadAuth) {
-                const authToken = window.uploadAuth.getAuthToken();
-                if (authToken) {
-                  retryPayload.authToken = authToken;
-                }
-                if (window.APP_CONFIG?.API_SECRET) {
-                  retryPayload.authToken = window.APP_CONFIG.API_SECRET;
+                const githubToken = window.uploadAuth.getGitHubToken && window.uploadAuth.getGitHubToken();
+                if (githubToken) {
+                  retryPayload.githubToken = githubToken;
+                } else {
+                  const authToken = window.uploadAuth.getAuthToken && window.uploadAuth.getAuthToken();
+                  if (authToken) {
+                    retryPayload.authToken = authToken;
+                  }
+                  if (window.APP_CONFIG?.API_SECRET) {
+                    retryPayload.authToken = window.APP_CONFIG.API_SECRET;
+                  }
                 }
               }
               
