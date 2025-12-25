@@ -39,14 +39,37 @@ export function setCorsHeaders(req, res) {
   const origin = req.headers.origin;
   const allowedOrigins = getAllowedOrigins();
   
-  if (origin && allowedOrigins.includes(origin)) {
+  // 检查 origin 是否在允许列表中（支持精确匹配和通配符）
+  let isAllowed = false;
+  if (origin) {
+    // 精确匹配
+    if (allowedOrigins.includes(origin)) {
+      isAllowed = true;
+    } else {
+      // 支持通配符匹配（如 https://*.example.com）
+      for (const allowedOrigin of allowedOrigins) {
+        if (allowedOrigin.includes('*')) {
+          const pattern = allowedOrigin.replace(/\*/g, '.*');
+          const regex = new RegExp(`^${pattern}$`);
+          if (regex.test(origin)) {
+            isAllowed = true;
+            break;
+          }
+        }
+      }
+    }
+  }
+  
+  if (isAllowed && origin) {
     res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   
   // 处理 OPTIONS 预检请求
   if (req.method === 'OPTIONS') {
+    res.status(200).end();
     return true; // 返回 true 表示已处理 OPTIONS 请求
   }
   

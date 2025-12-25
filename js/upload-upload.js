@@ -92,16 +92,32 @@ async function uploadFiles(fileList, basePath = '') {
         throw new Error('文件路径不能为空');
       }
       
+      // 构建上传请求体
+      const uploadPayload = {
+        action: 'upload',
+        path: filePath,
+        content: content,
+        message: `Upload: ${filePath}`
+      };
+      
+      // 添加认证token（优先使用 GitHub token）
+      if (window.uploadAuth) {
+        const githubToken = window.uploadAuth.getGitHubToken && window.uploadAuth.getGitHubToken();
+        if (githubToken) {
+          uploadPayload.githubToken = githubToken;
+        } else {
+          const authToken = window.uploadAuth.getAuthToken && window.uploadAuth.getAuthToken();
+          if (authToken) {
+            uploadPayload.authToken = authToken;
+          }
+        }
+      }
+      
       // 上传文件
       const uploadRes = await fetch(state.API_ENDPOINT(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'upload',
-          path: filePath,
-          content: content,
-          message: `Upload: ${filePath}`
-        }),
+        body: JSON.stringify(uploadPayload),
       });
       
       if (!uploadRes.ok) {

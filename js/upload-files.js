@@ -171,8 +171,12 @@ async function ensureDirectoryExists(dirPath, maxRetries = 3) {
           dirExists = true;
           break;
         }
+        // 404 是预期的（文件不存在），不需要记录错误
+        if (checkRes.status === 404) {
+          break;
+        }
       } catch (e) {
-        // 文件不存在，需要创建
+        // 网络错误，忽略（文件不存在是正常的）
       }
       if (checkRetry < 2) {
         await new Promise(resolve => setTimeout(resolve, 1000 * (checkRetry + 1)));
