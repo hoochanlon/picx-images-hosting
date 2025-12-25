@@ -67,11 +67,16 @@ window.APP_CONFIG = {
   //    - 详细配置见上方 GITHUB_OAUTH_CLIENT_ID 的注释
   DELETE_PASSWORD: 'admin123',
   
-  // API密钥（可选，用于后端验证）
-  // 如果设置了此值，后端API会验证此密钥
-  // ⚠️ 重要：必须在 Vercel 环境变量中设置相同的 API_SECRET 值
-  // 注意：此值存储在客户端，仅作为额外防护层
-  // 配置方式：在 Vercel 项目设置中添加环境变量 API_SECRET
+  // API密钥（已废弃，不再在客户端使用）
+  // ⚠️ 注意：API_SECRET 不应该存储在客户端，因为任何人都可以看到
+  // 真正的身份验证应该通过以下方式：
+  // 1. GitHub OAuth（推荐）：用户通过 GitHub 登录，确认身份
+  // 2. 密码认证：用户输入密码，服务器验证后返回 token
+  // 
+  // 如果需要在后端使用 API_SECRET，应该：
+  // - 只在 Vercel 环境变量中设置 API_SECRET
+  // - 后端 API 可以验证 API_SECRET，但前端不应该发送它
+  // - 前端应该通过用户输入密码或 GitHub OAuth 来确认身份
   API_SECRET: ''
 };
 

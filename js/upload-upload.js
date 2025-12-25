@@ -148,9 +148,8 @@ async function uploadFiles(fileList, basePath = '') {
                   if (authToken) {
                     retryPayload.authToken = authToken;
                   }
-                  if (window.APP_CONFIG?.API_SECRET) {
-                    retryPayload.authToken = window.APP_CONFIG.API_SECRET;
-                  }
+                  // 注意：不再使用 API_SECRET，因为它存储在客户端，不安全
+                  // 如果用户未登录，requireAuth 会要求用户输入密码
                 }
               }
               

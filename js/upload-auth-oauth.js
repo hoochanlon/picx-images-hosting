@@ -341,14 +341,23 @@ function isAuthenticated() {
     return false;
   }
   
-  // 如果 token 是从服务器返回的（base64 格式），直接认为有效
-  // 如果是本地生成的（包含密码信息），需要验证格式
+  // 如果 token 是从服务器返回的（base64 格式），验证格式和过期时间
+  // 从 verify-password API 返回的 token 格式是：Buffer.from(`${Date.now()}:${Math.random()}`).toString('base64')
   try {
-    // 尝试解析 token，如果是 base64 格式且不包含冒号，说明是服务器返回的
+    // 尝试解析 token，如果是 base64 格式且包含冒号，说明是服务器返回的
     const decoded = atob(token);
-    if (!decoded.includes(':')) {
-      // 服务器返回的 token，直接有效
-      return true;
+    if (decoded.includes(':') && decoded.split(':').length === 2) {
+      // 服务器返回的 token，检查时间戳是否在有效期内
+      const parts = decoded.split(':');
+      const timestamp = parseInt(parts[0]);
+      const maxAge = 24 * 60 * 60 * 1000; // 24小时
+      if (!isNaN(timestamp) && (now - timestamp) < maxAge && (now - timestamp) >= 0) {
+        return true;
+      } else {
+        // token 已过期，清除
+        clearAuth();
+        return false;
+      }
     }
   } catch (e) {
     // 不是 base64 格式，可能是其他格式，继续验证

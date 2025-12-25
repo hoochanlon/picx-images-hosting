@@ -28,29 +28,23 @@ async function apiRequest(payload) {
           payload.githubToken = githubToken;
         } else {
           // GitHub token 不存在，使用密码认证
-          // 优先使用 API_SECRET（如果设置了）
-          if (window.APP_CONFIG?.API_SECRET) {
-            payload.authToken = window.APP_CONFIG.API_SECRET;
-          } else {
-            // 如果没有设置 API_SECRET，使用从服务器获取的 token
-            const authToken = window.uploadAuth.getAuthToken && window.uploadAuth.getAuthToken();
-            if (authToken) {
-              payload.authToken = authToken;
-            }
-          }
-        }
-      } else {
-        // 没有 getGitHubToken 方法，使用密码认证
-        // 优先使用 API_SECRET（如果设置了）
-        if (window.APP_CONFIG?.API_SECRET) {
-          payload.authToken = window.APP_CONFIG.API_SECRET;
-        } else {
-          // 如果没有设置 API_SECRET，使用从服务器获取的 token
+          // 使用从服务器获取的登录 token（用户必须通过密码登录）
           const authToken = window.uploadAuth.getAuthToken && window.uploadAuth.getAuthToken();
           if (authToken) {
             payload.authToken = authToken;
           }
+          // 注意：不再使用 API_SECRET，因为它存储在客户端，不安全
+          // 如果用户未登录，requireAuth 会要求用户输入密码
         }
+      } else {
+        // 没有 getGitHubToken 方法，使用密码认证
+        // 使用从服务器获取的登录 token（用户必须通过密码登录）
+        const authToken = window.uploadAuth.getAuthToken && window.uploadAuth.getAuthToken();
+        if (authToken) {
+          payload.authToken = authToken;
+        }
+        // 注意：不再使用 API_SECRET，因为它存储在客户端，不安全
+        // 如果用户未登录，requireAuth 会要求用户输入密码
       }
     }
     
