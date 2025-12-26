@@ -554,12 +554,106 @@
   }
 
   /**
+   * 添加 CSS 动画样式
+   */
+  function addAnimationStyles() {
+    // 检查是否已经添加了样式
+    if (document.getElementById('mermaid-animation-styles')) {
+      return;
+    }
+
+    const style = document.createElement('style');
+    style.id = 'mermaid-animation-styles';
+    style.textContent = `
+      /* Mermaid 图表容器动画 */
+      .mermaid {
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* 加载动画 */
+      .mermaid-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100px;
+        color: #666;
+        font-size: 14px;
+      }
+
+      .mermaid-loading::after {
+        content: '';
+        width: 24px;
+        height: 24px;
+        margin-left: 10px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #0969da;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      /* 淡入动画 */
+      .mermaid-fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+        opacity: 0;
+      }
+
+      /* SVG 缩放动画 */
+      .mermaid svg {
+        transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        transform-origin: center top;
+      }
+
+      .mermaid svg:hover {
+        transform: scale(1.02);
+      }
+
+      /* 旋转动画 */
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* 淡入动画 */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* 复制按钮动画 */
+      .mermaid-copy-btn {
+        transition: all 0.2s ease;
+      }
+
+      .mermaid-copy-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  /**
+   * 显示加载动画
+   */
+  function showLoading(container) {
+    container.innerHTML = '<div class="mermaid-loading">图表渲染中...</div>';
+  }
+
+  /**
    * 显示 Mermaid 渲染错误
    */
   function showMermaidError(container, mermaidContent, err) {
     const errorMessage = err.message || err.str || '未知错误';
     container.innerHTML = `
-      <div style="color: #d1242f; padding: 20px; background: rgba(255, 235, 238, 0.5); border-radius: 6px; border: 1px solid rgba(255, 0, 0, 0.2);">
+      <div style="color: #d1242f; padding: 20px; background: rgba(255, 235, 238, 0.5); border-radius: 6px; border: 1px solid rgba(255, 0, 0, 0.2); animation: fadeIn 0.3s ease-out;">
         <p style="margin: 0; font-weight: 600;">⚠️ Mermaid 图表渲染失败</p>
         <p style="margin: 8px 0 0 0; font-size: 0.9em;">错误信息：${errorMessage}</p>
         <details style="margin-top: 12px;">

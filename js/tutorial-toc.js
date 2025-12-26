@@ -79,10 +79,29 @@ function updateTOC(stepIndex) {
       const targetId = link.getAttribute('href').substring(1);
       const targetElement = document.getElementById(targetId);
       if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // 计算正确的滚动位置（考虑固定头部）
+        const headerOffset = 120;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+        
         // 更新活动状态
         tocNav.querySelectorAll('a').forEach(a => a.classList.remove('active'));
         link.classList.add('active');
+        
+        // 延迟更新，等待滚动完成
+        setTimeout(() => {
+          // 确保活动链接在目录中可见
+          const linkRect = link.getBoundingClientRect();
+          const navRect = tocNav.getBoundingClientRect();
+          if (linkRect.top < navRect.top || linkRect.bottom > navRect.bottom) {
+            link.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }, 500);
       }
     });
   });
@@ -95,24 +114,40 @@ function updateTOC(stepIndex) {
       window.tocObserver.disconnect();
     }
     
+    // 使用更合理的 rootMargin，确保定位准确
+    // -120px 顶部偏移（考虑固定头部）
+    // -50% 底部偏移（当标题滚动到视口下半部分时高亮）
     window.tocObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          if (id) {
-            tocNav.querySelectorAll('a').forEach(a => {
-              a.classList.remove('active');
-              if (a.getAttribute('href') === '#' + id) {
-                a.classList.add('active');
-              }
-            });
+      // 找到最接近顶部的可见标题
+      const visibleHeadings = entries
+        .filter(entry => entry.isIntersecting)
+        .map(entry => ({
+          element: entry.target,
+          id: entry.target.id,
+          top: entry.boundingClientRect.top
+        }))
+        .sort((a, b) => a.top - b.top);
+      
+      if (visibleHeadings.length > 0) {
+        // 高亮最接近顶部的标题
+        const activeId = visibleHeadings[0].id;
+        tocNav.querySelectorAll('a').forEach(a => {
+          a.classList.remove('active');
+          if (a.getAttribute('href') === '#' + activeId) {
+            a.classList.add('active');
+            // 滚动到活动链接（如果不在视口中）
+            const linkRect = a.getBoundingClientRect();
+            const navRect = tocNav.getBoundingClientRect();
+            if (linkRect.top < navRect.top || linkRect.bottom > navRect.bottom) {
+              a.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
           }
-        }
-      });
+        });
+      }
     }, {
       root: tutorialMain,
-      rootMargin: '-100px 0px -60% 0px',
-      threshold: 0
+      rootMargin: '-120px 0px -50% 0px',
+      threshold: [0, 0.1, 0.5, 1]
     });
 
     headings.forEach(heading => {
