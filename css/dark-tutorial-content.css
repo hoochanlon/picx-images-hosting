@@ -9,6 +9,79 @@
   transition: all var(--transition-speed) ease;
 }
 
+/* 步骤内容区域基础样式 */
+[data-theme="dark"] .tutorial-step-content {
+  color: #e6edf3;
+  background: transparent;
+}
+
+[data-theme="dark"] .tutorial-step-content h1,
+[data-theme="dark"] .tutorial-step-content h2,
+[data-theme="dark"] .tutorial-step-content h3,
+[data-theme="dark"] .tutorial-step-content h4,
+[data-theme="dark"] .tutorial-step-content h5,
+[data-theme="dark"] .tutorial-step-content h6 {
+  color: #f0f6fc;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .tutorial-step-content h1 {
+  font-size: 1.8rem;
+  border-bottom: 1px solid rgba(48, 54, 61, 0.8);
+  padding-bottom: 12px;
+}
+
+[data-theme="dark"] .tutorial-step-content h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(48, 54, 61, 0.6);
+  padding-bottom: 8px;
+}
+
+[data-theme="dark"] .tutorial-step-content p {
+  color: #e6edf3;
+  margin-bottom: 16px;
+  line-height: 1.7;
+}
+
+[data-theme="dark"] .tutorial-step-content blockquote {
+  background: rgba(88, 166, 255, 0.05);
+  border-left: 4px solid rgba(88, 166, 255, 0.6);
+  color: #e6edf3;
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+}
+
+[data-theme="dark"] .tutorial-step-content blockquote p {
+  margin: 0;
+}
+
+[data-theme="dark"] .tutorial-step-content a {
+  color: #58a6ff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(88, 166, 255, 0.3);
+  transition: all var(--transition-speed) ease;
+}
+
+[data-theme="dark"] .tutorial-step-content a:hover {
+  color: #79c0ff;
+  border-bottom-color: rgba(88, 166, 255, 0.8);
+}
+
+[data-theme="dark"] .tutorial-step-content ul,
+[data-theme="dark"] .tutorial-step-content ol {
+  color: #e6edf3;
+  margin: 16px 0;
+  padding-left: 24px;
+}
+
+[data-theme="dark"] .tutorial-step-content li {
+  color: #e6edf3;
+  margin-bottom: 8px;
+}
+
 [data-theme="dark"] .tutorial-content h1,
 [data-theme="dark"] .tutorial-content h2,
 [data-theme="dark"] .tutorial-content h3,
@@ -96,6 +169,166 @@
   background: rgba(33, 38, 45, 0.9);
   border-color: rgba(88, 166, 255, 0.6);
   color: #f0f6fc;
+}
+
+/* 步骤内容区域的代码块样式 */
+[data-theme="dark"] .tutorial-step-content pre {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #f0f6fc;
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  margin: 16px 0;
+  position: relative;
+}
+
+[data-theme="dark"] .tutorial-step-content pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  color: #f0f6fc;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+}
+
+[data-theme="dark"] .tutorial-step-content code {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #f0f6fc;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+}
+
+[data-theme="dark"] .tutorial-step-content .tutorial-code-block {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #f0f6fc;
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  margin: 16px 0;
+  position: relative;
+}
+
+[data-theme="dark"] .tutorial-step-content .tutorial-code-block code {
+  background: transparent;
+  border: none;
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .tutorial-step-content .tutorial-code-block .code-copy-btn {
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  background: rgba(13, 17, 23, 0.95);
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .tutorial-step-content .tutorial-code-block .code-copy-btn:hover {
+  background: rgba(33, 38, 45, 0.9);
+  border-color: rgba(88, 166, 255, 0.6);
+  color: #f0f6fc;
+}
+
+/* Highlight.js 代码高亮夜间模式样式 */
+[data-theme="dark"] .tutorial-step-content .hljs,
+[data-theme="dark"] .tutorial-content .hljs,
+[data-theme="dark"] .tutorial-code-block .hljs {
+  background: rgba(13, 17, 23, 0.95) !important;
+  color: #e6edf3 !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-comment,
+[data-theme="dark"] .tutorial-content .hljs-comment,
+[data-theme="dark"] .tutorial-code-block .hljs-comment {
+  color: #8b949e !important;
+  font-style: italic;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-keyword,
+[data-theme="dark"] .tutorial-content .hljs-keyword,
+[data-theme="dark"] .tutorial-code-block .hljs-keyword {
+  color: #ff7b72 !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-string,
+[data-theme="dark"] .tutorial-content .hljs-string,
+[data-theme="dark"] .tutorial-code-block .hljs-string {
+  color: #a5d6ff !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-number,
+[data-theme="dark"] .tutorial-content .hljs-number,
+[data-theme="dark"] .tutorial-code-block .hljs-number {
+  color: #79c0ff !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-function,
+[data-theme="dark"] .tutorial-content .hljs-function,
+[data-theme="dark"] .tutorial-code-block .hljs-function {
+  color: #d2a8ff !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-variable,
+[data-theme="dark"] .tutorial-content .hljs-variable,
+[data-theme="dark"] .tutorial-code-block .hljs-variable {
+  color: #ffa657 !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-title,
+[data-theme="dark"] .tutorial-content .hljs-title,
+[data-theme="dark"] .tutorial-code-block .hljs-title {
+  color: #79c0ff !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-attr,
+[data-theme="dark"] .tutorial-content .hljs-attr,
+[data-theme="dark"] .tutorial-code-block .hljs-attr {
+  color: #79c0ff !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-tag,
+[data-theme="dark"] .tutorial-content .hljs-tag,
+[data-theme="dark"] .tutorial-code-block .hljs-tag {
+  color: #ff7b72 !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-attribute,
+[data-theme="dark"] .tutorial-content .hljs-attribute,
+[data-theme="dark"] .tutorial-code-block .hljs-attribute {
+  color: #a5d6ff !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-built_in,
+[data-theme="dark"] .tutorial-content .hljs-built_in,
+[data-theme="dark"] .tutorial-code-block .hljs-built_in {
+  color: #ffa657 !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-literal,
+[data-theme="dark"] .tutorial-content .hljs-literal,
+[data-theme="dark"] .tutorial-code-block .hljs-literal {
+  color: #79c0ff !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-type,
+[data-theme="dark"] .tutorial-content .hljs-type,
+[data-theme="dark"] .tutorial-code-block .hljs-type {
+  color: #ffa657 !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-selector-class,
+[data-theme="dark"] .tutorial-content .hljs-selector-class,
+[data-theme="dark"] .tutorial-code-block .hljs-selector-class {
+  color: #d2a8ff !important;
+}
+
+[data-theme="dark"] .tutorial-step-content .hljs-selector-id,
+[data-theme="dark"] .tutorial-content .hljs-selector-id,
+[data-theme="dark"] .tutorial-code-block .hljs-selector-id {
+  color: #d2a8ff !important;
 }
 
 [data-theme="dark"] .tutorial-content blockquote {
@@ -221,5 +454,22 @@
 [data-theme="dark"] .tutorial-btn-secondary:hover {
   background: rgba(48, 54, 61, 0.8);
   border-color: rgba(88, 166, 255, 0.6);
+}
+
+/* Mermaid 图表夜间模式样式 */
+[data-theme="dark"] .tutorial-step-content .mermaid,
+[data-theme="dark"] .tutorial-content .mermaid {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 24px 0;
+  overflow-x: auto;
+}
+
+[data-theme="dark"] .tutorial-step-content .mermaid svg,
+[data-theme="dark"] .tutorial-content .mermaid svg {
+  max-width: 100%;
+  height: auto;
 }
 

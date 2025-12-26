@@ -34,6 +34,13 @@
       "shortTitle": "问题排查",
       "icon": "fa-question-circle",
       "order": 5
+    },
+    {
+      "file": "docs/architecture.md",
+      "title": "系统架构",
+      "shortTitle": "架构流程",
+      "icon": "fa-sitemap",
+      "order": 6
     }
   ]
 }

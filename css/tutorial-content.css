@@ -278,3 +278,20 @@
   background: #fff;
 }
 
+/* Mermaid 图表样式 */
+.tutorial-step-content .mermaid,
+.tutorial-content .mermaid {
+  margin: 24px 0;
+  padding: 20px;
+  background: #f6f8fa;
+  border-radius: 8px;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.tutorial-step-content .mermaid svg,
+.tutorial-content .mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
