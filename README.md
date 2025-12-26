@@ -106,7 +106,4 @@ cp env.example .env.local
 
 详细配置说明请参考 `env.example` 文件中的注释。
 
----
 
-> [!TIP]
-> 更多详细文档请查看 `docs/` 目录下的相关文档。
