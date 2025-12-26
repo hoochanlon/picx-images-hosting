@@ -1,0 +1,174 @@
+/**
+ * upload-toolbar.css
+ * 统一管理上传管理页面工具栏按钮的高度和样式
+ */
+
+/* 工具栏容器 */
+.upload-toolbar {
+  background: #fff;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+/* 工具栏按钮基础样式 - 统一高度 40px */
+.upload-toolbar button {
+  padding: 10px 16px;
+  border: 1px solid #d0d7de;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.upload-toolbar button:hover {
+  background: #f6f8fa;
+}
+
+/* 主要按钮样式 */
+.upload-toolbar .btn-primary {
+  background: #0969da;
+  color: #fff;
+  border-color: #0969da;
+  height: 40px;
+}
+
+.upload-toolbar .btn-primary:hover {
+  background: #0860ca;
+}
+
+/* 危险按钮样式 */
+.upload-toolbar .btn-danger {
+  background: #cf222e;
+  color: #fff;
+  border-color: #cf222e;
+  height: 40px;
+}
+
+.upload-toolbar .btn-danger:hover {
+  background: #a40e26;
+  border-color: #a40e26;
+}
+
+.upload-toolbar .btn-danger:disabled {
+  background: #8b949e;
+  border-color: #8b949e;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* 选择控制区域 */
+.select-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+/* 全选标签 - 统一高度 40px */
+.select-all-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.95rem;
+  color: #24292f;
+  padding: 10px 16px;
+  height: 40px;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.select-all-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* 压缩开关标签 - 统一高度 40px */
+.compress-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.95rem;
+  color: #24292f;
+  padding: 10px 16px;
+  border: 1px solid #d0d7de;
+  background: #fff;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  height: 40px;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.compress-toggle-label:hover {
+  background: #f6f8fa;
+  border-color: #0969da;
+}
+
+.compress-toggle-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.compress-toggle-label i {
+  color: #57606a;
+  font-size: 1rem;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.compress-toggle-label:has(input:checked) {
+  background: #ddf4ff;
+  border-color: #0969da;
+  color: #0969da;
+}
+
+.compress-toggle-label:has(input:checked) i {
+  color: #0969da;
+}
+
+/* 退出选择模式按钮 - 统一高度 40px */
+#exit-select-mode-btn {
+  padding: 10px 16px;
+  border: 1px solid #238636;
+  background: #238636;
+  color: #fff;
+  border-radius: 6px;
+  height: 40px;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+#exit-select-mode-btn:hover {
+  background: #2ea043;
+  border-color: #2ea043;
+}
+

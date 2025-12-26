@@ -1,3 +1,6 @@
+/* 工具栏按钮样式已移至 upload-toolbar.css */
+@import url('upload-toolbar.css');
+
 /* Upload Modal Styles */
 .upload-modal.hidden {
   display: none;
@@ -339,116 +342,8 @@
   padding: 24px;
 }
 
-.upload-toolbar {
-  background: #fff;
-  border: 1px solid #d0d7de;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-}
-
-.upload-toolbar button {
-  padding: 10px 16px;
-  border: 1px solid #d0d7de;
-  background: #fff;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 40px;
-  box-sizing: border-box;
-}
-
-.upload-toolbar button:hover {
-  background: #f6f8fa;
-}
-
-.upload-toolbar .btn-primary {
-  background: #0969da;
-  color: #fff;
-  border-color: #0969da;
-  min-height: 40px;
-}
-
-.upload-toolbar .btn-primary:hover {
-  background: #0860ca;
-}
-
-.select-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-left: auto;
-}
-
-.select-all-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  user-select: none;
-  font-size: 0.95rem;
-  color: #24292f;
-  padding: 10px 16px;
-  min-height: 40px;
-  box-sizing: border-box;
-}
-
-.select-all-label input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-}
-
-.compress-toggle-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  user-select: none;
-  font-size: 0.95rem;
-  color: #24292f;
-  padding: 10px 16px;
-  border: 1px solid #d0d7de;
-  background: #fff;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  min-height: 40px;
-  box-sizing: border-box;
-}
-
-.compress-toggle-label:hover {
-  background: #f6f8fa;
-  border-color: #0969da;
-}
-
-.compress-toggle-label input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  margin: 0;
-}
-
-.compress-toggle-label i {
-  color: #57606a;
-  font-size: 0.9rem;
-}
-
-.compress-toggle-label:has(input:checked) {
-  background: #ddf4ff;
-  border-color: #0969da;
-  color: #0969da;
-}
-
-.compress-toggle-label:has(input:checked) i {
-  color: #0969da;
-}
+/* 工具栏按钮样式已移至 upload-toolbar.css */
+@import url('upload-toolbar.css');
 
 /* 模态框中的压缩开关样式 */
 .compress-toggle-label-modal {
@@ -515,45 +410,7 @@
   line-height: 1.5;
 }
 
-.upload-toolbar .btn-danger {
-  background: #cf222e;
-  color: #fff;
-  border-color: #cf222e;
-  min-height: 40px;
-}
-
-.upload-toolbar .btn-danger:hover {
-  background: #a40e26;
-  border-color: #a40e26;
-}
-
-.upload-toolbar .btn-danger:disabled {
-  background: #8b949e;
-  border-color: #8b949e;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-#exit-select-mode-btn {
-  padding: 10px 16px;
-  border: 1px solid #238636;
-  background: #238636;
-  color: #fff;
-  border-radius: 6px;
-  min-height: 40px;
-  box-sizing: border-box;
-  cursor: pointer;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 500;
-}
-
-#exit-select-mode-btn:hover {
-  background: #2ea043;
-  border-color: #2ea043;
-}
+/* 工具栏按钮样式已移至 upload-toolbar.css */
 
 .breadcrumb {
   background: #fff;

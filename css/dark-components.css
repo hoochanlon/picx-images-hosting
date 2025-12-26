@@ -41,11 +41,21 @@
 [data-theme="dark"] .controls label.icon-label:hover,
 [data-theme="dark"] .controls a.icon-label:hover,
 [data-theme="dark"] .controls button.icon-label:hover {
-  background: rgba(48, 54, 61, 0.5);
-  color: #e6edf3;
+  background: rgba(88, 166, 255, 0.1);
+  color: #58a6ff;
   transform: none !important;
   outline: none;
   box-shadow: none;
+}
+
+/* 搜索按钮激活状态 - 与浅色模式逻辑完全一致 */
+[data-theme="dark"] .controls label.toggle-control {
+  position: relative;
+}
+
+[data-theme="dark"] .controls label.toggle-control.active {
+  background: rgba(88, 166, 255, 0.15);
+  color: #58a6ff;
 }
 
 /* 确保夜间模式下图标本身不会放大 */
@@ -85,7 +95,18 @@
   background: #0a1a2e;
   border: 1px solid rgba(33, 38, 45, 0.8);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
-  transition: all var(--transition-speed) ease;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.95);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+[data-theme="dark"] .custom-select.active .custom-select-options {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+  pointer-events: auto;
 }
 
 [data-theme="dark"] .custom-select-option {
@@ -118,6 +139,15 @@
 [data-theme="dark"] input[type="search"]::placeholder,
 [data-theme="dark"] input[type="text"]::placeholder {
   color: #7d8590;
+}
+
+/* 搜索框展开动画 - 与浅色模式完全一致，覆盖全局过渡 */
+[data-theme="dark"] #filter-control {
+  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+[data-theme="dark"] #filter-control input {
+  transition: min-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, padding 0.3s ease !important;
 }
 
 /* Card Styles */
