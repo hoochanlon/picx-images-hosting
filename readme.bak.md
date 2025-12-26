@@ -109,14 +109,21 @@ git checkout
 
 根据项目需求，需要在 Vercel 中配置以下环境变量：
 
-| 变量名                       | 说明                              | 是否必需 | 示例值                                                                          |
-| ---------------------------- | --------------------------------- | -------- | ------------------------------------------------------------------------------- |
-| `GH_TOKEN`                   | GitHub Personal Access Token      | ✅ 必需  | `ghp_xxx...`                                                                    |
-| `GITHUB_OAUTH_CLIENT_ID`     | GitHub OAuth App 的 Client ID     | ✅ 推荐  | `0v231iA5D`                                                                     |
-| `GITHUB_OAUTH_CLIENT_SECRET` | GitHub OAuth App 的 Client Secret | ✅ 推荐  | `6d48b48...`                                                                    |
-| `GITHUB_OAUTH_REDIRECT_URI`  | OAuth 回调地址                    | ⚠️ 可选  | `https://picx-images-hosting-brown.vercel.app/api/github-oauth?action=callback` |
-| `API_BASE`                   | API 基础地址                      | ⚠️ 可选  | `https://picx-images-hosting-brown.vercel.app`                                  |
-| `PASSWORD`                   | 操作密码（备用认证）              | ⚠️ 可选  | `Pass@w0rd`                                                                     |
+| 变量名 | 说明 | 必要性 | 示例值 |
+|--------|------|---------|--------|
+| `GH_TOKEN` | GitHub Personal Access Token | 必需 | `ghp_xxx...` |
+| `GITHUB_OAUTH_CLIENT_ID` | GitHub OAuth App 的 Client ID | 推荐 | `0v231iA5D` |
+| `GITHUB_OAUTH_CLIENT_SECRET` | GitHub OAuth App 的 Client Secret | 推荐 | `6d48b48...` |
+| `GITHUB_OAUTH_REDIRECT_URI` | OAuth 回调地址 | 可选 | `https://picx-images-hosting-brown.vercel.app/api/github-oauth?action=callback` |
+| `API_BASE` | API 基础地址 | 可选 | `https://picx-images-hosting-brown.vercel.app` |
+| `PASSWORD` | 密码（备用认证） | 可选 | `Pass@w0rd` |
+
+## 网络图床
+
+有关图床的详细信息，请参考：
+
+* [几乎不受审查的图床标记](https://hoochanlon.github.io/posts/20250821144721)
+* [壁纸资源及图床整合笔记](https://hoochanlon.github.io/posts/20250821071908)
 
 
 
