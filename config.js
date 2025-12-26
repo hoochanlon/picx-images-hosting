@@ -13,5 +13,7 @@ window.APP_CONFIG = {
   GITHUB_REPO_URL: 'https://github.com/hoochanlon/picx-images-hosting',
   GITHUB_OAUTH_CLIENT_ID: 'Ov23liA5DyCFqvR93Rae',
   PASSWORD: 'admin123',
+  // 默认启用图片压缩
+  ENABLE_IMAGE_COMPRESSION: true,
 };
 

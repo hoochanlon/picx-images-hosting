@@ -22,6 +22,7 @@
   <script src="./js/dialog.js"></script>
   <script src="./js/upload-ui.js"></script>
   <script src="./js/upload-files.js"></script>
+  <script src="./js/upload-compress.js"></script>
   <script src="./js/upload-upload.js"></script>
   <script src="./js/upload-rename.js"></script>
   <script src="./js/upload-delete.js"></script>
@@ -66,6 +67,11 @@
         <i class="fas fa-cog"></i>
         设置上传目录
       </button>
+      <label class="compress-toggle-label" title="启用后自动压缩上传的图片">
+        <input type="checkbox" id="enable-compression-checkbox" checked />
+        <i class="fas fa-compress"></i>
+        <span>图片压缩</span>
+      </label>
       <button id="toggle-select-mode-btn" title="进入复选模式">
         <i class="fas fa-check-square"></i>
         复选模式

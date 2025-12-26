@@ -46,6 +46,31 @@
   color: #f0f6fc;
 }
 
+[data-theme="dark"] .compress-toggle-label {
+  background: rgba(33, 38, 45, 0.8);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .compress-toggle-label:hover {
+  background: rgba(48, 54, 61, 0.8);
+  border-color: rgba(88, 166, 255, 0.6);
+}
+
+[data-theme="dark"] .compress-toggle-label i {
+  color: #8b949e;
+}
+
+[data-theme="dark"] .compress-toggle-label:has(input:checked) {
+  background: rgba(9, 105, 218, 0.2);
+  border-color: #0969da;
+  color: #58a6ff;
+}
+
+[data-theme="dark"] .compress-toggle-label:has(input:checked) i {
+  color: #58a6ff;
+}
+
 [data-theme="dark"] .upload-toolbar .btn-danger {
   background: #da3633;
   border-color: #da3633;

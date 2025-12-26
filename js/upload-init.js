@@ -156,6 +156,38 @@ function initTitleClick() {
   }
 }
 
+// 初始化压缩开关
+function initCompressionToggle() {
+  const compressionCheckbox = document.getElementById('enable-compression-checkbox');
+  if (!compressionCheckbox) return;
+  
+  // 从 localStorage 读取保存的状态，如果没有则使用配置的默认值
+  const savedState = localStorage.getItem('enableImageCompression');
+  const defaultEnabled = window.APP_CONFIG && window.APP_CONFIG.ENABLE_IMAGE_COMPRESSION !== false;
+  
+  if (savedState !== null) {
+    compressionCheckbox.checked = savedState === 'true';
+  } else {
+    compressionCheckbox.checked = defaultEnabled;
+  }
+  
+  // 监听开关变化并保存到 localStorage
+  compressionCheckbox.addEventListener('change', (e) => {
+    localStorage.setItem('enableImageCompression', e.target.checked.toString());
+    
+    // 显示提示
+    const status = e.target.checked ? '已启用' : '已禁用';
+    const label = compressionCheckbox.closest('.compress-toggle-label');
+    if (label) {
+      const originalTitle = label.title;
+      label.title = `图片压缩：${status}`;
+      setTimeout(() => {
+        label.title = originalTitle;
+      }, 2000);
+    }
+  });
+}
+
 // 初始化所有功能
 function initUploadPage() {
   // 等待 DOM 加载完成
@@ -167,6 +199,7 @@ function initUploadPage() {
       initUploadPathSettings();
       initModalClose();
       initTitleClick();
+      initCompressionToggle();
       
       // 初始化：确保初始面包屑正确设置
       if (window.updateBreadcrumb) window.updateBreadcrumb(state.currentPath());
@@ -180,6 +213,7 @@ function initUploadPage() {
     initUploadPathSettings();
     initModalClose();
     initTitleClick();
+    initCompressionToggle();
     
     // 初始化：确保初始面包屑正确设置
     if (window.updateBreadcrumb) window.updateBreadcrumb(state.currentPath());

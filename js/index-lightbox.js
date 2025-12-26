@@ -152,7 +152,7 @@ function setupLightbox() {
     }
   });
 
-  infoBtn.addEventListener('click', () => {
+  infoBtn.addEventListener('click', async () => {
     if (!infoPanel || !infoContent) return;
     if (currentIndex < 0 || currentIndex >= images.length) return;
     const item = images[currentIndex];
@@ -162,14 +162,32 @@ function setupLightbox() {
         : '未知';
     const pagesUrl = `${PAGES_BASE}/${item.path}`;
     const cdnUrl = `${CDN_BASE}/${item.path}`;
+    
+    // 先显示基本信息，文件大小异步加载
     infoContent.innerHTML = `
       文件名：${item.name}<br />
       路径：${item.path}<br />
       目录：${item.dir || '(根目录)'}<br />
       尺寸：${dims}<br />
+      文件大小：<span id="file-size-loading">加载中...</span><br />
       Pages：<a href="${pagesUrl}" target="_blank" rel="noreferrer">打开</a> <button class="info-copy-btn" data-url="${pagesUrl}">复制</button><br />
       jsDelivr：<a href="${cdnUrl}" target="_blank" rel="noreferrer">打开</a> <button class="info-copy-btn" data-url="${cdnUrl}">复制</button>
     `;
+    
+    // 异步获取文件大小
+    const fileSizeEl = infoContent.querySelector('#file-size-loading');
+    try {
+      const fileSize = await getImageFileSize(cdnUrl);
+      if (fileSizeEl) {
+        fileSizeEl.textContent = fileSize;
+      }
+    } catch (err) {
+      console.error('获取文件大小失败:', err);
+      if (fileSizeEl) {
+        fileSizeEl.textContent = '获取失败';
+      }
+    }
+    
     // 添加复制按钮事件监听
     infoContent.querySelectorAll('.info-copy-btn').forEach((btn) => {
       btn.addEventListener('click', async (e) => {
@@ -189,5 +207,40 @@ function setupLightbox() {
     });
     infoPanel.classList.toggle('hidden');
   });
+}
+
+// 获取图片文件大小
+async function getImageFileSize(imageUrl) {
+  try {
+    // 先尝试使用 HEAD 请求获取 Content-Length（更高效）
+    const headResponse = await fetch(imageUrl, { method: 'HEAD' });
+    if (headResponse.ok) {
+      const contentLength = headResponse.headers.get('Content-Length');
+      if (contentLength) {
+        return formatFileSize(parseInt(contentLength, 10));
+      }
+    }
+    
+    // 如果 HEAD 请求失败或没有 Content-Length，使用 GET 请求获取 blob
+    const response = await fetch(imageUrl);
+    if (response.ok) {
+      const blob = await response.blob();
+      return formatFileSize(blob.size);
+    }
+    
+    throw new Error('无法获取文件大小');
+  } catch (err) {
+    throw err;
+  }
+}
+
+// 格式化文件大小
+function formatFileSize(bytes) {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const size = (bytes / Math.pow(k, i)).toFixed(2);
+  return `${size} ${sizes[i]}`;
 }
 

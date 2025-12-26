@@ -67,9 +67,58 @@ async function uploadFiles(fileList, basePath = '') {
     }
   }
   
+  // 检查是否启用压缩
+  const compressionEnabled = isCompressionEnabled();
+  
+  // 如果启用压缩，先压缩所有图片
+  let filesToUpload = filesArray;
+  if (compressionEnabled) {
+    try {
+      // 显示压缩进度
+      const compressProgressItem = document.createElement('div');
+      compressProgressItem.className = 'progress-item';
+      compressProgressItem.innerHTML = `
+        <div class="file-name">正在压缩图片...</div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-text">0%</div>
+      `;
+      uploadProgressEl.appendChild(compressProgressItem);
+      
+      const compressProgressFill = compressProgressItem.querySelector('.progress-fill');
+      const compressProgressText = compressProgressItem.querySelector('.progress-text');
+      
+      // 压缩图片
+      filesToUpload = await compressImages(filesArray, (current, total, fileName, status, info) => {
+        const percent = Math.round((current / total) * 100);
+        compressProgressFill.style.width = `${percent}%`;
+        
+        if (status === 'compressing') {
+          compressProgressText.textContent = `压缩中: ${fileName} (${current}/${total})`;
+        } else if (status === 'completed' && info) {
+          const savedMB = (info.saved / 1024 / 1024).toFixed(2);
+          compressProgressText.textContent = `${fileName}: 已压缩 ${info.savedPercent}% (节省 ${savedMB}MB)`;
+        } else if (status === 'skipped') {
+          compressProgressText.textContent = `${fileName}: 跳过 (非图片或不可压缩格式)`;
+        } else if (status === 'failed') {
+          compressProgressText.textContent = `${fileName}: 压缩失败，使用原文件`;
+        }
+      });
+      
+      compressProgressFill.style.width = '100%';
+      compressProgressText.textContent = '压缩完成';
+      compressProgressItem.style.opacity = '0.6';
+    } catch (err) {
+      console.error('批量压缩失败:', err);
+      // 压缩失败时使用原文件
+      filesToUpload = filesArray;
+    }
+  }
+  
   // 上传所有文件
-  for (let i = 0; i < filesArray.length; i++) {
-    const file = filesArray[i];
+  for (let i = 0; i < filesToUpload.length; i++) {
+    const file = filesToUpload[i];
     const progressItem = document.createElement('div');
     progressItem.className = 'progress-item';
     progressItem.innerHTML = `
@@ -209,9 +258,25 @@ async function uploadFiles(fileList, basePath = '') {
   }, 1000);
 }
 
+// 检查是否启用压缩
+function isCompressionEnabled() {
+  const checkbox = document.getElementById('enable-compression-checkbox');
+  if (checkbox) {
+    return checkbox.checked;
+  }
+  // 从 localStorage 读取，如果没有则使用配置的默认值
+  const savedState = localStorage.getItem('enableImageCompression');
+  if (savedState !== null) {
+    return savedState === 'true';
+  }
+  // 默认从配置读取
+  return window.APP_CONFIG && window.APP_CONFIG.ENABLE_IMAGE_COMPRESSION !== false;
+}
+
 // 导出到全局作用域
 window.getUploadPath = getUploadPath;
 window.saveUploadPath = saveUploadPath;
 window.uploadFiles = uploadFiles;
+window.isCompressionEnabled = isCompressionEnabled;
 
 })();
