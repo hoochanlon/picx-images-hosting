@@ -84,7 +84,7 @@ git checkout
 
 #### 2.2 GitHub OAUTH 认证（创建 GitHub OAuth App）
 
-> [!warning] 重要
+> [!WARNING]
 > - **Client secret** 只显示一次，请立即保存
 > - 如果丢失，需要重新生成
 > - 回调 URL 必须完全匹配，包括协议（https）和路径
