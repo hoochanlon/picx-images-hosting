@@ -78,7 +78,7 @@ git checkout
 ### 2. 密码 / GitHub OAuth 认证 （二选一）
 
 
-#### 配置密码
+#### 2.1 配置密码
 
 配置密码在 vercel 设置环境变量 PASSWORD 填入密码值即可。
 
