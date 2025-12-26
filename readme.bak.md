@@ -79,10 +79,60 @@ git sparse-checkout set --no-cone '/*' '!/imgs/*'
 git checkout master
 ```
 
-### 2. 设置 config.js
+### 2. 配置 config.js
 
+打开根目录的 `config.js`，根据自己的部署环境修改以下字段：
 
-### 3. 设置 api-config.json
+- `VERCEL_API_BASE`：填你的 Vercel 线上地址，如 `https://picx-images-hosting-brown.vercel.app`
+- `CUSTOM_DOMAINS`：如果有自定义域名（博客、图床入口），在这里填入，便于通过这些域名访问 API
+- `DEFAULT_UPLOAD_DIR`：默认上传目录，例如 `imgs/uploads/kate/`
+- `INCLUDED_DIRS`：允许在首页展示的图片目录列表，默认 `['imgs']`
+- `GITHUB_REPO_URL`：仓库地址，用于右上角 GitHub 按钮
+- `GITHUB_OAUTH_CLIENT_ID`：如果启用 GitHub OAuth，在这里填你的 Client ID
+- `PASSWORD`：操作密码（备用方案），如果不用 GitHub OAuth，就依赖它做上传/删除前的二次确认
+
+### 3. 配置 api-config.json
+
+`api-config.json` 用来控制后端 API 的 CORS 允许来源：
+
+- 打开根目录的 `api-config.json`
+- 在 `allowedOrigins` 中填入允许访问 API 的域名，例如：
+
+  ```
+  {
+    "allowedOrigins": [
+      "https://hoochanlon.github.io",
+      "https://blog.hoochanlon.moe",
+      "https://picx-images-hosting-brown.vercel.app"
+    ]
+  }
+  ```
+
+- 如果之后新增了前端访问入口域名（比如新绑定的自定义域名），记得同步加到这里并重新部署
+
+### 4. 设置 env.local
+
+复制 将 `env.example` 并重命名成 `env.local`
+
+```bash
+cp env.example env.local
+```
+
+编辑 env.local 文件填入如下相关信息
+
+```bash
+# ============ 必须配置 ============
+# GitHub Token（需要 repo 权限）
+# 获取地址：https://github.com/settings/tokens
+GH_TOKEN="your_github_personal_access_token_here"
+
+# ============ Vercel 配置 ============
+# Vercel OIDC Token（Vercel自动生成，勿修改）
+VERCEL_OIDC_TOKEN="your_vercel_oidc_token_here"
+
+# API 基础地址（vercel 部署地址）
+API_BASE="https://your-project-name.vercel.app"
+```
 
 
 ## 部署
