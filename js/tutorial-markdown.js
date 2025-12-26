@@ -322,11 +322,9 @@ async function loadMarkdownContent(stepIndex) {
       const processedContent = preprocessCallouts(markdownContent);
       // 解析 Markdown
       let html = marked.parse(processedContent);
-      console.log('Markdown 解析完成，HTML 长度:', html.length);
       // 替换 callout 占位符为实际 HTML
       html = replaceCalloutPlaceholders(html);
       contentDiv.innerHTML = html;
-      console.log('内容已插入到 DOM，开始处理代码块');
       
       // 为标题添加 ID，用于目录锚点
       const headings = contentDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
@@ -346,169 +344,25 @@ async function loadMarkdownContent(stepIndex) {
         }
       });
 
-      const codeBlocks = contentDiv.querySelectorAll('pre');
-      console.log('找到代码块数量:', codeBlocks.length);
+      // 处理 Mermaid 代码块（优先处理，避免被代码高亮处理）
+      if (typeof window.tutorialMermaid !== 'undefined') {
+        window.tutorialMermaid.processCodeBlocks(contentDiv);
+      }
       
-      codeBlocks.forEach((pre, index) => {
+      // 处理普通代码块
+      const codeBlocks = contentDiv.querySelectorAll('pre');
+      codeBlocks.forEach(pre => {
         const codeEl = pre.querySelector('code');
         
-        // 检查是否是 Mermaid 代码块
-        // marked.js 会将 ```mermaid 转换为 class="language-mermaid"
-        if (!codeEl) {
-          console.log(`代码块 ${index}: 没有 code 元素`);
-          return; // 跳过没有 code 元素的 pre
+        // 跳过已经是 Mermaid 图表的元素（已经被替换为 div.mermaid）
+        if (!codeEl || pre.classList.contains('mermaid-processed')) {
+          return;
         }
         
-        const codeText = codeEl.textContent.trim();
-        const codeClass = codeEl.className || '';
-        
-        console.log(`代码块 ${index}: class="${codeClass}", 内容开头="${codeText.substring(0, 30)}"`);
-        
-        // 检测 Mermaid 代码块的多种方式
-        // 优先检查类名，然后检查内容
-        const isMermaidByClass = 
-          codeClass.includes('language-mermaid') ||
-          codeClass.includes('mermaid');
-        
-        const isMermaidByContent = 
-          codeText.startsWith('graph ') ||
-          codeText.startsWith('flowchart ') ||
-          codeText.startsWith('sequenceDiagram') ||
-          codeText.startsWith('stateDiagram') ||
-          codeText.startsWith('classDiagram') ||
-          codeText.startsWith('erDiagram') ||
-          codeText.startsWith('gantt') ||
-          codeText.startsWith('pie');
-        
-        const isMermaid = isMermaidByClass || isMermaidByContent;
-        
-        console.log(`代码块 ${index}: 是 Mermaid? ${isMermaid} (类名: ${isMermaidByClass}, 内容: ${isMermaidByContent})`);
-        
-        if (isMermaid) {
-          console.log(`开始处理 Mermaid 代码块 ${index}`);
-          // Mermaid 图表渲染
-          const mermaidContent = codeText;
-          if (!mermaidContent) {
-            console.warn('Mermaid 代码块为空');
-            return;
-          }
-          
-          console.log('Mermaid 内容长度:', mermaidContent.length);
-          console.log('Mermaid 内容前50字符:', mermaidContent.substring(0, 50));
-          
-          if (typeof mermaid === 'undefined') {
-            console.error('Mermaid 库未加载');
-            pre.innerHTML = '<p style="color: red;">Mermaid 库未加载，请刷新页面重试。</p>';
-            return;
-          }
-          
-          console.log('Mermaid 库已加载，开始创建容器');
-          
-          // 创建 Mermaid 容器
-          const mermaidDiv = document.createElement('div');
-          mermaidDiv.className = 'mermaid';
-          mermaidDiv.textContent = mermaidContent;
-          mermaidDiv.style.textAlign = 'center';
-          mermaidDiv.style.margin = '20px 0';
-          
-          // 替换 pre 元素
-          console.log('替换 pre 元素为 mermaid div');
-          pre.parentNode.replaceChild(mermaidDiv, pre);
-          
-          // 延迟渲染，确保 DOM 完全准备好
-          setTimeout(() => {
-            try {
-              // 初始化 Mermaid（只初始化一次）
-              if (typeof window.mermaidInitialized === 'undefined') {
-                const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
-                mermaid.initialize({ 
-                  startOnLoad: false,
-                  theme: isDarkMode ? 'dark' : 'default',
-                  securityLevel: 'loose',
-                  flowchart: {
-                    useMaxWidth: true,
-                    htmlLabels: false,
-                    curve: 'basis',
-                    padding: 20,
-                    nodeSpacing: 80,
-                    rankSpacing: 100
-                  },
-                  sequence: {
-                    useMaxWidth: true,
-                    diagramMarginX: 50,
-                    diagramMarginY: 10,
-                    actorMargin: 50,
-                    width: 150,
-                    height: 65,
-                    boxMargin: 10,
-                    boxTextMargin: 5,
-                    noteMargin: 10,
-                    messageMargin: 35
-                  },
-                  gantt: {
-                    useMaxWidth: true
-                  }
-                });
-                window.mermaidInitialized = true;
-              }
-              
-              // 渲染 Mermaid 图表
-              // Mermaid 11.x 使用 run() 方法
-              console.log('检查 Mermaid API:', {
-                hasRun: typeof mermaid.run === 'function',
-                hasInit: typeof mermaid.init === 'function',
-                hasParse: typeof mermaid.parse === 'function',
-                hasRender: typeof mermaid.render === 'function'
-              });
-              
-              if (typeof mermaid.run === 'function') {
-                console.log('使用 mermaid.run() 渲染');
-                // 使用 run() 方法渲染
-                mermaid.run({
-                  nodes: [mermaidDiv],
-                  suppressError: false
-                }).then(() => {
-                  console.log('Mermaid 图表渲染成功');
-                }).catch(err => {
-                  console.error('Mermaid rendering error:', err);
-                  mermaidDiv.innerHTML = `<div style="color: #d1242f; padding: 20px; background: rgba(255, 235, 238, 0.5); border-radius: 6px; border: 1px solid rgba(255, 0, 0, 0.2);">
-                    <p style="margin: 0; font-weight: 600;">⚠️ Mermaid 图表渲染失败</p>
-                    <p style="margin: 8px 0 0 0; font-size: 0.9em;">错误信息：${err.message || err.str || '未知错误'}</p>
-                    <details style="margin-top: 12px;">
-                      <summary style="cursor: pointer; color: #0969da;">查看图表代码</summary>
-                      <pre style="margin-top: 8px; padding: 12px; background: rgba(0, 0, 0, 0.05); border-radius: 4px; overflow-x: auto; font-size: 0.85em;"><code>${mermaidContent.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>
-                    </details>
-                  </div>`;
-                });
-              } else if (typeof mermaid.parse === 'function' && typeof mermaid.render === 'function') {
-                // Mermaid 9.x 及以下版本使用 parse + render
-                try {
-                  const id = 'mermaid-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-                  mermaidDiv.id = id;
-                  mermaid.parse(mermaidContent);
-                  mermaid.render(id, mermaidContent, (svgCode) => {
-                    mermaidDiv.innerHTML = svgCode;
-                  });
-                } catch (err) {
-                  console.error('Mermaid rendering error:', err);
-                  mermaidDiv.innerHTML = `<div style="color: #d1242f; padding: 20px;">Mermaid 图表渲染失败：${err.message}</div>`;
-                }
-              } else if (typeof mermaid.init === 'function') {
-                // 兼容旧版本 API
-                mermaid.init(undefined, mermaidDiv);
-              } else {
-                console.error('Mermaid API 不可用，可用方法:', Object.keys(mermaid));
-                throw new Error('Mermaid API 不可用');
-              }
-            } catch (err) {
-              console.error('Mermaid rendering error:', err);
-              mermaidDiv.innerHTML = `<div style="color: #d1242f; padding: 20px; background: rgba(255, 235, 238, 0.5); border-radius: 6px; border: 1px solid rgba(255, 0, 0, 0.2);">
-                <p style="margin: 0; font-weight: 600;">⚠️ Mermaid 图表渲染失败</p>
-                <p style="margin: 8px 0 0 0; font-size: 0.9em;">错误信息：${err.message}</p>
-              </div>`;
-            }
-          }, 100);
-          return; // 跳过后续的代码高亮处理
+        // 检查是否已被 Mermaid 模块处理
+        if (typeof window.tutorialMermaid !== 'undefined' && 
+            window.tutorialMermaid.isMermaidCodeBlock(codeEl)) {
+          return; // 跳过 Mermaid 代码块
         }
         
         // 普通代码块处理
@@ -548,46 +402,6 @@ async function loadMarkdownContent(stepIndex) {
       lists.forEach(list => {
         list.classList.add('tutorial-list');
       });
-      
-      // Mermaid 图表已经在代码块处理时单独渲染，这里不需要再次渲染
-      // 但我们需要确保 Mermaid 已初始化（如果还没有初始化的话）
-      const mermaidElements = contentDiv.querySelectorAll('.mermaid');
-      if (mermaidElements.length > 0 && typeof mermaid !== 'undefined' && typeof window.mermaidInitialized === 'undefined') {
-        const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
-        try {
-          mermaid.initialize({ 
-            startOnLoad: false,
-            theme: isDarkMode ? 'dark' : 'default',
-            securityLevel: 'loose',
-            flowchart: {
-              useMaxWidth: true,
-              htmlLabels: true,
-              curve: 'basis',
-              padding: 20,
-              nodeSpacing: 50,
-              rankSpacing: 50
-            },
-            sequence: {
-              useMaxWidth: true,
-              diagramMarginX: 50,
-              diagramMarginY: 10,
-              actorMargin: 50,
-              width: 150,
-              height: 65,
-              boxMargin: 10,
-              boxTextMargin: 5,
-              noteMargin: 10,
-              messageMargin: 35
-            },
-            gantt: {
-              useMaxWidth: true
-            }
-          });
-          window.mermaidInitialized = true;
-        } catch (err) {
-          console.error('Mermaid initialization error:', err);
-        }
-      }
       
       contentDiv.dataset.loaded = 'true';
       

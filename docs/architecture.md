@@ -12,28 +12,23 @@ order: 6
 ## 系统架构与异步处理流程
 
 ```mermaid
-graph TB
+flowchart TB
     A[用户操作] --> B{操作类型}
-    B --> C[上传]
-    B --> D[加载]
-    B --> E[删除]
-    B --> F[认证]
+    B --> C[上传模块]
+    B --> D[加载模块]
+    B --> E[删除模块]
+    B --> F[认证模块]
     
-    C --> C1[文件处理]
-    C1 --> C2[API请求]
+    C --> C1[处理请求]
+    C1 --> H1[后端API]
     
     D --> D1[获取数据]
-    D1 --> D2[渲染]
-    
-    E --> E1[确认]
-    E1 --> E2[删除请求]
-    
-    F --> F1[验证]
-    F1 --> F2[存储Token]
-    
-    C2 --> H1[后端API]
     D1 --> H1
-    E2 --> H1
+    
+    E --> E1[删除请求]
+    E1 --> H1
+    
+    F --> F1[验证请求]
     F1 --> H1
     
     H1 --> G1[GitHub API]
@@ -111,7 +106,7 @@ sequenceDiagram
 ## 并发与阻塞处理机制
 
 ```mermaid
-graph TB
+flowchart TB
     A1[事件循环] --> A2[任务队列]
     A2 --> A3[宏任务]
     A2 --> A4[微任务]
@@ -153,7 +148,7 @@ graph TB
 ## 认证流程
 
 ```mermaid
-graph TB
+flowchart TB
     A[未认证] --> B[GitHub认证]
     A --> C[密码认证]
     
