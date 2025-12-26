@@ -29,6 +29,7 @@
   <script src="./js/upload-modal.js"></script>
   <script src="./js/upload-select.js"></script>
   <script src="./js/upload-lightbox.js"></script>
+  <script src="./js/upload-auth.js"></script>
   <script src="./js/upload-init.js"></script>
 </head>
 <body class="upload-page">
@@ -44,10 +45,13 @@
       <a id="github-link" href="#" target="_blank" rel="noopener noreferrer" class="icon-label">
         <i class="fab fa-github"></i>
       </a>
-      <button class="dark-mode-toggle icon-label" aria-label="切换到夜间模式" title="切换到夜间模式">
+      <button id="auth-login-btn" class="icon-label" type="button" aria-label="登录/授权">
+        <i class="fas fa-lock" id="auth-login-icon"></i>
+      </button>
+      <button class="dark-mode-toggle icon-label" aria-label="切换到夜间模式">
         <i class="fas fa-moon"></i>
       </button>
-      <a href="index.html" class="icon-label" aria-label="返回首页" title="返回首页">
+      <a href="index.html" class="icon-label" aria-label="返回首页">
         <i class="fas fa-home"></i>
       </a>
     </div>

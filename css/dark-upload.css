@@ -22,6 +22,15 @@
   color: #e6edf3;
 }
 
+[data-theme="dark"] .upload-header .icon-label.auth-authenticated {
+  color: #3fb950;
+}
+
+[data-theme="dark"] .upload-header .icon-label.auth-authenticated:hover {
+  color: #3fb950;
+  background: rgba(63, 185, 80, 0.1);
+}
+
 [data-theme="dark"] .upload-container {
   background: #0d1117;
 }

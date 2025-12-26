@@ -29,52 +29,59 @@ export default async function handler(req, res) {
     const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
     const buffer = Buffer.from(base64Data, 'base64');
     
+    // 根据文件名或 base64 前缀确定图片类型
+    let contentType = 'image/jpeg'; // 默认
+    if (fileName) {
+      const ext = fileName.toLowerCase().split('.').pop();
+      if (ext === 'png') contentType = 'image/png';
+      else if (ext === 'webp') contentType = 'image/webp';
+      else if (ext === 'jpg' || ext === 'jpeg') contentType = 'image/jpeg';
+    } else if (imageData.startsWith('data:image/')) {
+      const match = imageData.match(/data:image\/(\w+);/);
+      if (match) {
+        const type = match[1].toLowerCase();
+        if (type === 'png') contentType = 'image/png';
+        else if (type === 'webp') contentType = 'image/webp';
+        else if (type === 'jpeg' || type === 'jpg') contentType = 'image/jpeg';
+      }
+    }
+    
     // 第一步：上传图片到 TinyJPG API
-    // 构造 multipart/form-data 请求体
-    const boundary = `----WebKitFormBoundary${Date.now()}${Math.random().toString(36).substring(2, 15)}`;
-    const CRLF = '\r\n';
+    // 根据文档：https://tinyjpg.com/developers/reference
+    // POST /shrink 时，body 直接是图片的二进制数据
+    // 使用 HTTP Basic Auth，格式为：api:YOUR_API_KEY
+    const authHeader = Buffer.from(`api:${apiKey}`).toString('base64');
     
-    const formDataParts = [
-      `--${boundary}${CRLF}`,
-      `Content-Disposition: form-data; name="file"; filename="${fileName || 'image.jpg'}"${CRLF}`,
-      `Content-Type: image/jpeg${CRLF}`,
-      `${CRLF}`,
-      buffer,
-      `${CRLF}--${boundary}--${CRLF}`
-    ];
-    
-    // 将各部分合并为单个 Buffer
-    const formDataBuffers = formDataParts.map(part => 
-      Buffer.isBuffer(part) ? part : Buffer.from(part, 'utf8')
-    );
-    const formDataBuffer = Buffer.concat(formDataBuffers);
-
     const uploadResponse = await fetch('https://api.tinify.com/shrink', {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${Buffer.from(`api:${apiKey}`).toString('base64')}`,
-        'Content-Type': `multipart/form-data; boundary=${boundary}`,
-        'Content-Length': formDataBuffer.length.toString(),
+        'Authorization': `Basic ${authHeader}`,
+        // 不设置 Content-Type，让 API 自动检测图片类型
+        // Content-Length 由 fetch 自动计算
       },
-      body: formDataBuffer,
+      body: buffer,
     });
 
     if (!uploadResponse.ok) {
       const errorData = await uploadResponse.json().catch(() => ({}));
       const errorMsg = errorData.message || errorData.error || `HTTP ${uploadResponse.status}`;
+      console.error('TinyJPG upload error:', errorMsg, uploadResponse.status);
       return res.status(uploadResponse.status).json({ 
         error: `TinyJPG upload failed: ${errorMsg}` 
       });
     }
 
-    const uploadData = await uploadResponse.json();
+    // 根据文档，压缩后的图片 URL 在 Location 头中
+    const compressedImageUrl = uploadResponse.headers.get('Location');
     
-    if (!uploadData.output || !uploadData.output.url) {
-      return res.status(500).json({ error: 'Invalid response from TinyJPG API' });
+    if (!compressedImageUrl) {
+      console.error('No Location header in response');
+      return res.status(500).json({ error: 'Invalid response from TinyJPG API: No Location header' });
     }
 
     // 第二步：下载压缩后的图片
-    const downloadResponse = await fetch(uploadData.output.url, {
+    // 使用 Location 头中的 URL 下载压缩后的图片
+    const downloadResponse = await fetch(compressedImageUrl, {
       method: 'GET',
       headers: {
         'Authorization': `Basic ${Buffer.from(`api:${apiKey}`).toString('base64')}`,

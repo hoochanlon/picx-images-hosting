@@ -310,6 +310,24 @@
   text-decoration: none;
 }
 
+.upload-header .icon-label.auth-authenticated {
+  color: #238636;
+}
+
+[data-theme="dark"] .upload-header .icon-label.auth-authenticated {
+  color: #3fb950;
+}
+
+.upload-header .icon-label.auth-authenticated:hover {
+  color: #238636;
+  background: rgba(35, 134, 54, 0.1);
+}
+
+[data-theme="dark"] .upload-header .icon-label.auth-authenticated:hover {
+  color: #3fb950;
+  background: rgba(63, 185, 80, 0.1);
+}
+
 .upload-header .icon-label i,
 .upload-header button.icon-label i {
   font-size: 1rem;
