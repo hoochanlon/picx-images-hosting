@@ -284,7 +284,7 @@ function showAuthDialog(callback) {
     // 只有在服务器明确返回 404（未配置密码）时，才回退到本地配置验证
     // 这是为了兼容旧版本或开发环境
     // 如果 API 返回了其他状态码（如 401、500），说明服务器已配置密码，不应该回退
-    const correctPassword = window.APP_CONFIG?.DELETE_PASSWORD || 'admin123';
+    const correctPassword = window.APP_CONFIG?.PASSWORD || 'admin123';
     if (password !== correctPassword) {
       passwordInput.value = '';
       passwordInput.style.borderColor = '#cf222e';

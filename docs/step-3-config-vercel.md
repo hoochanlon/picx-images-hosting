@@ -56,7 +56,7 @@ title: 配置 Vercel 环境变量
 除了 Vercel 环境变量，还需要配置前端密码：
 
 1. 打开项目根目录的 `config.js` 文件
-2. 找到 `DELETE_PASSWORD` 配置项
+2. 找到 `PASSWORD` 配置项
 3. 将默认值 `'admin123'` 修改为你的强密码
 4. 保存文件并提交到仓库
 
@@ -78,7 +78,7 @@ title: 配置 Vercel 环境变量
 **方案 B：密码认证（备用）**
 1. ✅ 在 Vercel 设置 `GH_TOKEN`（必需）
 2. ✅ 在 Vercel 设置 `API_SECRET`（强烈推荐）
-3. ✅ 在 `config.js` 修改 `DELETE_PASSWORD`（必需）
+3. ✅ 在 `config.js` 修改 `PASSWORD`（必需）
 4. ✅ 重新部署项目
 
 详细配置指南请查看：[GitHub OAuth 配置指南](./github-oauth-setup.md)

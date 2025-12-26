@@ -29,7 +29,7 @@ window.APP_CONFIG = {
   
   // GitHub OAuth 配置（推荐使用，更安全）
   // 如果设置了 GITHUB_OAUTH_CLIENT_ID，将使用 GitHub OAuth 认证
-  // 否则回退到密码认证（DELETE_PASSWORD）
+  // 否则回退到密码认证（PASSWORD）
   // 
   // 如何获取 Client ID：
   // 1. 登录 GitHub → Settings → Developer settings → OAuth Apps
@@ -48,24 +48,24 @@ window.APP_CONFIG = {
   // 详细配置指南：docs/github-oauth-setup.md
   GITHUB_OAUTH_CLIENT_ID: 'Ov23liA5DyCFqvR93Rae',
   
-  // 删除操作密码（备用方案，如果未配置 GitHub OAuth 则使用此密码）
+  // 操作密码（用于上传和删除等写操作，备用方案，如果未配置 GitHub OAuth 则使用此密码）
   // ⚠️ 重要：如果使用密码认证，请务必修改为强密码
   // 
   // 配置方式（推荐方式 1）：
-  // 1. 在 Vercel 环境变量中设置 DELETE_PASSWORD（推荐，更安全）
+  // 1. 在 Vercel 环境变量中设置 PASSWORD（推荐，更安全）
   //    - 进入 Vercel 项目 → Settings → Environment Variables
-  //    - 添加变量名：DELETE_PASSWORD
+  //    - 添加变量名：PASSWORD
   //    - 设置值为你的强密码
   //    - 系统会自动通过 API 验证密码，密码不会暴露在代码中
   // 
   // 2. 直接在此处修改（简单但不安全，密码会暴露在代码中）
-  //    - 如果 Vercel 环境变量中未设置 DELETE_PASSWORD，会使用此处的值
+  //    - 如果 Vercel 环境变量中未设置 PASSWORD，会使用此处的值
   //    - 仅作为备用方案，不推荐用于生产环境
   // 
   // 3. 推荐：使用 GitHub OAuth 认证（最安全）
   //    - 配置 GITHUB_OAUTH_CLIENT_ID 后，系统会优先使用 GitHub OAuth
   //    - 详细配置见上方 GITHUB_OAUTH_CLIENT_ID 的注释
-  DELETE_PASSWORD: 'admin123',
+  PASSWORD: 'admin123',
   
   // API密钥（已废弃，不再在客户端使用）
   // ⚠️ 注意：API_SECRET 不应该存储在客户端，因为任何人都可以看到

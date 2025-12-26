@@ -36,12 +36,12 @@ https://cdn.jsdelivr.net/gh/你的用户名/仓库名@分支名/图片路径
 
 1. **首次操作**：会弹出授权对话框，输入密码进行授权
 2. **授权有效期**：授权后 24 小时内无需重复输入
-3. **安全提示**：请确保已修改 `config.js` 中的 `DELETE_PASSWORD` 为强密码
+3. **安全提示**：请确保已修改 `config.js` 中的 `PASSWORD` 为强密码
 
 ### 安全配置检查
 
 部署前请确认：
-- ✅ 已修改 `config.js` 中的 `DELETE_PASSWORD`（默认值不安全）
+- ✅ 已修改 `config.js` 中的 `PASSWORD`（默认值不安全）
 - ✅ 已在 Vercel 环境变量中设置 `GH_TOKEN`
 - ✅ 已在 Vercel 环境变量中设置 `API_SECRET`（强烈推荐）
 - ✅ 已重新部署项目使配置生效

@@ -14,7 +14,7 @@
    - 进入 **Settings** → **Environment Variables**
 
 2. **添加环境变量**
-   - 变量名：`DELETE_PASSWORD`
+   - 变量名：`PASSWORD`
    - 值：你的强密码（建议至少 32 个字符）
    - 选择环境：**Production**、**Preview**、**Development**（建议全选）
 
@@ -25,14 +25,14 @@
 
 ### 方式 2：本地 config.js（备用）
 
-如果 Vercel 环境变量中未设置 `DELETE_PASSWORD`，系统会回退到 `config.js` 中的 `DELETE_PASSWORD` 值。
+如果 Vercel 环境变量中未设置 `PASSWORD`，系统会回退到 `config.js` 中的 `PASSWORD` 值。
 
 **注意**：这种方式不安全，密码会暴露在代码中，仅作为备用方案。
 
 ## 工作原理
 
 1. **用户输入密码** → 前端发送密码到 API
-2. **API 验证** → 后端从 Vercel 环境变量读取 `DELETE_PASSWORD` 并验证
+2. **API 验证** → 后端从 Vercel 环境变量读取 `PASSWORD` 并验证
 3. **返回 Token** → 验证成功后，返回一个临时 token（24小时有效）
 4. **保存 Token** → 前端保存 token，后续操作自动使用
 
@@ -56,13 +56,13 @@
 ### Vercel 环境变量配置
 
 ```
-DELETE_PASSWORD = your_strong_password_here_min_32_chars
+PASSWORD = your_strong_password_here_min_32_chars
 ```
 
 ### config.js 配置（备用）
 
 ```javascript
-DELETE_PASSWORD: 'admin123',  // 仅作为备用，不推荐
+PASSWORD: 'admin123',  // 仅作为备用，不推荐
 ```
 
 ## 验证配置
@@ -79,8 +79,8 @@ DELETE_PASSWORD: 'admin123',  // 仅作为备用，不推荐
 
 系统会按以下优先级验证密码：
 
-1. **Vercel 环境变量** `DELETE_PASSWORD`（如果设置了）
-2. **config.js** 中的 `DELETE_PASSWORD`（备用）
+1. **Vercel 环境变量** `PASSWORD`（如果设置了）
+2. **config.js** 中的 `PASSWORD`（备用）
 3. **GitHub OAuth**（如果配置了 `GITHUB_OAUTH_CLIENT_ID`，会优先使用）
 
 ## 安全建议
@@ -95,13 +95,13 @@ DELETE_PASSWORD: 'admin123',  // 仅作为备用，不推荐
 ### Q: 设置了 Vercel 环境变量，但还是使用 config.js 的密码？
 
 A: 检查以下几点：
-1. 环境变量名是否正确：`DELETE_PASSWORD`（区分大小写）
+1. 环境变量名是否正确：`PASSWORD`（区分大小写）
 2. 是否已重新部署项目
 3. 浏览器是否清除了缓存
 
 ### Q: 可以同时使用 Vercel 环境变量和 config.js 吗？
 
-A: 可以，但 Vercel 环境变量的优先级更高。如果 Vercel 环境变量中设置了 `DELETE_PASSWORD`，会优先使用它。
+A: 可以，但 Vercel 环境变量的优先级更高。如果 Vercel 环境变量中设置了 `PASSWORD`，会优先使用它。
 
 ### Q: 密码验证失败怎么办？
 

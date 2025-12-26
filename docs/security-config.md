@@ -8,7 +8,7 @@
 
 ### 1. 前端密码验证
 - **作用**：防止误操作和基础防护
-- **配置位置**：`config.js` 中的 `DELETE_PASSWORD`
+- **配置位置**：`config.js` 中的 `PASSWORD`
 - **验证方式**：类似 GitHub OAuth 的授权对话框
 - **有效期**：授权后 24 小时内有效
 
@@ -22,11 +22,11 @@
 ### 步骤 1：配置前端密码
 
 1. 打开项目根目录的 `config.js` 文件
-2. 找到 `DELETE_PASSWORD` 配置项
+2. 找到 `PASSWORD` 配置项
 3. 将默认值 `'admin123'` 修改为你的强密码
 
 ```javascript
-DELETE_PASSWORD: 'your-strong-password-here'
+PASSWORD: 'your-strong-password-here'
 ```
 
 :::warning 重要
@@ -97,7 +97,7 @@ cp env.example .env.local
 
 部署前请确认：
 
-- [ ] ✅ 已修改 `config.js` 中的 `DELETE_PASSWORD` 为强密码
+- [ ] ✅ 已修改 `config.js` 中的 `PASSWORD` 为强密码
 - [ ] ✅ 已在 Vercel 环境变量中设置 `GH_TOKEN`
 - [ ] ✅ 已在 Vercel 环境变量中设置 `API_SECRET`（强烈推荐）
 - [ ] ✅ 已重新部署项目使配置生效
@@ -124,7 +124,7 @@ cp env.example .env.local
 
 ## 密码生成建议
 
-### 前端密码（`DELETE_PASSWORD`）
+### 前端密码（`PASSWORD`）
 - 长度：至少 16 个字符
 - 包含：大小写字母、数字、特殊字符
 - 示例生成方式：
@@ -154,12 +154,12 @@ cp env.example .env.local
 
 ### Q: 为什么需要两个密码？
 A: 
-- `DELETE_PASSWORD`：前端验证，防止误操作
+- `PASSWORD`：前端验证，防止误操作
 - `API_SECRET`：后端验证，提供额外安全层
 
 ### Q: 忘记密码怎么办？
 A: 
-- 前端密码：修改 `config.js` 中的 `DELETE_PASSWORD` 并重新部署
+- 前端密码：修改 `config.js` 中的 `PASSWORD` 并重新部署
 - 后端密钥：在 Vercel 环境变量中重新设置 `API_SECRET` 并重新部署
 
 ### Q: 如何撤销授权？
@@ -167,7 +167,7 @@ A: 清除浏览器 localStorage 或等待 24 小时自动过期
 
 ### Q: 可以禁用安全验证吗？
 A: 不推荐。如果确实需要，可以：
-1. 将 `DELETE_PASSWORD` 设置为空字符串（不推荐）
+1. 将 `PASSWORD` 设置为空字符串（不推荐）
 2. 不设置 `API_SECRET` 环境变量（不推荐）
 
 ## 安全最佳实践

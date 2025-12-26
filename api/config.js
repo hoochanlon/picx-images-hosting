@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       // GitHub OAuth Client ID（可以暴露，因为这是公开的）
       GITHUB_OAUTH_CLIENT_ID: process.env.GITHUB_OAUTH_CLIENT_ID || '',
       
-      // 注意：DELETE_PASSWORD 和 API_SECRET 不应该通过 API 返回
+      // 注意：PASSWORD 和 API_SECRET 不应该通过 API 返回
       // 这些敏感信息应该只在服务器端使用
       // 如果前端需要验证密码，应该通过专门的认证 API
     };
@@ -48,7 +48,7 @@ export async function verifyPassword(req, res) {
     }
 
     // 从环境变量读取密码（如果设置了）
-    const envPassword = process.env.DELETE_PASSWORD;
+    const envPassword = process.env.PASSWORD;
     
     if (!envPassword) {
       // 如果环境变量中没有设置密码，返回错误

@@ -8,7 +8,7 @@
 - 所有写操作（上传、删除、重命名、创建文件夹）前需要输入密码验证
 - 类似 GitHub OAuth 的授权对话框体验
 - 密码验证后24小时内有效，无需重复输入
-- 密码存储在 `config.js` 的 `DELETE_PASSWORD` 中
+- 密码存储在 `config.js` 的 `PASSWORD` 中
 - ⚠️ **必须修改默认密码** `admin123`
 
 ### 2. 后端API保护
@@ -23,7 +23,7 @@
 1. **修改前端密码**（必需）
    ```javascript
    // 在 config.js 中修改
-   DELETE_PASSWORD: 'your-strong-password-here'
+   PASSWORD: 'your-strong-password-here'
    ```
 
 2. **设置 Vercel 环境变量**（必需）
@@ -44,7 +44,7 @@
    - 要求Pull Request审核后才能合并到主分支
 
 5. **定期更换密码和密钥**
-   - 定期更换 `DELETE_PASSWORD` 和 `API_SECRET`
+   - 定期更换 `PASSWORD` 和 `API_SECRET`
    - 如果怀疑泄露，立即更换
 
 6. **监控删除操作**
@@ -77,7 +77,7 @@
 
 ### 回退机制
 
-如果未配置 GitHub OAuth，系统会自动回退到密码认证（`DELETE_PASSWORD`）。
+如果未配置 GitHub OAuth，系统会自动回退到密码认证（`PASSWORD`）。
 
 ## 更安全的替代方案
 

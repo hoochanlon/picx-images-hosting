@@ -16,7 +16,7 @@ function generateToken() {
 function verifyPassword(password) {
   // 从配置或环境变量获取密码
   // 这里使用一个默认密码，实际使用时应该从安全的地方获取
-  const correctPassword = window.APP_CONFIG?.DELETE_PASSWORD || 'admin123';
+  const correctPassword = window.APP_CONFIG?.PASSWORD || 'admin123';
   
   if (password === correctPassword) {
     // 生成token并存储
@@ -80,7 +80,7 @@ function getAuthToken() {
 
 // 显示密码输入对话框
 function showPasswordDialog(callback) {
-  const password = prompt('请输入删除密码以确认操作：\n\n（密码验证后24小时内有效）');
+  const password = prompt('请输入操作密码以确认操作：\n\n（密码验证后24小时内有效）');
   
   if (password === null) {
     // 用户取消

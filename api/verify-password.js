@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     }
 
     // 从环境变量读取密码（如果设置了）
-    const envPassword = process.env.DELETE_PASSWORD;
+    const envPassword = process.env.PASSWORD;
     
     if (!envPassword) {
       // 如果环境变量中没有设置密码，返回特殊状态码，让前端知道可以使用本地配置

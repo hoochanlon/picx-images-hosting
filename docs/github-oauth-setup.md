@@ -64,7 +64,7 @@ GITHUB_OAUTH_CLIENT_ID: 'your_client_id_here'
 
 :::tip
 如果设置了 `GITHUB_OAUTH_CLIENT_ID`，系统会自动使用 GitHub OAuth 认证。
-如果未设置，会回退到密码认证（`DELETE_PASSWORD`）。
+如果未设置，会回退到密码认证（`PASSWORD`）。
 :::
 
 ### 步骤 4：重新部署
@@ -123,7 +123,7 @@ GitHub OAuth App 需要以下权限：
 如果未配置 GitHub OAuth，系统会自动回退到密码认证：
 
 1. 检查 `config.js` 中是否设置了 `GITHUB_OAUTH_CLIENT_ID`
-2. 如果未设置，使用 `DELETE_PASSWORD` 进行密码认证
+2. 如果未设置，使用 `PASSWORD` 进行密码认证
 3. 如果已设置，使用 GitHub OAuth 认证
 
 ## 故障排查

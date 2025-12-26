@@ -63,9 +63,9 @@ export default async function handler(req, res) {
       }
       
       // 如果 API_SECRET 验证失败，检查是否是密码验证的 token
-      // 如果设置了 DELETE_PASSWORD 但没有设置 API_SECRET，接受从 verify-password API 返回的 token
+      // 如果设置了 PASSWORD 但没有设置 API_SECRET，接受从 verify-password API 返回的 token
       // 因为前端已经通过密码验证获取了这个 token
-      if (!isAuthorized && authToken && process.env.DELETE_PASSWORD && !process.env.API_SECRET) {
+      if (!isAuthorized && authToken && process.env.PASSWORD && !process.env.API_SECRET) {
         // 验证 token 格式：应该是 base64 编码的字符串
         // 从 verify-password API 返回的 token 格式是：Buffer.from(`${Date.now()}:${Math.random()}`).toString('base64')
         try {

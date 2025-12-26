@@ -32,7 +32,7 @@ fork 这个仓库
 
 :::warning 安全提示
 部署前请务必配置安全设置，否则任何人都可以操作你的仓库！
-- 修改 `config.js` 中的 `DELETE_PASSWORD`（默认值不安全）
+- 修改 `config.js` 中的 `PASSWORD`（默认值不安全）
 - 在 Vercel 环境变量中设置 `API_SECRET`（强烈推荐）
 - 详细说明请查看 [安全配置指南](./docs/security-config.md)
 :::
@@ -134,7 +134,7 @@ vercel dev
 
 **本地开发：**
 - 创建 `.env.local` 文件（参考 `env.example`）
-- 注意：前端 `config.js` 中的 `DELETE_PASSWORD` 也需要配置（见下方说明）
+- 注意：前端 `config.js` 中的 `PASSWORD` 也需要配置（见下方说明）
 
 ### 配置文件说明
 
@@ -148,7 +148,7 @@ vercel dev
 - `INCLUDED_DIRS`: 允许显示的图片目录列表（例如：`['imgs']` 只显示 imgs 目录下的图片，`['imgs', 'example']` 显示多个目录，`[]` 显示所有目录）
 
 **安全配置（重要）：**
-- `DELETE_PASSWORD`: 删除操作密码，用于前端验证
+- `PASSWORD`: 操作密码，用于前端验证
   - ⚠️ **必须修改**：默认值为 `'admin123'`，请修改为强密码
   - 此密码用于所有写操作（上传、删除、重命名、创建文件夹）的前端验证
   - 授权后 24 小时内无需重复输入
@@ -166,7 +166,7 @@ vercel dev
 
 :::important 安全配置检查清单
 部署前请确认：
-- [ ] 已修改 `config.js` 中的 `DELETE_PASSWORD` 为强密码
+- [ ] 已修改 `config.js` 中的 `PASSWORD` 为强密码
 - [ ] 已在 Vercel 环境变量中设置 `GH_TOKEN`
 - [ ] 已在 Vercel 环境变量中设置 `API_SECRET`（强烈推荐）
 - [ ] 已重新部署项目使配置生效

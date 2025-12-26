@@ -27,9 +27,35 @@
 > * uploads/${YEAR}：用于个人自由上传，题材不限
 
 
+## 安全须知
+
+### 敏感信息保护
+
+- ⚠️ **永远不要**将敏感变量值提交到代码仓库
+- ⚠️ **永远不要**在代码中硬编码 Client Secret 或 Token
+- ✅ 使用 Vercel 环境变量存储所有敏感信息
+- ✅ 定期轮换（更换）敏感 token
+
+### 变量命名规范
+
+- ✅ 使用大写字母和下划线：`GITHUB_OAUTH_CLIENT_ID`
+- ✅ 使用描述性名称：`PASSWORD` 而不是 `PWD`
+- ✅ 保持一致性：所有 GitHub OAuth 相关变量使用 `GITHUB_OAUTH_` 前缀
+
+### 环境变量配置的关键要点
+
+1. **完整性**：确保所有必需变量都已配置
+2. **准确性**：变量名和值必须完全正确（区分大小写）
+3. **一致性**：OAuth 回调 URL 必须与 GitHub 配置一致
+4. **安全性**：敏感信息只存储在环境变量中
+5. **及时性**：配置后必须重新部署才能生效
+
+遵循以上要点，可以确保环境变量配置正确且安全。
+
+
 ## 部署
 
-### Git 稀疏检出
+### 1. Git 稀疏检出
 
 由于是自用图床，图片过多存储空间占用过大在所难免，所以需要排除图片目录，进行相关克隆。
 
@@ -49,10 +75,47 @@ git checkout
 ```
 
 
-### GitHub OATH 认证
+### 2. 密码 / GitHub OAuth 认证 （二选一）
 
 
+#### 配置密码
 
-### vercel 环境变量配置
+配置密码在 vercel 设置环境变量 PASSWORD 填入密码值即可。
 
-![]()
+#### 2.2 GitHub OAUTH 认证（创建 GitHub OAuth App）
+
+> [!warning] 重要
+> - **Client secret** 只显示一次，请立即保存
+> - 如果丢失，需要重新生成
+> - 回调 URL 必须完全匹配，包括协议（https）和路径
+
+1. 登录 GitHub，进入 **Settings** → **Developer settings** → **OAuth Apps**
+2. 点击 **New OAuth App**
+3. 填写以下信息：
+
+   | 字段 | 值 | 说明 |
+   |------|-----|------|
+   | **Application name** | picx-images-hosting | 应用名称（可自定义） |
+   | **Homepage URL** | `https://picx-images-hosting-brown.vercel.app` | 你的 Vercel 部署地址 |
+   | **Authorization callback URL** | `https://picx-images-hosting-brown.vercel.app/api/github-oauth?action=callback` | 回调地址（重要！） |
+
+4. 点击 **Register application**
+5. **记录生成的 Client ID**（例如：`Iv1.8a61f9b3a7aba766`）
+6. 点击 **Generate a new client secret**，**记录 Client secret**（只显示一次，请妥善保存）
+
+
+### 3. vercel 环境变量配置
+
+
+根据项目需求，需要在 Vercel 中配置以下环境变量：
+
+| 变量名 | 说明 | 是否必需 | 示例值 |
+|--------|------|---------|--------|
+| `GH_TOKEN` | GitHub Personal Access Token | ✅ 必需 | `ghp_xxx...` |
+| `GITHUB_OAUTH_CLIENT_ID` | GitHub OAuth App 的 Client ID | ✅ 推荐 | `0v231iA5D` |
+| `GITHUB_OAUTH_CLIENT_SECRET` | GitHub OAuth App 的 Client Secret | ✅ 推荐 | `6d48b48...` |
+| `GITHUB_OAUTH_REDIRECT_URI` | OAuth 回调地址 | ⚠️ 可选 | `https://picx-images-hosting-brown.vercel.app/api/github-oauth?action=callback` |
+| `API_BASE` | API 基础地址 | ⚠️ 可选 | `https://picx-images-hosting-brown.vercel.app` |
+| `PASSWORD` | 操作密码（备用认证） | ⚠️ 可选 | `Pass@w0rd` |
+
+
