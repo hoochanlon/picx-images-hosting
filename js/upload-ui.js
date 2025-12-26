@@ -102,10 +102,10 @@ function renderFiles() {
       <div class="file-icon"><i class="fas fa-folder"></i></div>
       <div class="file-name">${folder.name}</div>
       <div class="file-actions">
-        <button class="btn-rename" data-type="folder" data-path="${folder.path}" title="重命名">
+        <button class="btn-rename" data-type="folder" data-path="${folder.path}" aria-label="重命名">
           <i class="fas fa-edit"></i>
         </button>
-        <button class="btn-delete btn-danger" data-type="folder" data-path="${folder.path}" title="删除">
+        <button class="btn-delete btn-danger" data-type="folder" data-path="${folder.path}" aria-label="删除">
           <i class="fas fa-trash"></i>
         </button>
       </div>
@@ -151,20 +151,20 @@ function renderFiles() {
       <div class="file-name">${file.name}</div>
       <div class="file-actions">
         ${isImage ? `
-        <button class="btn-preview" data-path="${file.path}" data-name="${file.name}" title="预览图片">
+        <button class="btn-preview" data-path="${file.path}" data-name="${file.name}" aria-label="预览图片">
           <i class="fas fa-eye"></i>
         </button>
         ` : ''}
-        <button class="btn-copy-pages" data-url="${pagesUrl}" title="复制 Pages 链接">
+        <button class="btn-copy-pages" data-url="${pagesUrl}" aria-label="复制 Pages 链接">
           <i class="fas fa-link"></i>
         </button>
-        <button class="btn-copy-cdn" data-url="${cdnUrl}" title="复制 CDN 链接">
+        <button class="btn-copy-cdn" data-url="${cdnUrl}" aria-label="复制 CDN 链接">
           <i class="fas fa-cloud"></i>
         </button>
-        <button class="btn-rename" data-type="file" data-path="${file.path}" title="重命名">
+        <button class="btn-rename" data-type="file" data-path="${file.path}" aria-label="重命名">
           <i class="fas fa-edit"></i>
         </button>
-        <button class="btn-delete btn-danger" data-type="file" data-path="${file.path}" title="删除">
+        <button class="btn-delete btn-danger" data-type="file" data-path="${file.path}" aria-label="删除">
           <i class="fas fa-trash"></i>
         </button>
       </div>
@@ -190,11 +190,21 @@ function renderFiles() {
       try {
         await navigator.clipboard.writeText(url);
         const btn = li.querySelector('.btn-copy-pages');
-        const originalTitle = btn.title;
-        btn.title = '已复制';
-        setTimeout(() => {
-          btn.title = originalTitle;
-        }, 1500);
+        const icon = btn.querySelector('i');
+        if (icon) {
+          const originalClass = icon.className;
+          const originalAriaLabel = btn.getAttribute('aria-label');
+          // 替换为勾选图标
+          icon.className = 'fas fa-check';
+          btn.setAttribute('aria-label', '已复制');
+          // 添加成功样式类（可选，用于改变颜色）
+          btn.classList.add('copy-success');
+          setTimeout(() => {
+            icon.className = originalClass;
+            btn.setAttribute('aria-label', originalAriaLabel);
+            btn.classList.remove('copy-success');
+          }, 1500);
+        }
       } catch (err) {
         console.error('复制失败:', err);
         alert('复制失败，请手动复制');
@@ -208,11 +218,21 @@ function renderFiles() {
       try {
         await navigator.clipboard.writeText(url);
         const btn = li.querySelector('.btn-copy-cdn');
-        const originalTitle = btn.title;
-        btn.title = '已复制';
-        setTimeout(() => {
-          btn.title = originalTitle;
-        }, 1500);
+        const icon = btn.querySelector('i');
+        if (icon) {
+          const originalClass = icon.className;
+          const originalAriaLabel = btn.getAttribute('aria-label');
+          // 替换为勾选图标
+          icon.className = 'fas fa-check';
+          btn.setAttribute('aria-label', '已复制');
+          // 添加成功样式类（可选，用于改变颜色）
+          btn.classList.add('copy-success');
+          setTimeout(() => {
+            icon.className = originalClass;
+            btn.setAttribute('aria-label', originalAriaLabel);
+            btn.classList.remove('copy-success');
+          }, 1500);
+        }
       } catch (err) {
         console.error('复制失败:', err);
         alert('复制失败，请手动复制');

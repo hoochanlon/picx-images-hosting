@@ -247,6 +247,16 @@
   background: #e6fff5;
 }
 
+/* 复制成功时的样式 */
+.file-actions .copy-success {
+  color: #238636;
+  border-color: #238636;
+}
+
+.file-actions .copy-success:hover {
+  background: #dafbe1;
+}
+
 .upload-area {
   border: 2px dashed #d0d7de;
   border-radius: 8px;

@@ -257,3 +257,13 @@
   color: #8b949e;
 }
 
+/* 复制成功时的样式（暗色模式） */
+[data-theme="dark"] .file-actions .copy-success {
+  color: #3fb950;
+  border-color: #3fb950;
+}
+
+[data-theme="dark"] .file-actions .copy-success:hover {
+  background: rgba(63, 185, 80, 0.2);
+}
+
