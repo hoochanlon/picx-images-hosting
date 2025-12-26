@@ -14,4 +14,4 @@
 
 ## 使用方式
 
-见部署教程：https://hoochanlon.github.io/picx-images-hosting/tutorial.html
+详情见部署教程：https://hoochanlon.github.io/picx-images-hosting/tutorial.html
