@@ -456,46 +456,5 @@
   border-color: rgba(88, 166, 255, 0.6);
 }
 
-/* Mermaid 图表夜间模式样式 */
-[data-theme="dark"] .tutorial-step-content .mermaid,
-[data-theme="dark"] .tutorial-content .mermaid {
-  background: rgba(13, 17, 23, 0.95);
-  border: 1px solid rgba(48, 54, 61, 0.8);
-  border-radius: 8px;
-  padding: 20px;
-  margin: 24px 0;
-  overflow-x: auto;
-}
-
-[data-theme="dark"] .tutorial-step-content .mermaid svg,
-[data-theme="dark"] .tutorial-content .mermaid svg {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Mermaid 控制按钮夜间模式样式 */
-[data-theme="dark"] .mermaid-toggle-btn,
-[data-theme="dark"] .mermaid-copy-btn {
-  background: rgba(255, 255, 255, 0.15);
-  color: #e6edf3;
-  backdrop-filter: blur(10px);
-}
-
-[data-theme="dark"] .mermaid-toggle-btn:hover,
-[data-theme="dark"] .mermaid-copy-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
-
-[data-theme="dark"] .mermaid-source {
-  background: rgba(22, 27, 34, 0.8);
-  border: 1px solid rgba(48, 54, 61, 0.5);
-}
-
-[data-theme="dark"] .mermaid-source code {
-  color: #e6edf3;
-}
-
-[data-theme="dark"] .mermaid-copy-success {
-  background: rgba(34, 197, 94, 0.6) !important;
-}
+/* Mermaid 图表夜间模式样式已移至 dark-tutorial-mermaid.css */
 

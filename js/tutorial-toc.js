@@ -16,7 +16,10 @@ function updateTOC(stepIndex) {
   
   // 如果内容还未加载，等待加载完成后再生成
   if (activeContent.dataset.loaded !== 'true') {
-    tocNav.innerHTML = '<div class="tutorial-toc-loading">正在加载内容...</div>';
+    // 只在没有内容时才显示加载提示
+    if (!tocNav.querySelector('ul')) {
+      tocNav.innerHTML = '<div class="tutorial-toc-loading">正在加载内容...</div>';
+    }
     // 等待内容加载后再次尝试
     const checkInterval = setInterval(() => {
       if (activeContent.dataset.loaded === 'true') {
@@ -24,17 +27,31 @@ function updateTOC(stepIndex) {
         updateTOC(stepIndex);
       }
     }, 100);
-    // 最多等待 5 秒
-    setTimeout(() => clearInterval(checkInterval), 5000);
+    // 最多等待 5 秒，超时后清除加载提示
+    setTimeout(() => {
+      clearInterval(checkInterval);
+      // 如果仍然没有内容，显示空状态
+      if (activeContent.dataset.loaded !== 'true') {
+        const headings = activeContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        if (headings.length === 0) {
+          tocNav.innerHTML = '<div class="tutorial-toc-loading">暂无目录</div>';
+        }
+      }
+    }, 5000);
     return;
   }
 
   const headings = activeContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
   
   if (headings.length === 0) {
+    // 清除之前的加载提示
     tocNav.innerHTML = '<div class="tutorial-toc-loading">暂无目录</div>';
     return;
   }
+  
+  // 确保清除所有加载提示
+  const loadingElements = tocNav.querySelectorAll('.tutorial-toc-loading');
+  loadingElements.forEach(el => el.remove());
 
   let tocHTML = '<ul>';
   let stack = []; // 用于跟踪嵌套级别
@@ -70,7 +87,17 @@ function updateTOC(stepIndex) {
   }
   
   tocHTML += '</ul>';
+  
+  // 清除所有加载提示，然后设置目录内容
+  tocNav.innerHTML = '';
   tocNav.innerHTML = tocHTML;
+  
+  // 触发目录动画
+  if (window.tutorialAnimations && window.tutorialAnimations.applyTOCAnimations) {
+    setTimeout(() => {
+      window.tutorialAnimations.applyTOCAnimations();
+    }, 50);
+  }
 
   // 添加平滑滚动
   tocNav.querySelectorAll('a').forEach(link => {

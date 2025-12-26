@@ -34,8 +34,14 @@
 /* 教程目录样式 */
 @import url('dark-tutorial-toc.css');
 
+/* 教程 Mermaid 图表样式 */
+@import url('dark-tutorial-mermaid.css');
+
 /* 教程 Callout 组件样式 */
 @import url('dark-tutorial-callout.css');
+
+/* 教程动画样式 */
+@import url('dark-tutorial-animations.css');
 
 /* 切换按钮样式 */
 @import url('dark-toggle.css');

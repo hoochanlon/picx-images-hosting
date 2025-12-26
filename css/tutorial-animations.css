@@ -1,0 +1,512 @@
+/* Tutorial Animations - 页面过渡动画效果 */
+
+/* ==================== 基础动画定义 ==================== */
+
+@keyframes tutorial-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tutorial-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes tutorial-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes tutorial-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes tutorial-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes tutorial-shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* ==================== 页面加载动画 ==================== */
+
+.tutorial-page {
+  animation: tutorial-fade-in 0.4s ease-out;
+}
+
+.tutorial-container {
+  animation: tutorial-fade-in 0.5s ease-out;
+}
+
+/* ==================== 侧边栏动画 ==================== */
+
+.tutorial-sidebar {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s ease;
+}
+
+.tutorial-sidebar-nav-item {
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tutorial-sidebar-nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: #667eea;
+  transform: scaleY(0);
+  transition: transform 0.2s ease;
+  transform-origin: top;
+}
+
+.tutorial-sidebar-nav-item:hover {
+  transform: translateX(4px);
+  background: rgba(102, 126, 234, 0.08);
+}
+
+.tutorial-sidebar-nav-item.active::before {
+  transform: scaleY(1);
+}
+
+.tutorial-sidebar-nav-item.active {
+  background: rgba(102, 126, 234, 0.12);
+  font-weight: 500;
+}
+
+/* ==================== 步骤指示器动画 ==================== */
+
+.tutorial-step {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.tutorial-step::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: #667eea;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tutorial-step.active::after {
+  width: 100%;
+}
+
+.tutorial-step:hover {
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.tutorial-step span:first-child {
+  transition: all 0.3s ease;
+}
+
+.tutorial-step.active span:first-child {
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* ==================== 内容区域动画 ==================== */
+
+.tutorial-content {
+  animation: tutorial-fade-in 0.6s ease-out;
+}
+
+.tutorial-step-content {
+  animation: tutorial-fade-in 0.5s ease-out;
+}
+
+.tutorial-step-content h1,
+.tutorial-step-content h2,
+.tutorial-step-content h3,
+.tutorial-step-content h4,
+.tutorial-step-content h5,
+.tutorial-step-content h6 {
+  animation: tutorial-slide-in-right 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.tutorial-step-content h1 {
+  animation-delay: 0.1s;
+}
+
+.tutorial-step-content h2 {
+  animation-delay: 0.15s;
+}
+
+.tutorial-step-content h3 {
+  animation-delay: 0.2s;
+}
+
+.tutorial-step-content p,
+.tutorial-step-content ul,
+.tutorial-step-content ol {
+  animation: tutorial-fade-in 0.6s ease-out;
+  animation-fill-mode: both;
+  animation-delay: 0.3s;
+}
+
+/* ==================== 目录动画 ==================== */
+
+.tutorial-toc {
+  animation: tutorial-slide-in-right 0.5s ease-out;
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+}
+
+.tutorial-toc-nav a {
+  transition: all 0.2s ease;
+  position: relative;
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.tutorial-toc-nav a.tutorial-toc-item {
+  animation: tutorial-slide-in-right 0.4s ease-out forwards;
+}
+
+.tutorial-toc-nav a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleX(0);
+  width: 3px;
+  height: 0;
+  background: #667eea;
+  transition: all 0.2s ease;
+  border-radius: 0 2px 2px 0;
+}
+
+.tutorial-toc-nav a:hover {
+  transform: translateX(4px);
+  padding-left: 14px;
+}
+
+.tutorial-toc-nav a.active::before {
+  transform: translateY(-50%) scaleX(1);
+  height: 60%;
+}
+
+.tutorial-toc-nav a.active {
+  padding-left: 14px;
+}
+
+/* 目录项列表动画 */
+.tutorial-toc-nav ul {
+  animation: tutorial-fade-in 0.3s ease-out;
+}
+
+.tutorial-toc-nav li {
+  animation: tutorial-fade-in 0.4s ease-out;
+  animation-fill-mode: both;
+}
+
+.tutorial-toc-nav > ul > li {
+  animation-delay: 0.1s;
+}
+
+.tutorial-toc-nav ul ul li {
+  animation-delay: 0.2s;
+}
+
+/* ==================== 代码块动画 ==================== */
+
+.tutorial-step-content pre {
+  animation: tutorial-scale-in 0.4s ease-out;
+  animation-fill-mode: both;
+  animation-delay: 0.4s;
+}
+
+.tutorial-step-content code {
+  transition: background-color 0.2s ease;
+}
+
+/* ==================== Mermaid 图表动画 ==================== */
+
+.tutorial-step-content .mermaid,
+.tutorial-content .mermaid {
+  animation: tutorial-scale-in 0.5s ease-out;
+  animation-fill-mode: both;
+  animation-delay: 0.5s;
+}
+
+.tutorial-step-content .mermaid svg,
+.tutorial-content .mermaid svg {
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.tutorial-step-content .mermaid:hover svg,
+.tutorial-content .mermaid:hover svg {
+  transform: scale(1.01);
+}
+
+/* ==================== Callout 动画 ==================== */
+
+.tutorial-callout {
+  animation: tutorial-slide-in-left 0.4s ease-out;
+  animation-fill-mode: both;
+  animation-delay: 0.3s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tutorial-callout:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ==================== 按钮动画 ==================== */
+
+.tutorial-sidebar-footer .icon-label,
+.tutorial-header .icon-label {
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.tutorial-sidebar-footer .icon-label::after,
+.tutorial-header .icon-label::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 80%;
+  height: 2px;
+  background: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.tutorial-sidebar-footer .icon-label:hover::after,
+.tutorial-header .icon-label:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ==================== 加载状态动画 ==================== */
+
+.tutorial-loading {
+  animation: tutorial-fade-in 0.3s ease-out;
+}
+
+.tutorial-loading::after {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==================== 步骤切换动画 ==================== */
+
+.tutorial-step-content.entering {
+  animation: tutorial-fade-in 0.4s ease-out, tutorial-slide-in-right 0.4s ease-out;
+  animation-fill-mode: both;
+}
+
+.tutorial-step-content.leaving {
+  animation: tutorial-fade-out 0.3s ease-in;
+  animation-fill-mode: both;
+}
+
+/* ==================== 滚动动画 ==================== */
+
+.tutorial-content-wrapper {
+  scroll-behavior: smooth;
+}
+
+/* ==================== 响应式动画优化 ==================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==================== 暗色模式动画适配 ==================== */
+
+[data-theme="dark"] .tutorial-sidebar-nav-item:hover {
+  background: rgba(102, 126, 234, 0.15);
+}
+
+[data-theme="dark"] .tutorial-step:hover {
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+}
+
+[data-theme="dark"] .tutorial-callout:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ==================== 暗色模式目录动画优化 ==================== */
+
+/* 暗色模式目录项动画 */
+[data-theme="dark"] .tutorial-toc-nav a.tutorial-toc-item {
+  animation: tutorial-slide-in-right 0.4s ease-out forwards, tutorial-fade-in 0.4s ease-out forwards;
+}
+
+/* 暗色模式目录项悬停效果 */
+[data-theme="dark"] .tutorial-toc-nav a:hover {
+  transform: translateX(6px);
+  padding-left: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 暗色模式目录项激活效果 */
+[data-theme="dark"] .tutorial-toc-nav a.active:hover {
+  transform: translateX(6px);
+  padding-left: 14px;
+}
+
+/* 暗色模式目录列表动画 */
+[data-theme="dark"] .tutorial-toc-nav ul {
+  animation: tutorial-fade-in 0.3s ease-out;
+}
+
+[data-theme="dark"] .tutorial-toc-nav li {
+  animation: tutorial-fade-in 0.4s ease-out;
+  animation-fill-mode: both;
+}
+
+[data-theme="dark"] .tutorial-toc-nav > ul > li {
+  animation-delay: 0.1s;
+}
+
+[data-theme="dark"] .tutorial-toc-nav ul ul li {
+  animation-delay: 0.2s;
+}
+
+/* 暗色模式目录激活指示器动画 */
+[data-theme="dark"] .tutorial-toc-nav a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleX(0);
+  width: 3px;
+  height: 0;
+  background: #58a6ff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 8px rgba(88, 166, 255, 0.5);
+}
+
+[data-theme="dark"] .tutorial-toc-nav a.active::before {
+  transform: translateY(-50%) scaleX(1);
+  height: 60%;
+  box-shadow: 0 0 12px rgba(88, 166, 255, 0.7);
+}
+
+/* 暗色模式二级目录激活指示器动画 */
+[data-theme="dark"] .tutorial-toc-nav ul ul a::before {
+  background: #89d1dc;
+  box-shadow: 0 0 8px rgba(137, 209, 220, 0.5);
+}
+
+[data-theme="dark"] .tutorial-toc-nav ul ul a.active::before {
+  box-shadow: 0 0 12px rgba(137, 209, 220, 0.7);
+}
+
+/* 暗色模式目录进入动画 */
+[data-theme="dark"] .tutorial-toc {
+  animation: tutorial-slide-in-right 0.5s ease-out, tutorial-fade-in 0.5s ease-out;
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+}
+
+/* 暗色模式目录滚动条隐藏 */
+[data-theme="dark"] .tutorial-toc::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* 暗色模式目录加载状态动画 */
+[data-theme="dark"] .tutorial-toc-loading {
+  animation: tutorial-fade-in 0.3s ease-out;
+  transition: opacity 0.3s ease-out;
+}
+
+/* 暗色模式目录项点击波纹效果 */
+[data-theme="dark"] .tutorial-toc-nav a {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .tutorial-toc-nav a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(88, 166, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease-out, height 0.6s ease-out;
+  pointer-events: none;
+}
+
+[data-theme="dark"] .tutorial-toc-nav a:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* 暗色模式二级目录项点击波纹效果 */
+[data-theme="dark"] .tutorial-toc-nav ul ul a::after {
+  background: rgba(137, 209, 220, 0.3);
+}
+

@@ -1,0 +1,40 @@
+/* Dark Tutorial Animations - 暗色模式动画适配 */
+
+[data-theme="dark"] .tutorial-sidebar-nav-item:hover {
+  background: rgba(102, 126, 234, 0.15);
+}
+
+[data-theme="dark"] .tutorial-sidebar-nav-item.active {
+  background: rgba(102, 126, 234, 0.2);
+}
+
+[data-theme="dark"] .tutorial-step:hover {
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+[data-theme="dark"] .tutorial-step.active span:first-child {
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+[data-theme="dark"] .tutorial-toc-nav a:hover {
+  background: rgba(102, 126, 234, 0.12);
+}
+
+[data-theme="dark"] .tutorial-toc-nav a.active {
+  background: rgba(102, 126, 234, 0.18);
+}
+
+[data-theme="dark"] .tutorial-callout:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .tutorial-sidebar-footer .icon-label:hover,
+[data-theme="dark"] .tutorial-header .icon-label:hover {
+  color: #667eea;
+}
+
+[data-theme="dark"] .tutorial-loading::after {
+  border-color: rgba(102, 126, 234, 0.3);
+  border-top-color: #667eea;
+}
+

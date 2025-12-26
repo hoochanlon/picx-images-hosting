@@ -2,62 +2,188 @@
 /* 夜间模式教程目录样式 */
 
 [data-theme="dark"] .tutorial-toc {
-  background: rgba(13, 17, 23, 0.9);
-  border: 1px solid rgba(48, 54, 61, 0.6);
+  width: 300px;
+  min-width: 0; /* 允许收缩 */
+  flex-shrink: 0;
+  position: sticky;
+  top: 120px;
+  align-self: flex-start;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto; /* 保持滚动功能 */
+  overflow-x: hidden; /* 防止横向滚动 */
+  background: #0d1117;
+  border: 1px solid #30363d;
   border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  max-width: 280px;
-  overflow: hidden;
-}
-
-[data-theme="dark"] .tutorial-toc-header {
-  background: rgba(13, 17, 23, 0.98);
-  border-bottom: 1px solid rgba(48, 54, 61, 0.8);
   padding: 16px;
+  margin-top: 10px;
+  box-sizing: border-box; /* 确保 padding 包含在宽度内 */
+  /* 显示滚动条 */
+  scrollbar-width: thin; /* Firefox - 细滚动条 */
+  scrollbar-color: #8b949e00 #0d111700; /* Firefox - 滚动条颜色 */
+  -ms-overflow-style: auto; /* IE 和 Edge - 自动样式 */
 }
 
+/* Webkit 浏览器滚动条样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc::-webkit-scrollbar {
+  width: 8px; /* 滚动条宽度 */
+  height: 8px; /* 滚动条高度 */
+}
+
+/* 滚动条轨道样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc::-webkit-scrollbar-track {
+  background: #0d1117; /* 轨道背景色 */
+  border-radius: 4px; /* 轨道圆角 */
+}
+
+/* 滚动条滑块样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc::-webkit-scrollbar-thumb {
+  background: #8b949e; /* 滑块背景色 */
+  border-radius: 4px; /* 滑块圆角 */
+  transition: background 0.2s ease; /* 过渡效果 */
+}
+
+/* 滚动条滑块悬停样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc::-webkit-scrollbar-thumb:hover {
+  background: #6e7681; /* 滑块悬停背景色 */
+}
+
+/* 滚动条角落样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc::-webkit-scrollbar-corner {
+  background: #0d1117; /* 角落背景色 */
+}
+
+/* 标题样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc-header {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #30363d;
+}
+
+/* 标题文本样式 - 与浅色模式保持一致 */
 [data-theme="dark"] .tutorial-toc-header h3 {
   color: #f0f6fc;
   margin: 0;
   font-size: 1rem;
+  font-weight: 600;
 }
 
+/* 目录导航样式 - 与浅色模式保持一致 */
 [data-theme="dark"] .tutorial-toc-nav {
-  background: transparent;
-  padding: 8px 0;
+  font-size: 0.875rem;
+  width: 100%;
+  overflow-x: hidden; /* 防止横向溢出 */
+  word-wrap: break-word; /* 允许长文本换行 */
+  overflow-wrap: break-word; /* 现代浏览器支持 */
+  overflow-y: visible; /* 确保不产生额外的滚动条 */
 }
 
+/* 目录列表样式 - 与浅色模式保持一致 */
 [data-theme="dark"] .tutorial-toc-nav ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
+  overflow-x: hidden; /* 防止横向溢出 */
 }
 
-[data-theme="dark"] .tutorial-toc-nav li {
-  margin: 0;
+/* 根目录列表样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc-nav > ul {
   padding: 0;
+  margin: 0;
+  width: 100%;
 }
 
+/* 目录项样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc-nav li {
+  margin: 6px 0;
+  line-height: 1.6;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word; /* 确保内容不会溢出 */
+}
+
+/* 根目录项样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc-nav > ul > li {
+  margin: 8px 0;
+}
+
+/* 目录链接样式 - 与浅色模式保持一致 */
 [data-theme="dark"] .tutorial-toc-nav a {
+  display: block; /* 改为 block 以便文字换行 */
+  padding: 6px 10px;
   color: #8b949e;
-  padding: 6px 16px;
-  display: block;
   text-decoration: none;
-  font-size: 0.875rem;
-  transition: all var(--transition-speed) ease;
-  border-left: 3px solid transparent;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  line-height: 1.6;
+  min-height: 28px;
+  word-wrap: break-word; /* 允许长文本换行 */
+  overflow-wrap: break-word; /* 现代浏览器支持 */
+  hyphens: auto; /* 自动断字 */
 }
 
-[data-theme="dark"] .tutorial-toc-nav a:hover,
-[data-theme="dark"] .tutorial-toc-nav a.active {
+/* 目录项悬停效果 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc-nav a:hover {
+  background: rgba(102, 126, 234, 0.1);
   color: #58a6ff;
-  background: rgba(48, 54, 61, 0.3);
-  border-left-color: rgba(88, 166, 255, 0.5);
 }
 
+/* 目录项激活效果 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc-nav a.active {
+  background: rgba(102, 126, 234, 0.15);
+  color: #58a6ff;
+  font-weight: 500;
+}
+
+/* 二级目录列表样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc-nav ul ul {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 2px solid #30363d;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  width: calc(100% - 32px); /* 减去左右边距，防止溢出 */
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* 二级目录项样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc-nav ul ul li {
+  margin: 4px 0;
+}
+
+/* 二级目录链接样式 - 与浅色模式保持一致 */
 [data-theme="dark"] .tutorial-toc-nav ul ul a {
-  padding-left: 28px;
+  padding-left: 12px;
   font-size: 0.8125rem;
+  min-height: 24px;
   color: #7d8590;
 }
+
+/* 二级目录项悬停效果 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc-nav ul ul a:hover {
+  background: rgba(102, 126, 234, 0.1);
+  color: #58a6ff;
+}
+
+/* 二级目录项激活效果 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc-nav ul ul a.active {
+  background: rgba(102, 126, 234, 0.15);
+  color: #58a6ff;
+  font-weight: 500;
+}
+
+/* 加载状态样式 - 与浅色模式保持一致 */
+[data-theme="dark"] .tutorial-toc-loading {
+  color: #8b949e;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 20px 0;
+  animation: tutorial-fade-in 0.3s ease-out;
+  transition: opacity 0.3s ease-out;
+}
+
+/* 滚动条已显示，带有平滑过渡效果 */
 

@@ -7,4 +7,6 @@
 @import url('./tutorial-content.css');
 @import url('./tutorial-callout.css');
 @import url('./tutorial-toc.css');
+@import url('./tutorial-mermaid.css');
 @import url('./tutorial-responsive.css');
+@import url('./tutorial-animations.css');

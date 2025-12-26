@@ -1,17 +1,53 @@
 /* Tutorial Table of Contents Styles */
 .tutorial-toc {
   width: 300px;
+  min-width: 0; /* 允许收缩 */
   flex-shrink: 0;
   position: sticky;
   top: 120px;
   align-self: flex-start;
   max-height: calc(100vh - 140px);
-  overflow-y: auto;
+  overflow-y: auto; /* 保持滚动功能 */
+  overflow-x: hidden; /* 防止横向滚动 */
   background: #f6f8fa;
   border: 1px solid #d0d7de;
   border-radius: 6px;
   padding: 16px;
   margin-top: 10px;
+  box-sizing: border-box; /* 确保 padding 包含在宽度内 */
+  /* 显示滚动条 */
+  scrollbar-width: thin; /* Firefox - 细滚动条 */
+  scrollbar-color: #8b949e00 #f6f8fa; /* Firefox - 滚动条颜色 */
+  -ms-overflow-style: auto; /* IE 和 Edge - 自动样式 */
+}
+
+/* Webkit 浏览器滚动条样式 */
+.tutorial-toc::-webkit-scrollbar {
+  width: 8px; /* 滚动条宽度 */
+  height: 8px; /* 滚动条高度 */
+}
+
+/* 滚动条轨道样式 */
+.tutorial-toc::-webkit-scrollbar-track {
+  background: #f6f8fa; /* 轨道背景色 */
+  border-radius: 4px; /* 轨道圆角 */
+}
+
+/* 滚动条滑块样式 */
+.tutorial-toc::-webkit-scrollbar-thumb {
+  background: #8b949e; /* 滑块背景色 */
+  border-radius: 4px; /* 滑块圆角 */
+  transition: background 0.2s ease; /* 过渡效果 */
+}
+
+/* 滚动条滑块悬停样式 */
+.tutorial-toc::-webkit-scrollbar-thumb:hover {
+  background: #6e7681; /* 滑块悬停背景色 */
+}
+
+/* 滚动条角落样式 */
+.tutorial-toc::-webkit-scrollbar-corner {
+  background: #f6f8fa; /* 角落背景色 */
 }
 
 .tutorial-toc-header {
@@ -29,22 +65,33 @@
 
 .tutorial-toc-nav {
   font-size: 0.875rem;
+  width: 100%;
+  overflow-x: hidden; /* 防止横向溢出 */
+  word-wrap: break-word; /* 允许长文本换行 */
+  overflow-wrap: break-word; /* 现代浏览器支持 */
+  overflow-y: visible; /* 确保不产生额外的滚动条 */
 }
 
 .tutorial-toc-nav ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
+  overflow-x: hidden; /* 防止横向溢出 */
 }
 
 .tutorial-toc-nav > ul {
   padding: 0;
   margin: 0;
+  width: 100%;
 }
 
 .tutorial-toc-nav li {
   margin: 6px 0;
   line-height: 1.6;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word; /* 确保内容不会溢出 */
 }
 
 .tutorial-toc-nav > ul > li {
@@ -52,8 +99,7 @@
 }
 
 .tutorial-toc-nav a {
-  display: flex;
-  align-items: center;
+  display: block; /* 改为 block 以便文字换行 */
   padding: 6px 10px;
   color: #57606a;
   text-decoration: none;
@@ -61,6 +107,9 @@
   transition: all 0.2s ease;
   line-height: 1.6;
   min-height: 28px;
+  word-wrap: break-word; /* 允许长文本换行 */
+  overflow-wrap: break-word; /* 现代浏览器支持 */
+  hyphens: auto; /* 自动断字 */
 }
 
 .tutorial-toc-nav a:hover {
@@ -82,6 +131,9 @@
   border-left: 2px solid #d0d7de;
   padding-top: 2px;
   padding-bottom: 2px;
+  width: calc(100% - 32px); /* 减去左右边距，防止溢出 */
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .tutorial-toc-nav ul ul li {
@@ -99,5 +151,12 @@
   font-size: 0.875rem;
   text-align: center;
   padding: 20px 0;
+  animation: tutorial-fade-in 0.3s ease-out;
+  transition: opacity 0.3s ease-out;
+}
+
+/* 当目录有内容时，加载提示应该被隐藏 */
+.tutorial-toc-nav ul ~ .tutorial-toc-loading {
+  display: none;
 }
 

@@ -1,0 +1,280 @@
+/* Dark Mode Mermaid Styles */
+/* 夜间模式 Mermaid 图表样式优化 */
+
+/* 主图表容器样式 */
+[data-theme="dark"] .tutorial-step-content .mermaid,
+[data-theme="dark"] .tutorial-content .mermaid {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* 图表背景色优化 */
+[data-theme="dark"] .mermaid svg {
+  background: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* 控制按钮样式优化 */
+[data-theme="dark"] .mermaid-toggle-btn,
+[data-theme="dark"] .mermaid-copy-btn {
+  background: rgba(33, 38, 45, 0.9);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #f0f6fc;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .mermaid-toggle-btn:hover,
+[data-theme="dark"] .mermaid-copy-btn:hover {
+  background: rgba(48, 54, 61, 0.9);
+  border-color: rgba(88, 166, 255, 0.6);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .mermaid-toggle-btn:active,
+[data-theme="dark"] .mermaid-copy-btn:active {
+  background: rgba(60, 66, 74, 0.9);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 源代码显示样式优化 */
+[data-theme="dark"] .mermaid-source {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .mermaid-source code {
+  color: #f0f6fc;
+}
+
+/* 复制成功状态样式优化 */
+[data-theme="dark"] .mermaid-copy-success {
+  background: rgba(34, 197, 94, 0.9) !important;
+  border-color: rgba(34, 197, 94, 0.6) !important;
+  color: white !important;
+}
+
+/* Mermaid 图表元素颜色优化 */
+/* 确保夜间模式下的文本和线条颜色与背景形成良好对比 */
+[data-theme="dark"] .mermaid .node rect,
+[data-theme="dark"] .mermaid .node circle,
+[data-theme="dark"] .mermaid .node ellipse,
+[data-theme="dark"] .mermaid .node polygon,
+[data-theme="dark"] .mermaid .node path {
+  fill: rgba(26, 32, 44, 0.95);
+  stroke: rgba(88, 166, 255, 0.8);
+  stroke-width: 2px;
+  filter: brightness(1.2);
+}
+
+[data-theme="dark"] .mermaid .edgePath path,
+[data-theme="dark"] .mermaid .edgeLabel {
+  stroke: rgba(156, 163, 175, 0.9);
+  fill: rgba(156, 163, 175, 0.9);
+  font-weight: 500;
+}
+
+[data-theme="dark"] .mermaid text {
+  fill: #f0f6fc !important;
+  stroke: none !important;
+  font-weight: 600;
+  filter: brightness(1.3);
+}
+
+/* 序列图样式优化 */
+[data-theme="dark"] .mermaid .sequenceDiagram .actor {
+  fill: rgba(26, 32, 44, 0.95);
+  stroke: rgba(88, 166, 255, 0.8);
+  filter: brightness(1.2);
+}
+
+[data-theme="dark"] .mermaid .sequenceDiagram .messageLine0,
+[data-theme="dark"] .mermaid .sequenceDiagram .messageLine1 {
+  stroke: rgba(156, 163, 175, 0.9);
+  stroke-width: 2px;
+}
+
+[data-theme="dark"] .mermaid .sequenceDiagram .messageText {
+  fill: #f0f6fc;
+  stroke: none;
+  font-weight: 600;
+  filter: brightness(1.3);
+}
+
+/* 流程图样式优化 */
+[data-theme="dark"] .mermaid .flowchart-link {
+  stroke: rgba(156, 163, 175, 0.9);
+  stroke-width: 2px;
+}
+
+/* 类图样式优化 */
+[data-theme="dark"] .mermaid .classDiagram .class,
+[data-theme="dark"] .mermaid .classDiagram .interface {
+  fill: rgba(26, 32, 44, 0.95);
+  stroke: rgba(88, 166, 255, 0.8);
+  filter: brightness(1.2);
+}
+
+[data-theme="dark"] .mermaid .classDiagram .classLabel {
+  fill: #f0f6fc !important;
+  font-weight: 600;
+  filter: brightness(1.3);
+}
+
+/* 状态图样式优化 */
+[data-theme="dark"] .mermaid .stateDiagram .state {
+  fill: rgba(26, 32, 44, 0.95);
+  stroke: rgba(88, 166, 255, 0.8);
+  filter: brightness(1.2);
+}
+
+[data-theme="dark"] .mermaid .stateDiagram .transition {
+  stroke: rgba(156, 163, 175, 0.9);
+  stroke-width: 2px;
+}
+
+/* 甘特图样式优化 */
+[data-theme="dark"] .mermaid .gantt .grid .tick {
+  stroke: rgba(75, 85, 99, 0.7);
+}
+
+[data-theme="dark"] .mermaid .gantt .taskRect {
+  fill: rgba(59, 130, 246, 0.8);
+  stroke: rgba(59, 130, 246, 1);
+  stroke-width: 2px;
+  filter: brightness(1.1);
+}
+
+[data-theme="dark"] .mermaid .gantt .milestone {
+  fill: rgba(239, 68, 68, 0.8);
+  stroke: rgba(239, 68, 68, 1);
+  stroke-width: 2px;
+  filter: brightness(1.1);
+}
+
+[data-theme="dark"] .mermaid .gantt .todayMarker {
+  stroke: rgba(239, 68, 68, 0.9);
+  stroke-width: 3px;
+}
+
+/* 饼图样式优化 */
+[data-theme="dark"] .mermaid .pie .slice {
+  stroke: rgba(17, 24, 39, 1);
+  stroke-width: 3px;
+  filter: brightness(1.2);
+}
+
+/* 思维导图样式优化 */
+[data-theme="dark"] .mermaid .mindmap .node {
+  fill: rgba(26, 32, 44, 0.95);
+  stroke: rgba(88, 166, 255, 0.8);
+  filter: brightness(1.2);
+}
+
+/* Git 图样式优化 */
+[data-theme="dark"] .mermaid .gitGraph .branch {
+  stroke: rgba(88, 166, 255, 1);
+  stroke-width: 3px;
+  filter: brightness(1.1);
+}
+
+[data-theme="dark"] .mermaid .gitGraph .commit {
+  fill: rgba(26, 32, 44, 0.95);
+  stroke: rgba(88, 166, 255, 0.8);
+  filter: brightness(1.2);
+}
+
+[data-theme="dark"] .mermaid .gitGraph .commitLabel {
+  fill: #f0f6fc !important;
+  font-weight: 600;
+  filter: brightness(1.3);
+}
+
+/* 流程图节点类型特定颜色 */
+[data-theme="dark"] .mermaid .node.flowchart.flowchart-conditional {
+  fill: rgba(234, 88, 12, 0.2);
+  stroke: rgba(234, 88, 12, 0.9);
+}
+
+[data-theme="dark"] .mermaid .node.flowchart.flowchart-inputoutput {
+  fill: rgba(16, 185, 129, 0.2);
+  stroke: rgba(16, 185, 129, 0.9);
+}
+
+[data-theme="dark"] .mermaid .node.flowchart.flowchart-start {
+  fill: rgba(34, 197, 94, 0.2);
+  stroke: rgba(34, 197, 94, 0.9);
+}
+
+[data-theme="dark"] .mermaid .node.flowchart.flowchart-end {
+  fill: rgba(239, 68, 68, 0.2);
+  stroke: rgba(239, 68, 68, 0.9);
+}
+
+/* 增强对比度的特殊样式 */
+[data-theme="dark"] .mermaid .node.highlight {
+  fill: rgba(245, 158, 11, 0.25);
+  stroke: rgba(245, 158, 11, 1);
+  filter: brightness(1.4);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+[data-theme="dark"] .mermaid .edge.highlight {
+  stroke: rgba(245, 158, 11, 0.9);
+  stroke-width: 3px;
+  filter: brightness(1.3);
+}
+
+/* 加载动画优化 */
+[data-theme="dark"] .mermaid-loading {
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .mermaid-loading::after {
+  border-color: rgba(48, 54, 61, 0.8);
+  border-top-color: rgba(88, 166, 255, 0.8);
+}
+
+/* 错误信息样式优化 */
+[data-theme="dark"] .mermaid .error {
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  color: #fecaca;
+}
+
+/* 复制按钮样式增强 */
+[data-theme="dark"] .mermaid-copy-btn {
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .mermaid-copy-btn:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* 按钮图标颜色优化 */
+[data-theme="dark"] .mermaid-copy-btn i {
+  color: #e6edf3;
+}
+
+/* 复制成功状态优化 */
+[data-theme="dark"] .mermaid-copy-btn.copied {
+  background: rgba(34, 197, 94, 0.9) !important;
+  border-color: rgba(34, 197, 94, 0.6) !important;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+/* 淡入动画增强 */
+[data-theme="dark"] .mermaid-fade-in {
+  animation: darkFadeIn 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes darkFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

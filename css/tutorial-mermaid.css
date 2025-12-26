@@ -1,0 +1,108 @@
+/* Tutorial Mermaid Styles */
+/* Mermaid 图表样式 */
+
+.tutorial-step-content .mermaid,
+.tutorial-content .mermaid {
+  margin: 24px 0;
+  padding: 20px;
+  background: #f6f8fa;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  overflow-x: auto;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tutorial-step-content .mermaid svg,
+.tutorial-content .mermaid svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Mermaid 包装器样式 */
+.mermaid-wrapper {
+  position: relative;
+  margin: 24px 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Mermaid 控制按钮容器 */
+.mermaid-controls {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+}
+
+/* Mermaid 控制按钮基础样式 */
+.mermaid-toggle-btn,
+.mermaid-copy-btn {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #24292f;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.mermaid-copy-btn {
+  padding: 6px 10px;
+}
+
+.mermaid-toggle-btn:hover,
+.mermaid-copy-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: #afb8c1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.mermaid-toggle-btn:active,
+.mermaid-copy-btn:active {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Mermaid 源代码显示样式 */
+.mermaid-source {
+  margin: 0;
+  padding: 16px;
+  background: #f6f8fa;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.6;
+  position: relative;
+  font-family: "Consolas", "Monaco", "Courier New", monospace;
+}
+
+.mermaid-source code {
+  font-family: "Consolas", "Monaco", "Courier New", monospace;
+  color: #24292f;
+  background: transparent;
+  border: none;
+  padding: 0;
+  white-space: pre;
+}
+
+/* 复制成功状态样式 */
+.mermaid-copy-success {
+  background: rgba(34, 197, 94, 0.9) !important;
+  color: white !important;
+  border-color: rgba(34, 197, 94, 0.5) !important;
+}
+
+/* 导入夜间模式 Mermaid 样式 */
+@import url('./dark-tutorial-mermaid.css');
+
