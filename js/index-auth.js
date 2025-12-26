@@ -54,12 +54,36 @@
     const isAuthenticated = checkAuthStatus();
     
     if (isAuthenticated) {
-      // 已登录，显示退出确认
-      if (confirm('确定要退出登录吗？')) {
-        if (window.uploadAuth && typeof window.uploadAuth.clearAuth === 'function') {
-          window.uploadAuth.clearAuth();
-          updateAuthIcon();
-          alert('已退出登录');
+      // 已登录，显示退出确认对话框
+      if (window.showLogoutConfirmDialog) {
+        window.showLogoutConfirmDialog((confirmed) => {
+          if (confirmed) {
+            if (window.uploadAuth && typeof window.uploadAuth.clearAuth === 'function') {
+              window.uploadAuth.clearAuth();
+              updateAuthIcon();
+              // 使用更友好的提示方式（可选：可以改为 toast 通知）
+              const statusEl = document.getElementById('status');
+              if (statusEl) {
+                const oldText = statusEl.textContent;
+                statusEl.textContent = '已退出登录';
+                statusEl.style.color = '';
+                setTimeout(() => {
+                  statusEl.textContent = oldText;
+                }, 2000);
+              } else {
+                alert('已退出登录');
+              }
+            }
+          }
+        });
+      } else {
+        // 向后兼容：如果没有对话框模块，使用原始 confirm
+        if (confirm('确定要退出登录吗？')) {
+          if (window.uploadAuth && typeof window.uploadAuth.clearAuth === 'function') {
+            window.uploadAuth.clearAuth();
+            updateAuthIcon();
+            alert('已退出登录');
+          }
         }
       }
     } else {
@@ -68,7 +92,17 @@
         window.uploadAuth.showAuthDialog((authenticated) => {
           if (authenticated) {
             updateAuthIcon();
-            alert('登录成功！');
+            // 使用现代化成功提示对话框
+            if (window.showSuccessDialog) {
+              window.showSuccessDialog({
+                title: '登录成功',
+                message: '您已成功登录，现在可以进行写操作了',
+                autoClose: true,
+                duration: 2000
+              });
+            } else {
+              alert('登录成功！');
+            }
           }
         });
       } else if (window.uploadAuth && typeof window.uploadAuth.requireAuth === 'function') {
@@ -76,7 +110,17 @@
         window.uploadAuth.requireAuth((authenticated) => {
           if (authenticated) {
             updateAuthIcon();
-            alert('登录成功！');
+            // 使用现代化成功提示对话框
+            if (window.showSuccessDialog) {
+              window.showSuccessDialog({
+                title: '登录成功',
+                message: '您已成功登录，现在可以进行写操作了',
+                autoClose: true,
+                duration: 2000
+              });
+            } else {
+              alert('登录成功！');
+            }
           }
         });
       } else {
