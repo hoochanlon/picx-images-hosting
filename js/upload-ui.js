@@ -128,6 +128,11 @@ function renderFiles() {
     fileListEl.appendChild(li);
   });
 
+  // 更新灯箱图片列表（仅图片文件）
+  if (window.uploadLightbox && window.uploadLightbox.updateImageList) {
+    window.uploadLightbox.updateImageList(files);
+  }
+
   // 显示文件
   files.forEach(file => {
     const li = document.createElement('li');
@@ -145,6 +150,11 @@ function renderFiles() {
       </div>
       <div class="file-name">${file.name}</div>
       <div class="file-actions">
+        ${isImage ? `
+        <button class="btn-preview" data-path="${file.path}" data-name="${file.name}" title="预览图片">
+          <i class="fas fa-eye"></i>
+        </button>
+        ` : ''}
         <button class="btn-copy-pages" data-url="${pagesUrl}" title="复制 Pages 链接">
           <i class="fas fa-link"></i>
         </button>
@@ -159,6 +169,19 @@ function renderFiles() {
         </button>
       </div>
     `;
+    
+    // 预览图片（仅图片文件）
+    if (isImage) {
+      const previewBtn = li.querySelector('.btn-preview');
+      if (previewBtn) {
+        previewBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (window.uploadLightbox && window.uploadLightbox.open) {
+            window.uploadLightbox.open(file.path, file.name);
+          }
+        });
+      }
+    }
     
     // 复制 Pages 链接
     li.querySelector('.btn-copy-pages').addEventListener('click', async (e) => {

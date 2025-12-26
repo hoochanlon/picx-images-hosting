@@ -200,42 +200,65 @@ async function ensureDirectoryExists(dirPath, maxRetries = 3) {
     
     for (let createRetry = 0; createRetry < maxRetries; createRetry++) {
       try {
-        await apiRequest({
+        const result = await apiRequest({
           action: 'upload',
           path: gitkeepPath,
           content: btoa(''),
           message: `Create directory: ${currentPath}/`
         });
         
-        // 验证目录是否真正创建成功
-        let verified = false;
-        const verifyWaitTime = state.isLocalhost() ? 2000 : 1500;
-        const maxVerifyRetries = state.isLocalhost() ? 8 : 6;
+        // 如果 API 返回成功，认为创建成功（GitHub API 返回 201 表示创建成功）
+        // 即使验证时返回 404，也可能是 GitHub API 同步延迟，不影响实际创建
+        created = true;
         
-        for (let verifyRetry = 0; verifyRetry < maxVerifyRetries; verifyRetry++) {
-          await new Promise(resolve => setTimeout(resolve, verifyWaitTime * (verifyRetry + 1)));
+        // 可选：快速验证（不阻塞，仅用于日志）
+        // 如果验证失败，不影响创建成功的判断
+        setTimeout(async () => {
           try {
             const verifyRes = await fetch(`${state.API_BASE()}/api/file?path=${encodeURIComponent(gitkeepPath)}`);
-            if (verifyRes.ok) {
-              verified = true;
-              break;
+            if (!verifyRes.ok && verifyRes.status !== 404) {
+              console.warn(`目录 ${currentPath} 创建后验证失败，但可能已成功创建`);
             }
           } catch (e) {
-            // 验证失败，继续重试
+            // 验证失败不影响主流程
           }
-        }
+        }, 1000);
         
-        if (verified) {
+        break;
+      } catch (err) {
+        const errorMsg = err.message || '';
+        const errorLower = errorMsg.toLowerCase();
+        const errorStatus = err.status || 0;
+        
+        // 422 错误通常表示文件已存在（需要 SHA 来更新）
+        // 如果错误提示文件已存在或需要 SHA，认为目录可能已存在
+        if (errorStatus === 422 || 
+            errorLower.includes('already exists') || 
+            errorLower.includes('file exists') ||
+            (errorLower.includes('sha') && (errorLower.includes('wasn\'t supplied') || errorLower.includes('required')))) {
+          // 文件已存在，说明目录已存在，认为创建成功
+          // 可选：验证文件是否真的存在（不阻塞）
+          setTimeout(async () => {
+            try {
+              const checkRes = await fetch(`${state.API_BASE()}/api/file?path=${encodeURIComponent(gitkeepPath)}`);
+              if (!checkRes.ok && checkRes.status !== 404) {
+                console.warn(`目录 ${currentPath} 的 .gitkeep 文件检查异常，但目录可能已存在`);
+              }
+            } catch (e) {
+              // 检查失败不影响主流程
+            }
+          }, 500);
+          
+          // 认为创建成功（目录已存在）
           created = true;
           break;
         }
-      } catch (err) {
+        
         console.error(`创建目录 ${currentPath} 失败 (尝试 ${createRetry + 1}/${maxRetries}):`, err);
         lastError = err;
-        const errorMsg = err.message || '';
         
         // 如果错误是目录不存在，尝试再次创建父目录
-        if (errorMsg.includes('not be found') && i > 0) {
+        if ((errorLower.includes('not be found') || errorLower.includes('not found')) && i > 0) {
           const parentPath = parts.slice(0, i).join('/');
           await ensureDirectoryExists(parentPath, maxRetries);
           // 等待父目录生效
@@ -250,8 +273,23 @@ async function ensureDirectoryExists(dirPath, maxRetries = 3) {
     }
     
     if (!created) {
-      const errorMsg = lastError ? lastError.message : '未知错误';
-      throw new Error(`无法创建目录 ${currentPath} (已重试 ${maxRetries} 次): ${errorMsg}`);
+      // 最后检查：如果文件夹可能已经存在（通过检查文件夹本身）
+      try {
+        const tree = await fetchTree();
+        const allItems = (tree.tree || []).filter(item => item.type === 'tree');
+        const folderExists = allItems.some(item => item.path === currentPath);
+        if (folderExists) {
+          // 文件夹已存在，认为成功
+          created = true;
+        }
+      } catch (e) {
+        // 检查失败，继续抛出错误
+      }
+      
+      if (!created) {
+        const errorMsg = lastError ? lastError.message : '未知错误';
+        throw new Error(`无法创建目录 ${currentPath} (已重试 ${maxRetries} 次): ${errorMsg}`);
+      }
     }
   }
 }

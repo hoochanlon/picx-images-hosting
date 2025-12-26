@@ -56,14 +56,36 @@ async function apiRequest(payload) {
     
     if (!res.ok) {
       let errorMessage = `API 请求失败: HTTP ${res.status}`;
+      let errorData = null;
       try {
-        const errorData = await res.json();
+        errorData = await res.json();
+        // GitHub API 的错误信息可能在 message 字段中
         errorMessage = errorData.message || errorData.error || errorMessage;
+        // 如果是字符串数组，合并它们
+        if (Array.isArray(errorData.errors)) {
+          const errors = errorData.errors.map(e => e.message || e).join('; ');
+          if (errors) errorMessage = errors;
+        }
       } catch (e) {
         const text = await res.text().catch(() => '');
-        if (text) errorMessage = text;
+        if (text) {
+          try {
+            // 尝试解析 JSON
+            const parsed = JSON.parse(text);
+            errorMessage = parsed.message || parsed.error || text;
+          } catch {
+            errorMessage = text;
+          }
+        }
       }
-      throw new Error(errorMessage);
+      
+      // 将错误数据和消息一起抛出，方便调用者判断
+      const error = new Error(errorMessage);
+      if (errorData) {
+        error.data = errorData;
+      }
+      error.status = res.status;
+      throw error;
     }
     
     return res.json();
