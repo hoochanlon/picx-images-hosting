@@ -279,8 +279,8 @@ function isCompressionEnabled() {
   if (savedState !== null) {
     return savedState === 'true';
   }
-  // 默认从配置读取
-  return window.APP_CONFIG && window.APP_CONFIG.ENABLE_IMAGE_COMPRESSION !== false;
+  // 默认从配置读取，如果未设置则返回 false
+  return window.APP_CONFIG?.ENABLE_IMAGE_COMPRESSION === true;
 }
 
 // 检查是否启用时间戳重命名
@@ -289,13 +289,13 @@ function isTimestampRenameEnabled() {
   if (checkbox) {
     return checkbox.checked;
   }
-  // 从 localStorage 读取，如果没有则默认启用
+  // 从 localStorage 读取，如果没有则使用配置的默认值
   const savedState = localStorage.getItem('enableTimestampRename');
   if (savedState !== null) {
     return savedState === 'true';
   }
-  // 默认启用
-  return true;
+  // 默认从配置读取，如果未设置则返回 false
+  return window.APP_CONFIG?.ENABLE_TIMESTAMP_RENAME === true;
 }
 
 // 导出到全局作用域

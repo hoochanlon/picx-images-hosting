@@ -31,7 +31,7 @@
     
     if (isAuthenticated) {
       // 已登录状态
-      authIcon.className = 'fas fa-unlock';
+      authIcon.className = 'fas fa-user-shield';
       authBtn.removeAttribute('title'); // 移除提示文字
       authBtn.setAttribute('aria-label', '已登录（点击退出）');
       // 移除所有内联样式，使用默认样式
@@ -40,7 +40,7 @@
       authBtn.classList.add('auth-authenticated');
     } else {
       // 未登录状态
-      authIcon.className = 'fas fa-lock';
+      authIcon.className = 'fas fa-user-shield';
       authBtn.removeAttribute('title'); // 移除提示文字
       authBtn.setAttribute('aria-label', '登录/授权');
       // 移除所有内联样式，使用默认样式

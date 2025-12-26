@@ -66,6 +66,9 @@
       <div class="collapsible" id="filter-control">
         <input id="filter" type="search" placeholder="输入关键词过滤" />
       </div>
+      <button id="auth-login-btn" class="icon-label" type="button" aria-label="登录/授权">
+        <i class="fas fa-user-shield" id="auth-login-icon"></i>
+      </button>
       <label for="open-upload" class="icon-label">
         <i class="fas fa-cloud-upload-alt"></i>
       </label>
@@ -73,9 +76,6 @@
       <a href="upload.html" class="icon-label">
         <i class="fas fa-tasks"></i>
       </a>
-      <button id="auth-login-btn" class="icon-label" type="button" aria-label="登录/授权">
-        <i class="fas fa-lock" id="auth-login-icon"></i>
-      </button>
       <label for="reload-btn" class="icon-label">
         <i class="fas fa-sync"></i>
       </label>
@@ -83,12 +83,12 @@
       <a href="tutorial.html" class="icon-label">
         <i class="fas fa-book"></i>
       </a>
-      <button class="dark-mode-toggle icon-label">
-        <i class="fas fa-moon"></i>
-      </button>
       <a id="github-link" href="#" target="_blank" rel="noopener noreferrer" class="icon-label">
         <i class="fab fa-github"></i>
       </a>
+      <button class="dark-mode-toggle icon-label">
+        <i class="fas fa-moon"></i>
+      </button>
     </div>
   </header>
 
@@ -168,7 +168,7 @@
             <span>图片压缩</span>
           </label>
           <label class="compress-toggle-label-modal" title="启用后自动使用时间戳重命名文件（格式：yyyyMMddHHmmss）">
-            <input type="checkbox" id="enable-timestamp-rename-checkbox-modal" checked />
+            <input type="checkbox" id="enable-timestamp-rename-checkbox-modal" />
             <i class="fas fa-clock"></i>
             <span>自动重命名</span>
           </label>

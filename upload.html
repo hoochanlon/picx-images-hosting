@@ -39,21 +39,21 @@
       <span id="upload-title" style="cursor: pointer;">上传管理</span>
     </h1>
     <div style="display: flex; align-items: center; gap: 12px;">
+      <button id="auth-login-btn" class="icon-label" type="button" aria-label="登录/授权">
+        <i class="fas fa-user-shield" id="auth-login-icon"></i>
+      </button>
+      <a href="index.html" class="icon-label" aria-label="返回首页">
+        <i class="fas fa-home"></i>
+      </a>
       <a href="tutorial.html" class="icon-label">
         <i class="fas fa-book"></i>
       </a>
       <a id="github-link" href="#" target="_blank" rel="noopener noreferrer" class="icon-label">
         <i class="fab fa-github"></i>
       </a>
-      <button id="auth-login-btn" class="icon-label" type="button" aria-label="登录/授权">
-        <i class="fas fa-lock" id="auth-login-icon"></i>
-      </button>
       <button class="dark-mode-toggle icon-label" aria-label="切换到夜间模式">
         <i class="fas fa-moon"></i>
       </button>
-      <a href="index.html" class="icon-label" aria-label="返回首页">
-        <i class="fas fa-home"></i>
-      </a>
     </div>
   </header>
 
@@ -77,7 +77,7 @@
         <span>图片压缩</span>
       </label>
       <label class="compress-toggle-label">
-        <input type="checkbox" id="enable-timestamp-rename-checkbox" checked />
+        <input type="checkbox" id="enable-timestamp-rename-checkbox" />
         <i class="fas fa-clock"></i>
         <span>自动重命名</span>
       </label>

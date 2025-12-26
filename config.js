@@ -15,5 +15,7 @@ window.APP_CONFIG = {
   PASSWORD: 'admin123',
   // 默认启用图片压缩
   ENABLE_IMAGE_COMPRESSION: true,
+  // 默认启用自动重命名
+  ENABLE_TIMESTAMP_RENAME: false,
 };
 

@@ -163,7 +163,7 @@ function initCompressionToggle() {
   
   // 从 localStorage 读取保存的状态，如果没有则使用配置的默认值
   const savedState = localStorage.getItem('enableImageCompression');
-  const defaultEnabled = window.APP_CONFIG && window.APP_CONFIG.ENABLE_IMAGE_COMPRESSION !== false;
+  const defaultEnabled = window.APP_CONFIG?.ENABLE_IMAGE_COMPRESSION === true;
   
   if (savedState !== null) {
     compressionCheckbox.checked = savedState === 'true';
@@ -193,13 +193,14 @@ function initTimestampRenameToggle() {
   const timestampRenameCheckbox = document.getElementById('enable-timestamp-rename-checkbox');
   if (!timestampRenameCheckbox) return;
   
-  // 从 localStorage 读取保存的状态，如果没有则默认启用
+  // 从 localStorage 读取保存的状态，如果没有则使用配置的默认值
   const savedState = localStorage.getItem('enableTimestampRename');
+  const defaultEnabled = window.APP_CONFIG?.ENABLE_TIMESTAMP_RENAME === true;
   
   if (savedState !== null) {
     timestampRenameCheckbox.checked = savedState === 'true';
   } else {
-    timestampRenameCheckbox.checked = true; // 默认启用
+    timestampRenameCheckbox.checked = defaultEnabled;
   }
   
   // 监听开关变化并保存到 localStorage

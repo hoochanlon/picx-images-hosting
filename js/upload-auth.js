@@ -31,15 +31,13 @@
     
     if (isAuthenticated) {
       // 已登录状态
-      authIcon.className = 'fas fa-unlock';
+      authIcon.className = 'fas fa-user-shield';
       authBtn.setAttribute('aria-label', '已登录（点击退出）');
-      authBtn.setAttribute('title', '已登录（点击退出）');
       authBtn.classList.add('auth-authenticated');
     } else {
       // 未登录状态
-      authIcon.className = 'fas fa-lock';
+      authIcon.className = 'fas fa-user-shield';
       authBtn.setAttribute('aria-label', '登录/授权');
-      authBtn.setAttribute('title', '登录/授权');
       authBtn.classList.remove('auth-authenticated');
     }
   }
