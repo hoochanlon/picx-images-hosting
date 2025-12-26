@@ -2,6 +2,30 @@
 
 (function() {
   'use strict';
+  
+  // 获取 API_BASE（支持上传页面和首页）
+  function getApiBase() {
+    // 优先使用 uploadState（上传页面）
+    if (window.uploadState && typeof window.uploadState.API_BASE === 'function') {
+      return window.uploadState.API_BASE();
+    }
+    // 否则从全局配置获取（首页）
+    const config = window.APP_CONFIG || {};
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const isVercelDev = isLocalhost && (window.location.port === '3000' || window.location.port === '3001');
+    const isGitHubPages = config.GITHUB_PAGES_PATTERN && config.GITHUB_PAGES_PATTERN.test(window.location.hostname);
+    const isCustomDomain = config.CUSTOM_DOMAINS && config.CUSTOM_DOMAINS.includes(window.location.hostname);
+    const VERCEL_API_BASE = config.VERCEL_API_BASE || 'https://picx-images-hosting-brown.vercel.app';
+    
+    if (isLocalhost && !isVercelDev) {
+      return VERCEL_API_BASE;
+    } else if (isGitHubPages || isCustomDomain) {
+      return VERCEL_API_BASE;
+    } else {
+      return window.location.origin;
+    }
+  }
+  
   const state = window.uploadState;
 
 // 检查文件是否为可压缩的图片格式
@@ -48,7 +72,8 @@ async function compressImage(file) {
     const imageData = await fileToBase64(file);
     
     // 调用服务器端压缩 API
-    const compressResponse = await fetch(`${state.API_BASE()}/api/compress`, {
+    const apiBase = getApiBase();
+    const compressResponse = await fetch(`${apiBase}/api/compress`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

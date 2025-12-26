@@ -131,11 +131,54 @@ function getParentPath(path) {
   return parts.join('/');
 }
 
+// 生成时间戳格式的文件名（yyyyMMddHHmmss）
+// 使用静态计数器确保批量上传时文件名唯一
+let timestampCounter = 0;
+let lastTimestamp = '';
+
+function generateTimestampFilename(originalFilename, index = 0) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  
+  // 格式：yyyyMMddHHmmss
+  const timestamp = `${year}${month}${day}${hours}${minutes}${seconds}`;
+  
+  // 如果时间戳相同（同一秒内），使用计数器确保唯一性
+  if (timestamp === lastTimestamp) {
+    timestampCounter++;
+  } else {
+    timestampCounter = 0;
+    lastTimestamp = timestamp;
+  }
+  
+  // 获取原文件扩展名
+  const lastDotIndex = originalFilename.lastIndexOf('.');
+  const extension = lastDotIndex > 0 ? originalFilename.substring(lastDotIndex) : '';
+  
+  // 如果计数器 > 0，添加序号以确保唯一性（格式：-1, -2, ...）
+  const suffix = timestampCounter > 0 ? `-${timestampCounter}` : '';
+  
+  return `${timestamp}${suffix}${extension}`;
+}
+
+// 重置时间戳计数器（可选，用于新上传会话）
+function resetTimestampCounter() {
+  timestampCounter = 0;
+  lastTimestamp = '';
+}
+
 // 导出到全局作用域
 window.toBase64 = toBase64;
 window.apiRequest = apiRequest;
 window.fetchTree = fetchTree;
 window.buildPath = buildPath;
 window.getParentPath = getParentPath;
+window.generateTimestampFilename = generateTimestampFilename;
+window.resetTimestampCounter = resetTimestampCounter;
 
 })();

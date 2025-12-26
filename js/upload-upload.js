@@ -116,13 +116,21 @@ async function uploadFiles(fileList, basePath = '') {
     }
   }
   
+  // 检查是否启用时间戳重命名
+  const timestampRenameEnabled = isTimestampRenameEnabled();
+  
   // 上传所有文件
   for (let i = 0; i < filesToUpload.length; i++) {
     const file = filesToUpload[i];
+    // 根据设置决定是否使用时间戳格式重命名文件
+    const timestampFilename = timestampRenameEnabled ? generateTimestampFilename(file.name) : file.name;
+    
     const progressItem = document.createElement('div');
     progressItem.className = 'progress-item';
+    const displayName = timestampRenameEnabled && timestampFilename !== file.name ? 
+      `${file.name} → ${timestampFilename}` : file.name;
     progressItem.innerHTML = `
-      <div class="file-name">${file.name}</div>
+      <div class="file-name">${displayName}</div>
       <div class="progress-bar">
         <div class="progress-fill" style="width: 0%"></div>
       </div>
@@ -135,7 +143,9 @@ async function uploadFiles(fileList, basePath = '') {
     
     try {
       const content = await toBase64(file);
-      const filePath = buildPath(targetPath, file.name);
+    // 使用时间戳格式重命名文件
+    const timestampFilename = generateTimestampFilename(file.name);
+      const filePath = buildPath(targetPath, timestampFilename);
       
       if (!filePath) {
         throw new Error('文件路径不能为空');
@@ -184,7 +194,7 @@ async function uploadFiles(fileList, basePath = '') {
       // 如果是目录不存在错误，尝试创建目录后重试
       if (errorMsg.includes('not be found')) {
         try {
-          const fileDir = getParentPath(buildPath(targetPath, file.name));
+          const fileDir = getParentPath(filePath);
           if (fileDir) {
             const normalizedFileDir = fileDir.replace(/^\/+|\/+$/g, '');
             if (normalizedFileDir) {
@@ -192,9 +202,9 @@ async function uploadFiles(fileList, basePath = '') {
               // 等待目录生效
               await new Promise(resolve => setTimeout(resolve, state.isLocalhost() ? 3000 : 2000));
               
-              // 重试上传
+              // 重试上传（使用相同的时间戳文件名）
               const retryContent = await toBase64(file);
-              const retryFilePath = buildPath(targetPath, file.name);
+              const retryFilePath = filePath; // 使用相同的时间戳文件名
               
               const retryPayload = {
                 action: 'upload',
@@ -273,10 +283,26 @@ function isCompressionEnabled() {
   return window.APP_CONFIG && window.APP_CONFIG.ENABLE_IMAGE_COMPRESSION !== false;
 }
 
+// 检查是否启用时间戳重命名
+function isTimestampRenameEnabled() {
+  const checkbox = document.getElementById('enable-timestamp-rename-checkbox');
+  if (checkbox) {
+    return checkbox.checked;
+  }
+  // 从 localStorage 读取，如果没有则默认启用
+  const savedState = localStorage.getItem('enableTimestampRename');
+  if (savedState !== null) {
+    return savedState === 'true';
+  }
+  // 默认启用
+  return true;
+}
+
 // 导出到全局作用域
 window.getUploadPath = getUploadPath;
 window.saveUploadPath = saveUploadPath;
 window.uploadFiles = uploadFiles;
 window.isCompressionEnabled = isCompressionEnabled;
+window.isTimestampRenameEnabled = isTimestampRenameEnabled;
 
 })();

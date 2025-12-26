@@ -226,3 +226,34 @@
   transition: width var(--transition-speed) ease;
 }
 
+[data-theme="dark"] .upload-progress-modal {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+}
+
+[data-theme="dark"] .upload-progress-title {
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .progress-item-modal {
+  background: rgba(33, 38, 45, 0.6);
+  border: 1px solid rgba(48, 54, 61, 0.6);
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .file-name-modal {
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .progress-bar-modal {
+  background: rgba(48, 54, 61, 0.8);
+}
+
+[data-theme="dark"] .progress-fill-modal {
+  background: #238636;
+}
+
+[data-theme="dark"] .progress-text-modal {
+  color: #8b949e;
+}
+

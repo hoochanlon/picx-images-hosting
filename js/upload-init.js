@@ -188,6 +188,37 @@ function initCompressionToggle() {
   });
 }
 
+// 初始化时间戳重命名开关
+function initTimestampRenameToggle() {
+  const timestampRenameCheckbox = document.getElementById('enable-timestamp-rename-checkbox');
+  if (!timestampRenameCheckbox) return;
+  
+  // 从 localStorage 读取保存的状态，如果没有则默认启用
+  const savedState = localStorage.getItem('enableTimestampRename');
+  
+  if (savedState !== null) {
+    timestampRenameCheckbox.checked = savedState === 'true';
+  } else {
+    timestampRenameCheckbox.checked = true; // 默认启用
+  }
+  
+  // 监听开关变化并保存到 localStorage
+  timestampRenameCheckbox.addEventListener('change', (e) => {
+    localStorage.setItem('enableTimestampRename', e.target.checked.toString());
+    
+    // 显示提示
+    const status = e.target.checked ? '已启用' : '已禁用';
+    const label = timestampRenameCheckbox.closest('.compress-toggle-label');
+    if (label) {
+      const originalTitle = label.title;
+      label.title = `自动重命名：${status}`;
+      setTimeout(() => {
+        label.title = originalTitle;
+      }, 2000);
+    }
+  });
+}
+
 // 初始化所有功能
 function initUploadPage() {
   // 等待 DOM 加载完成
@@ -200,6 +231,7 @@ function initUploadPage() {
       initModalClose();
       initTitleClick();
       initCompressionToggle();
+      initTimestampRenameToggle();
       
       // 初始化：确保初始面包屑正确设置
       if (window.updateBreadcrumb) window.updateBreadcrumb(state.currentPath());
@@ -214,6 +246,7 @@ function initUploadPage() {
     initModalClose();
     initTitleClick();
     initCompressionToggle();
+    initTimestampRenameToggle();
     
     // 初始化：确保初始面包屑正确设置
     if (window.updateBreadcrumb) window.updateBreadcrumb(state.currentPath());

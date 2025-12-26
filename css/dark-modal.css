@@ -271,6 +271,13 @@
   margin-bottom: 20px;
 }
 
+/* 让包含多个开关的容器在一行显示（夜间模式） */
+[data-theme="dark"] .upload-form-group:has(.compress-toggle-label-modal) {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
 [data-theme="dark"] .upload-form-group label {
   color: #f0f6fc;
   font-weight: 500;
@@ -433,5 +440,30 @@
   border-color: rgba(88, 166, 255, 0.6);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .compress-toggle-label-modal {
+  background: rgba(33, 38, 45, 0.8);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .compress-toggle-label-modal:hover {
+  background: rgba(48, 54, 61, 0.8);
+  border-color: rgba(88, 166, 255, 0.6);
+}
+
+[data-theme="dark"] .compress-toggle-label-modal i {
+  color: #8b949e;
+}
+
+[data-theme="dark"] .compress-toggle-label-modal:has(input:checked) {
+  background: rgba(9, 105, 218, 0.2);
+  border-color: #0969da;
+  color: #58a6ff;
+}
+
+[data-theme="dark"] .compress-toggle-label-modal:has(input:checked) i {
+  color: #58a6ff;
 }
 

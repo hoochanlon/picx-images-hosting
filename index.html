@@ -28,6 +28,7 @@
   <script src="./js/index-render.js"></script>
   <script src="./js/index-filter.js"></script>
   <script src="./js/index-load.js"></script>
+  <script src="./js/upload-compress.js"></script>
   <script src="./js/index-upload.js"></script>
   <script src="./js/index-collapsible.js"></script>
   <script src="./js/index-events.js"></script>
@@ -143,6 +144,10 @@
           </div>
           <div id="upload-file-list" class="upload-file-list" style="display: none;"></div>
         </div>
+        <div id="upload-progress-modal" class="upload-progress-modal" style="display: none;">
+          <div class="upload-progress-title">上传进度</div>
+          <div id="upload-progress-content-modal" class="upload-progress-content"></div>
+        </div>
         <div class="upload-form-group">
           <label for="upload-path">保存到：</label>
           <input id="upload-path" type="text" placeholder="例如 imgs/2025/" />
@@ -157,7 +162,16 @@
           <p class="upload-tip">设置后，下次上传时路径留空将使用此默认路径</p>
         </div>
         <div class="upload-form-group">
-          <p class="upload-tip">文件经 Vercel Serverless 调用 GitHub API，前端不存 token。</p>
+          <label class="compress-toggle-label-modal" title="启用后自动压缩上传的图片">
+            <input type="checkbox" id="enable-compression-checkbox-modal" checked />
+            <i class="fas fa-compress"></i>
+            <span>图片压缩</span>
+          </label>
+          <label class="compress-toggle-label-modal" title="启用后自动使用时间戳重命名文件（格式：yyyyMMddHHmmss）">
+            <input type="checkbox" id="enable-timestamp-rename-checkbox-modal" checked />
+            <i class="fas fa-clock"></i>
+            <span>自动重命名</span>
+          </label>
         </div>
       </div>
       <div class="upload-modal-footer">
