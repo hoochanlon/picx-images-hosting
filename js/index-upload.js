@@ -5,6 +5,29 @@ async function uploadSelectedFiles() {
     alert('请先选择文件');
     return;
   }
+  
+  // 检查认证状态
+  if (window.uploadAuth && typeof window.uploadAuth.isAuthenticated === 'function') {
+    if (!window.uploadAuth.isAuthenticated()) {
+      // 未认证，提示用户登录
+      if (window.uploadAuth.requireAuth) {
+        window.uploadAuth.requireAuth((authenticated) => {
+          if (authenticated) {
+            // 认证成功，重新尝试上传
+            uploadSelectedFiles();
+          } else {
+            setStatus('上传需要认证，请先登录', true);
+          }
+        });
+        return;
+      } else {
+        alert('上传需要认证，请先点击右上角的锁图标登录');
+        setStatus('上传需要认证，请先登录', true);
+        return;
+      }
+    }
+  }
+  
   const folder = uploadPathInput.value;
   try {
     setStatus('上传中...');
@@ -24,7 +47,20 @@ async function uploadSelectedFiles() {
     uploadFileInput.value = '';
   } catch (err) {
     console.error(err);
-    setStatus(err.message || '上传失败', true);
+    const errorMessage = err.message || '上传失败';
+    // 如果是认证错误，提供更友好的提示
+    if (errorMessage.includes('Unauthorized') || errorMessage.includes('Authentication')) {
+      setStatus('上传失败：需要认证，请先登录', true);
+      if (window.uploadAuth && window.uploadAuth.showAuthDialog) {
+        setTimeout(() => {
+          window.uploadAuth.showAuthDialog(() => {
+            setStatus('认证成功，请重新尝试上传', false);
+          });
+        }, 500);
+      }
+    } else {
+      setStatus(errorMessage, true);
+    }
   }
 }
 

@@ -1,5 +1,20 @@
 // API 请求相关
 async function apiRequest(payload) {
+  // 添加认证 token（如果存在）
+  if (window.uploadAuth) {
+    // 优先使用 GitHub token
+    const githubToken = window.uploadAuth.getGitHubToken && window.uploadAuth.getGitHubToken();
+    if (githubToken) {
+      payload.githubToken = githubToken;
+    } else {
+      // 如果没有 GitHub token，使用密码认证 token
+      const authToken = window.uploadAuth.getAuthToken && window.uploadAuth.getAuthToken();
+      if (authToken) {
+        payload.authToken = authToken;
+      }
+    }
+  }
+  
   const res = await fetch(API_ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
