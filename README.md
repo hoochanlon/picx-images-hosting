@@ -98,10 +98,61 @@ git checkout master
 
 ## 本地开发
 
-如果需要本地开发，复制 `env.example` 为 `.env.local` 并填写相关配置：
+### 1. 安装依赖
+
+使用 pnpm 安装 Vercel CLI：
+
+```bash
+pnpm add -D vercel
+```
+
+或者全局安装：
+
+```bash
+pnpm add -g vercel
+```
+
+### 2. 配置环境变量
+
+复制 `env.example` 为 `.env.local` 并填写相关配置：
 
 ```bash
 cp env.example .env.local
 ```
+
+编辑 `.env.local` 文件，填入以下配置：
+
+- `GH_TOKEN`：GitHub Personal Access Token（需要 repo 权限）
+- `API_BASE`：你的 Vercel 部署地址（本地开发时可以使用 `http://localhost:3000`）
+- `VERCEL_OIDC_TOKEN`：Vercel OIDC Token（可选，用于 Vercel 部署）
+
+### 3. 启动本地开发服务器
+
+使用 Vercel CLI 启动本地开发环境：
+
+```bash
+# 如果全局安装了 vercel
+vercel dev
+
+# 如果使用项目依赖
+pnpm vercel dev
+# 或
+npx vercel dev
+```
+
+首次运行时会提示：
+- **Set up and develop**：选择 `Y`
+- **Which scope**：选择你的 Vercel 账号
+- **Link to existing project**：选择 `Y`（如果已有项目）或 `N`（创建新项目）
+- **What's your project's name**：输入项目名称
+
+启动成功后，访问 `http://localhost:3000` 即可看到本地运行的应用。
+
+### 4. 本地开发注意事项
+
+- 本地开发时，`config.js` 中的 `VERCEL_API_BASE` 应设置为 `http://localhost:3000`
+- `api-config.json` 中的 `allowedOrigins` 需要包含 `http://localhost:3000`
+- GitHub OAuth 回调 URL 需要包含本地地址（开发环境）
+- 环境变量优先从 `.env.local` 读取，如果没有则从 Vercel 项目配置读取
 
 
