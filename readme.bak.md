@@ -11,6 +11,12 @@
 > * 国内GitHub的链接很慢，所以上传的照片需要用到[jsdelivr cdn](https://www.jsdelivr.com)、[statically.io](https://statically.io/)、[webcache](https://www.webcache.cn)保证加载速度。
 > * 其他免费相关托管方案：[ling-drag0n/CloudPaste](https://github.com/ling-drag0n/CloudPaste)、[MarSeventh/CloudFlare-ImgBed](https://github.com/MarSeventh/CloudFlare-ImgBed)、兰空图床（需服务器）等
 
+有关图床的详细信息，请参考：
+
+* [几乎不受审查的图床标记](https://hoochanlon.github.io/posts/20250821144721)
+* [壁纸资源及图床整合笔记](https://hoochanlon.github.io/posts/20250821071908)
+
+
 ## 快速使用
 
 * https://picx.xpoet.cn/#/upload
@@ -53,38 +59,43 @@
 遵循以上要点，可以确保环境变量配置正确且安全。
 
 
-## 部署
+## 配置
 
 ### 1. Git 稀疏检出
 
-由于是自用图床，图片过多存储空间占用过大在所难免，所以需要排除图片目录，进行相关克隆。
+由于是自用图床，图片过多存储空间占用过大在所难免，所以需要排除图片目录，进行稀疏检出的克隆模式。
 
 ```bash
-# 创建空仓库
-git clone --no-checkout https://github.com/YOUR-USERNAME/picx-images-hosting.git
+# 1. 克隆仓库元数据，不下载文件内容
+git clone --filter=blob:none --no-checkout https://github.com/hoochanlon/picx-images-hosting.git
+
+# 2. 进入仓库目录
 cd picx-images-hosting
 
-# 启用稀疏检出
-git sparse-checkout init --cone
+# 3. 设置稀疏检出规则：包含所有文件，排除imgs目录
+git sparse-checkout set --no-cone '/*' '!/imgs/*'
 
-# 只克隆必要的目录和文件（排除 imgs 目录）
-git sparse-checkout set api css index.html upload.html config.js api-config.json README.md .gitignore package.json
-
-# 检出文件
-git checkout
+# 4. 检出主分支
+git checkout master
 ```
 
+### 2. 设置 config.js
 
-### 2. 密码 / GitHub OAuth 认证 （二选一）
+
+### 3. 设置 api-config.json
 
 
-#### 配置密码
+## 部署
+
+### 1. 设定密码 / 设定 GitHub OAuth 认证 （二选一）
+
+#### 1.1 配置密码
 
 配置密码在 vercel 设置环境变量 PASSWORD 填入密码值即可。
 
-#### 2.2 GitHub OAUTH 认证（创建 GitHub OAuth App）
+#### 1.2 GitHub OAUTH 认证（创建 GitHub OAuth App）
 
-> [!warning] 重要
+> [!WARNING]
 > - **Client secret** 只显示一次，请立即保存
 > - 如果丢失，需要重新生成
 > - 回调 URL 必须完全匹配，包括协议（https）和路径
@@ -93,23 +104,22 @@ git checkout
 2. 点击 **New OAuth App**
 3. 填写以下信息：
 
-    | 字段                          | 值                                                                 | 说明                        |
-    |-------------------------------|--------------------------------------------------------------------|-----------------------------|
-    | **Application name**          | `picx-images-hosting`                                              | 应用名称（可自定义）        |
-    | **Homepage URL**              | `https://picx-images-hosting-brown.vercel.app`                     | 你的 Vercel 部署地址        |
-    | **Authorization callback URL** | `https://picx-images-hosting-brown.vercel.app/api/github-oauth?action=callback` | 回调地址（**重要！**）      |
+    | 字段 | 示例值 | 说明 |
+    |------|--------|------|
+    | **Application name** | `picx-images-hosting` | 应用名称（可自定义） |
+    | **Homepage URL** | `https://picx-images...` | 你的 Vercel 部署地址 |
+    | **Callback URL** | `https://.../callback` | OAuth 回调地址 |
+
+    > **完整 URL：**
+    > - 主页地址：`https://picx-images-hosting-brown.vercel.app`
+    > - 回调地址：`https://picx-images-hosting-brown.vercel.app/api/github-oauth?action=callback`
    
-
-
-
 
 4. 点击 **Register application**
 5. **记录生成的 Client ID**（例如：`Iv1.8a61f9b3a7aba766`）
 6. 点击 **Generate a new client secret**，**记录 Client secret**（只显示一次，请妥善保存）
 
-
-### 3. vercel 环境变量配置
-
+### 2. vercel 环境变量配置
 
 根据项目需求，需要在 Vercel 中配置以下环境变量：
 
@@ -119,12 +129,5 @@ git checkout
 | `GITHUB_OAUTH_CLIENT_ID` | GitHub OAuth App 的 Client ID | *推荐* | `0v231iA5D` |
 | `GITHUB_OAUTH_CLIENT_SECRET` | GitHub OAuth App 的 Client Secret | *推荐* | `6d48b48...` |
 | `GITHUB_OAUTH_REDIRECT_URI` | OAuth 回调地址 | 可选 | `https://.../callback` |
-| `API_BASE` | API 基础地址 | 可选 | `https://picx-images...` |
+| `API_BASE` | API 基础地址（vercel 部署地址） | 可选 | `https://picx-images...` |
 | `PASSWORD` | 密码（备用认证） | 可选 | `Pass@w0rd` |
-
-## 网络图床
-
-有关图床的详细信息，请参考：
-
-* [几乎不受审查的图床标记](https://hoochanlon.github.io/posts/20250821144721)
-* [壁纸资源及图床整合笔记](https://hoochanlon.github.io/posts/20250821071908)
