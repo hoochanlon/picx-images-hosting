@@ -49,7 +49,7 @@ git checkout master
 | `GITHUB_OAUTH_CLIENT_SECRET` | GitHub OAuth Client Secret | ⚠️ 推荐 |
 | `PASSWORD` | 操作密码（备用认证） | ⚠️ 二选一 |
 
-> [!warning] 重要
+> [!important]
 > 环境变量配置后**必须重新部署**才能生效！
 
 ### 4. GitHub OAuth 配置（推荐）
