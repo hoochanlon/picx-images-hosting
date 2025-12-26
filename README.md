@@ -93,11 +93,15 @@ git checkout
 2. 点击 **New OAuth App**
 3. 填写以下信息：
 
-   | 字段 | 示例值 | 说明 |
-   |------|-----|------|
-   | **Application name** | picx-images-hosting | 应用名称（可自定义） |
-   | **Homepage URL** | `https://picx-images-hosting-brown.vercel.app` | 你的 Vercel 部署地址 |
-   | **Authorization callback URL** | `https://picx-images-hosting-brown.vercel.app/api/github-oauth?action=callback` | 回调地址 |
+  | 字段 | 示例值 | 说明 |
+  |------|--------|------|
+  | **Application name** | `picx-images-hosting` | 应用名称（可自定义） |
+  | **Homepage URL** | `https://picx-images...` | 你的 Vercel 部署地址 |
+  | **Callback URL** | `https://.../callback` | OAuth 回调地址 |
+
+  > **完整 URL：**
+  > - 主页地址：`https://picx-images-hosting-brown.vercel.app`
+  > - 回调地址：`https://picx-images-hosting-brown.vercel.app/api/github-oauth?action=callback`
    
 
 
