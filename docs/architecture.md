@@ -59,6 +59,12 @@ sequenceDiagram
     end
     
     Frontend->>Frontend: 文件转 Base64
+    alt 启用图片压缩
+        Frontend->>API: 请求压缩图片
+        API->>API: 调用 TinyJPG API
+        API->>Frontend: 返回压缩后的图片
+        Frontend->>Frontend: 使用压缩后的文件
+    end
     Frontend->>Frontend: 检查目录
     
     loop 目录创建重试
@@ -203,4 +209,11 @@ flowchart TB
 - **重试机制**: 自动重试失败的请求
 - **错误捕获**: 使用 `try/catch` 和 `Promise.catch`
 - **用户反馈**: 显示错误信息和重试提示
+
+### 6. 图片压缩功能
+- **压缩服务**: 使用 TinyJPG/TinyPNG API 进行图片压缩
+- **安全代理**: 通过服务器端 API (`/api/compress`) 代理请求，保护 API Key
+- **格式支持**: JPEG、PNG、WebP、AVIF
+- **降级处理**: 压缩失败时自动使用原文件，不影响上传流程
+- **进度反馈**: 显示压缩进度和节省的空间大小
 
