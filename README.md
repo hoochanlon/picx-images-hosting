@@ -15,3 +15,5 @@
 ## 使用方式
 
 详情见部署教程：https://hoochanlon.github.io/picx-images-hosting/tutorial.html
+
+![](https://cdn.jsdelivr.net/gh/hoochanlon/picx-images-hosting@refs/heads/master/example/PixPin_2025-12-27_00-29-26.png)
