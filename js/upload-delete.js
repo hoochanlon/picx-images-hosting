@@ -141,42 +141,69 @@ async function deleteItem(type, path) {
     return;
   }
   
-  if (!confirm(`确定要删除${type === 'folder' ? '文件夹' : '文件'} "${path}" 吗？${type === 'folder' ? '\n\n注意：将删除文件夹及其所有内容！' : ''}`)) {
-    return;
+  // 执行删除操作的函数
+  async function performDelete() {
+    try {
+      if (type === 'file') {
+        // 获取文件信息
+        const fileRes = await fetch(`${state.API_BASE()}/api/file?path=${encodeURIComponent(path)}`);
+        if (!fileRes.ok) {
+          const errorData = await fileRes.json().catch(() => ({}));
+          throw new Error(errorData.message || `获取文件信息失败: HTTP ${fileRes.status}`);
+        }
+        
+        const fileData = await fileRes.json();
+        if (!fileData.sha) {
+          throw new Error('无法获取文件 SHA，文件可能不存在');
+        }
+        
+        // 执行删除
+        await apiRequest({
+          action: 'delete',
+          path: path,
+          sha: fileData.sha,
+          message: `Delete: ${path}`
+        });
+      } else {
+        // 删除文件夹：需要删除文件夹下的所有文件和子文件夹
+        await deleteFolder(path);
+      }
+      
+      if (window.loadFiles) window.loadFiles();
+    } catch (err) {
+      console.error('删除失败:', err);
+      const errorMessage = err.message || '删除失败，请检查网络连接或稍后重试';
+      alert('删除失败：' + errorMessage);
+    }
   }
   
-  try {
-    if (type === 'file') {
-      // 获取文件信息
-      const fileRes = await fetch(`${state.API_BASE()}/api/file?path=${encodeURIComponent(path)}`);
-      if (!fileRes.ok) {
-        const errorData = await fileRes.json().catch(() => ({}));
-        throw new Error(errorData.message || `获取文件信息失败: HTTP ${fileRes.status}`);
-      }
-      
-      const fileData = await fileRes.json();
-      if (!fileData.sha) {
-        throw new Error('无法获取文件 SHA，文件可能不存在');
-      }
-      
-      // 执行删除
-      await apiRequest({
-        action: 'delete',
-        path: path,
-        sha: fileData.sha,
-        message: `Delete: ${path}`
+  // 使用现代化对话框
+  await new Promise(async (resolve) => {
+    if (window.showDeleteConfirmDialog) {
+      window.showDeleteConfirmDialog({
+        filePath: path,
+        fileName: path.split('/').pop(),
+        type: type,
+        callback: async (confirmed) => {
+          if (!confirmed) {
+            resolve();
+            return;
+          }
+          // 继续执行删除操作
+          await performDelete();
+          resolve();
+        }
       });
     } else {
-      // 删除文件夹：需要删除文件夹下的所有文件和子文件夹
-      await deleteFolder(path);
+      // 向后兼容：如果没有对话框模块，使用原始 confirm
+      if (!confirm(`确定要删除${type === 'folder' ? '文件夹' : '文件'} "${path}" 吗？${type === 'folder' ? '\n\n注意：将删除文件夹及其所有内容！' : ''}`)) {
+        resolve();
+        return;
+      }
+      await performDelete();
+      resolve();
     }
-    
-    if (window.loadFiles) window.loadFiles();
-  } catch (err) {
-    console.error('删除失败:', err);
-    const errorMessage = err.message || '删除失败，请检查网络连接或稍后重试';
-    alert('删除失败：' + errorMessage);
-  }
+  });
 }
 
 // 导出到全局作用域

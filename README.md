@@ -104,6 +104,4 @@ git checkout master
 cp env.example .env.local
 ```
 
-详细配置说明请参考 `env.example` 文件中的注释。
-
 

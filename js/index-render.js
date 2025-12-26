@@ -41,16 +41,50 @@ function buildCard(item) {
 
   delBtn.addEventListener('click', async (e) => {
     e.stopPropagation();
-    const ok = confirm(`确定删除文件：${item.path} 吗？此操作会提交到仓库。`);
-    if (!ok) return;
-    try {
-      setStatus('删除中...');
-      await deleteFile(item.path);
-      await loadImages(false);
-      setStatus('删除完成');
-    } catch (err) {
-      console.error(err);
-      setStatus(err.message || '删除失败', true);
+    
+    // 检查认证状态，如果未认证则弹出登录窗口
+    if (window.uploadAuth && typeof window.uploadAuth.requireAuth === 'function') {
+      window.uploadAuth.requireAuth(async (authenticated) => {
+        if (!authenticated) {
+          // 用户取消登录或登录失败
+          return;
+        }
+        
+        // 认证成功，更新认证图标状态
+        if (typeof window.updateAuthIcon === 'function') {
+          window.updateAuthIcon();
+        }
+        
+        // 已认证，显示删除确认对话框
+        showDeleteConfirmDialog(item.path, item.name, async (confirmed) => {
+          if (!confirmed) return;
+          
+          try {
+            setStatus('删除中...');
+            await deleteFile(item.path);
+            await loadImages(false);
+            setStatus('删除完成');
+          } catch (err) {
+            console.error(err);
+            setStatus(err.message || '删除失败', true);
+          }
+        });
+      });
+    } else {
+      // 如果没有认证模块，直接显示删除确认对话框（向后兼容）
+      showDeleteConfirmDialog(item.path, item.name, async (confirmed) => {
+        if (!confirmed) return;
+        
+        try {
+          setStatus('删除中...');
+          await deleteFile(item.path);
+          await loadImages(false);
+          setStatus('删除完成');
+        } catch (err) {
+          console.error(err);
+          setStatus(err.message || '删除失败', true);
+        }
+      });
     }
   });
 

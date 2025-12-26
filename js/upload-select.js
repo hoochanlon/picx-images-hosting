@@ -92,28 +92,9 @@ async function batchDelete() {
     return;
   }
   
-  const itemTypes = {
-    file: '文件',
-    folder: '文件夹'
-  };
-  
-  const fileCount = selectedItems.filter(item => item.type === 'file').length;
-  const folderCount = selectedItems.filter(item => item.type === 'folder').length;
-  
-  let confirmMessage = `确定要删除选中的 ${selectedItems.length} 项吗？\n\n`;
-  if (fileCount > 0) {
-    confirmMessage += `文件: ${fileCount} 个\n`;
-  }
-  if (folderCount > 0) {
-    confirmMessage += `文件夹: ${folderCount} 个\n`;
-    confirmMessage += `\n注意：删除文件夹将同时删除其所有内容！`;
-  }
-  
-  if (!confirm(confirmMessage)) {
-    return;
-  }
-  
-  const batchDeleteBtn = document.getElementById('batch-delete-btn');
+  // 执行批量删除操作的函数
+  async function performBatchDelete() {
+    const batchDeleteBtn = document.getElementById('batch-delete-btn');
   if (batchDeleteBtn) {
     batchDeleteBtn.disabled = true;
     batchDeleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 删除中...';
@@ -185,6 +166,45 @@ async function batchDelete() {
   
   // 删除完成后退出复选模式
   exitSelectMode();
+  }
+  
+  // 使用现代化批量删除对话框
+  await new Promise(async (resolve) => {
+    if (window.showBatchDeleteConfirmDialog) {
+      window.showBatchDeleteConfirmDialog({
+        items: selectedItems,
+        callback: async (confirmed) => {
+          if (!confirmed) {
+            resolve();
+            return;
+          }
+          // 继续执行批量删除操作
+          await performBatchDelete();
+          resolve();
+        }
+      });
+    } else {
+      // 向后兼容：如果没有对话框模块，使用原始 confirm
+      const fileCount = selectedItems.filter(item => item.type === 'file').length;
+      const folderCount = selectedItems.filter(item => item.type === 'folder').length;
+      
+      let confirmMessage = `确定要删除选中的 ${selectedItems.length} 项吗？\n\n`;
+      if (fileCount > 0) {
+        confirmMessage += `文件: ${fileCount} 个\n`;
+      }
+      if (folderCount > 0) {
+        confirmMessage += `文件夹: ${folderCount} 个\n`;
+        confirmMessage += `\n注意：删除文件夹将同时删除其所有内容！`;
+      }
+      
+      if (!confirm(confirmMessage)) {
+        resolve();
+        return;
+      }
+      await performBatchDelete();
+      resolve();
+    }
+  });
 }
 
 // 切换复选模式
