@@ -6,6 +6,36 @@
 [data-theme="dark"] .controls button.icon-label {
   color: #8b949e;
   transform: none !important;
+  outline: none;
+  border: none;
+  box-shadow: none;
+  position: relative;
+  z-index: 0;
+}
+
+[data-theme="dark"] .controls button.icon-label {
+  outline: none;
+  position: relative;
+  z-index: 0;
+}
+
+[data-theme="dark"] .controls button.icon-label:hover {
+  outline: none;
+  box-shadow: none;
+}
+
+[data-theme="dark"] .controls button.icon-label:focus {
+  outline: none;
+  background: rgba(48, 54, 61, 0.5);
+  color: #e6edf3;
+  z-index: 0;
+}
+
+[data-theme="dark"] .controls button.icon-label:focus-visible {
+  outline: 2px solid #58a6ff;
+  outline-offset: 2px;
+  border-radius: 6px;
+  z-index: 0;
 }
 
 [data-theme="dark"] .controls label.icon-label:hover,
@@ -14,6 +44,8 @@
   background: rgba(48, 54, 61, 0.5);
   color: #e6edf3;
   transform: none !important;
+  outline: none;
+  box-shadow: none;
 }
 
 /* 确保夜间模式下图标本身不会放大 */
