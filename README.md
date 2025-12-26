@@ -93,11 +93,15 @@ git checkout
 2. 点击 **New OAuth App**
 3. 填写以下信息：
 
-   | 字段 | 值 | 说明 |
-   |------|-----|------|
-   | **Application name** | picx-images-hosting | 应用名称（可自定义） |
-   | **Homepage URL** | `https://picx-images-hosting-brown.vercel.app` | 你的 Vercel 部署地址 |
-   | **Authorization callback URL** | `https://picx-images-hosting-brown.vercel.app/api/github-oauth?action=callback` | 回调地址（重要！） |
+    | 字段                          | 值                                                                 | 说明                        |
+    |-------------------------------|--------------------------------------------------------------------|-----------------------------|
+    | **Application name**          | `picx-images-hosting`                                              | 应用名称（可自定义）        |
+    | **Homepage URL**              | `https://picx-images-hosting-brown.vercel.app`                     | 你的 Vercel 部署地址        |
+    | **Authorization callback URL** | `https://picx-images-hosting-brown.vercel.app/api/github-oauth?action=callback` | 回调地址（**重要！**）      |
+   
+
+
+
 
 4. 点击 **Register application**
 5. **记录生成的 Client ID**（例如：`Iv1.8a61f9b3a7aba766`）
@@ -109,13 +113,13 @@ git checkout
 
 根据项目需求，需要在 Vercel 中配置以下环境变量：
 
-| 变量名 | 说明 | 必要性 | 示例值 |
-|--------|------|---------|--------|
-| `GH_TOKEN` | GitHub Personal Access Token | 必需 | `ghp_xxx...` |
-| `GITHUB_OAUTH_CLIENT_ID` | GitHub OAuth App 的 Client ID | 推荐 | `0v231iA5D` |
-| `GITHUB_OAUTH_CLIENT_SECRET` | GitHub OAuth App 的 Client Secret | 推荐 | `6d48b48...` |
-| `GITHUB_OAUTH_REDIRECT_URI` | OAuth 回调地址 | 可选 | `https://picx-images-hosting-brown.vercel.app/api/github-oauth?action=callback` |
-| `API_BASE` | API 基础地址 | 可选 | `https://picx-images-hosting-brown.vercel.app` |
+| 变量名 | 说明 | 必要 | 示例值 |
+|--------|------|:----:|--------|
+| `GH_TOKEN` | GitHub Personal Access Token | **必需** | `ghp_xxx...` |
+| `GITHUB_OAUTH_CLIENT_ID` | GitHub OAuth App 的 Client ID | *推荐* | `0v231iA5D` |
+| `GITHUB_OAUTH_CLIENT_SECRET` | GitHub OAuth App 的 Client Secret | *推荐* | `6d48b48...` |
+| `GITHUB_OAUTH_REDIRECT_URI` | OAuth 回调地址 | 可选 | `https://.../callback` |
+| `API_BASE` | API 基础地址 | 可选 | `https://picx-images...` |
 | `PASSWORD` | 密码（备用认证） | 可选 | `Pass@w0rd` |
 
 ## 网络图床
