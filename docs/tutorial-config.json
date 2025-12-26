@@ -1,32 +1,39 @@
 {
   "steps": [
     {
-      "file": "docs/step-1-create-repo.md",
-      "title": "创建一个 GitHub 仓库",
-      "shortTitle": "创建仓库",
-      "icon": "fa-cube",
+      "file": "docs/setup.md",
+      "title": "快速开始",
+      "shortTitle": "快速开始",
+      "icon": "fa-rocket",
       "order": 1
     },
     {
-      "file": "docs/step-2-get-token.md",
-      "title": "获取 GitHub Personal Access Token",
-      "shortTitle": "获取 Token",
-      "icon": "fa-key",
+      "file": "docs/deployment.md",
+      "title": "部署指南",
+      "shortTitle": "部署",
+      "icon": "fa-cloud",
       "order": 2
     },
     {
-      "file": "docs/step-3-config-vercel.md",
-      "title": "配置 Vercel 环境变量",
-      "shortTitle": "配置 Vercel",
-      "icon": "fa-cog",
+      "file": "docs/authentication.md",
+      "title": "认证配置",
+      "shortTitle": "认证",
+      "icon": "fa-lock",
       "order": 3
     },
     {
-      "file": "docs/step-4-start-using.md",
-      "title": "开始使用",
-      "shortTitle": "开始使用",
-      "icon": "fa-rocket",
+      "file": "docs/local-development.md",
+      "title": "本地开发",
+      "shortTitle": "本地开发",
+      "icon": "fa-code",
       "order": 4
+    },
+    {
+      "file": "docs/troubleshooting.md",
+      "title": "常见问题",
+      "shortTitle": "问题排查",
+      "icon": "fa-question-circle",
+      "order": 5
     }
   ]
 }

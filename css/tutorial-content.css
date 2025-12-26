@@ -132,6 +132,7 @@
   padding: 16px;
   margin: 20px 0;
   overflow-x: auto;
+  position: relative;
 }
 
 .tutorial-step-content pre code {
@@ -183,30 +184,45 @@
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
   overflow-x: auto;
+  position: relative;
 }
 
 .tutorial-code-block code {
   color: #24292f;
 }
 
+/* 代码块复制按钮 */
+.tutorial-code-block .code-copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 10px;
+  border: 1px solid #d0d7de;
+  background: #fff;
+  color: #1f2328;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tutorial-code-block .code-copy-btn:hover {
+  background: #f3f4f6;
+  border-color: #afb8c1;
+}
+
 .tutorial-list {
-  list-style: none;
-  padding: 0;
   margin: 20px 0;
+  padding-left: 24px;
 }
 
 .tutorial-list li {
-  padding: 8px 0;
-  padding-left: 24px;
-  position: relative;
-}
-
-.tutorial-list li:before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  color: #1a7f37;
-  font-weight: bold;
+  padding: 4px 0;
+  line-height: 1.6;
 }
 
 .tutorial-image-placeholder {

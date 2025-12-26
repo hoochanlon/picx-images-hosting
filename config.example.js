@@ -45,7 +45,7 @@ window.APP_CONFIG = {
   // - GITHUB_OAUTH_CLIENT_ID（与这里相同）
   // - GITHUB_OAUTH_CLIENT_SECRET（从 GitHub OAuth App 获取）
   // 
-  // 详细配置指南：docs/github-oauth-setup.md
+  // 详细配置指南：docs/authentication.md
   GITHUB_OAUTH_CLIENT_ID: 'Ov23liA5DyCFqvR93Rae',
   
   // 操作密码（用于上传和删除等写操作，备用方案，如果未配置 GitHub OAuth 则使用此密码）

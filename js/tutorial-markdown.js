@@ -261,6 +261,36 @@ async function loadMarkdownContent(stepIndex) {
       const codeBlocks = contentDiv.querySelectorAll('pre');
       codeBlocks.forEach(pre => {
         pre.classList.add('tutorial-code-block');
+        const codeEl = pre.querySelector('code');
+
+        // 代码高亮
+        if (codeEl && typeof hljs !== 'undefined') {
+          hljs.highlightElement(codeEl);
+        }
+
+        // 复制按钮
+        if (codeEl && !pre.querySelector('.code-copy-btn')) {
+          const copyBtn = document.createElement('button');
+          copyBtn.className = 'code-copy-btn';
+          copyBtn.type = 'button';
+          copyBtn.innerHTML = '<i class="fas fa-copy"></i> 复制';
+          copyBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            try {
+              await navigator.clipboard.writeText(codeEl.innerText);
+              copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+              setTimeout(() => {
+                copyBtn.innerHTML = '<i class="fas fa-copy"></i> 复制';
+              }, 1500);
+            } catch (err) {
+              copyBtn.innerHTML = '<i class="fas fa-times"></i> 失败';
+              setTimeout(() => {
+                copyBtn.innerHTML = '<i class="fas fa-copy"></i> 复制';
+              }, 1500);
+            }
+          });
+          pre.appendChild(copyBtn);
+        }
       });
 
       const lists = contentDiv.querySelectorAll('ul, ol');

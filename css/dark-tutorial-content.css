@@ -57,6 +57,7 @@
   overflow-x: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   margin: 16px 0;
+  position: relative;
 }
 
 [data-theme="dark"] .tutorial-content pre code {
@@ -64,6 +65,37 @@
   border: none;
   padding: 0;
   border-radius: 0;
+}
+
+/* 代码块样式（与内容共用） */
+[data-theme="dark"] .tutorial-code-block {
+  background: rgba(13, 17, 23, 0.95);
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  color: #f0f6fc;
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  margin: 16px 0;
+  position: relative;
+}
+
+[data-theme="dark"] .tutorial-code-block code {
+  background: transparent;
+  color: #f0f6fc;
+}
+
+/* 夜间模式复制按钮 */
+[data-theme="dark"] .tutorial-code-block .code-copy-btn {
+  border: 1px solid rgba(48, 54, 61, 0.8);
+  background: rgba(13, 17, 23, 0.95);
+  color: #f0f6fc;
+}
+
+[data-theme="dark"] .tutorial-code-block .code-copy-btn:hover {
+  background: rgba(33, 38, 45, 0.9);
+  border-color: rgba(88, 166, 255, 0.6);
+  color: #f0f6fc;
 }
 
 [data-theme="dark"] .tutorial-content blockquote {
