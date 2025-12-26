@@ -113,14 +113,14 @@ git checkout
 
 根据项目需求，需要在 Vercel 中配置以下环境变量：
 
-| 变量名 | 说明 | 必要 | 示例值 |
-|--------|------|:----:|--------|
-| `GH_TOKEN` | GitHub Personal Access Token | **必需** | `ghp_xxx...` |
-| `GITHUB_OAUTH_CLIENT_ID` | GitHub OAuth App 的 Client ID | *推荐* | `0v231iA5D` |
-| `GITHUB_OAUTH_CLIENT_SECRET` | GitHub OAuth App 的 Client Secret | *推荐* | `6d48b48...` |
-| `GITHUB_OAUTH_REDIRECT_URI` | OAuth 回调地址 | 可选 | `https://.../callback` |
-| `API_BASE` | API 基础地址 | 可选 | `https://picx-images...` |
-| `PASSWORD` | 密码（备用认证） | 可选 | `Pass@w0rd` |
+| Environment Variable | Description | Requirement | Example Value |
+|----------------------|-------------|:-----------:|---------------|
+| `GH_TOKEN` | GitHub Personal Access Token | **Required** | `ghp_xxx...` |
+| `GITHUB_OAUTH_CLIENT_ID` | GitHub OAuth App Client ID | Recommended | `0v231iA5D` |
+| `GITHUB_OAUTH_CLIENT_SECRET` | GitHub OAuth App Client Secret | Recommended | `6d48b48...` |
+| `GITHUB_OAUTH_REDIRECT_URI` | OAuth Callback URL | Optional | `https://.../callback` |
+| `API_BASE` | API Base URL | Optional | `https://picx-images...` |
+| `PASSWORD` | Password for fallback authentication | Optional | `Pass@w0rd` |
 
 ## 网络图床
 
