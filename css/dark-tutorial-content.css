@@ -473,3 +473,29 @@
   height: auto;
 }
 
+/* Mermaid 控制按钮夜间模式样式 */
+[data-theme="dark"] .mermaid-toggle-btn,
+[data-theme="dark"] .mermaid-copy-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #e6edf3;
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .mermaid-toggle-btn:hover,
+[data-theme="dark"] .mermaid-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+[data-theme="dark"] .mermaid-source {
+  background: rgba(22, 27, 34, 0.8);
+  border: 1px solid rgba(48, 54, 61, 0.5);
+}
+
+[data-theme="dark"] .mermaid-source code {
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .mermaid-copy-success {
+  background: rgba(34, 197, 94, 0.6) !important;
+}
+
