@@ -18,5 +18,11 @@
 
 ![](https://cdn.jsdelivr.net/gh/hoochanlon/picx-images-hosting@refs/heads/master/example/PixPin_2025-12-27_00-29-26.png)
 
-## 高级自定义
+## 高级玩法
 
+> [!note]
+> 可基于该项目进行二次开发，以支持七牛云、B2、R2 等兼容 S3 的对象存储。以及通过 [CF-Proxy-B2](https://github.com/hoochanlon/CF-Proxy-B2) 来实现 100% 免流的目的。
+
+picx-images-hosting 网页版图床是图片资产的管理后台，而 PicGo/PicList 图床扩展软件是写作时的快捷生产工具。它们共享一个GitHub数据仓库，既能享受批量管理的便利，也能拥有写作时一键插图的畅快。
+
+![](https://cdn.jsdelivr.net/gh/hoochanlon/picx-images-hosting@refs/heads/master/example/PixPin_2025-12-27_17-10-00.png)
