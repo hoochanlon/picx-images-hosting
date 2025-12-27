@@ -303,26 +303,14 @@
 
 .tutorial-sidebar-footer .icon-label,
 .tutorial-header .icon-label {
-  transition: all 0.2s ease;
-  position: relative;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.tutorial-sidebar-footer .icon-label::after,
-.tutorial-header .icon-label::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%) scaleX(0);
-  width: 80%;
-  height: 2px;
-  background: currentColor;
-  transition: transform 0.2s ease;
-}
-
-.tutorial-sidebar-footer .icon-label:hover::after,
-.tutorial-header .icon-label:hover::after {
-  transform: translateX(-50%) scaleX(1);
+/* 夜间模式切换按钮图标不受过渡影响 */
+.tutorial-sidebar-footer .dark-mode-toggle i,
+.tutorial-header .dark-mode-toggle i {
+  transition: none !important;
+  transform: none !important;
 }
 
 /* ==================== 加载状态动画 ==================== */

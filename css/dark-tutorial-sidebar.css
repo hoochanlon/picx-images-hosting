@@ -90,13 +90,42 @@
 
 /* 侧边栏图标按钮的夜间模式样式 - 与主页按钮保持一致 */
 [data-theme="dark"] .tutorial-sidebar-footer .icon-label,
-[data-theme="dark"] .tutorial-sidebar-footer button.icon-label {
+[data-theme="dark"] .tutorial-sidebar-footer button.icon-label,
+[data-theme="dark"] .tutorial-sidebar-footer a.icon-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
   color: #8b949e;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border-radius: 6px;
+  flex-shrink: 0;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 
 [data-theme="dark"] .tutorial-sidebar-footer .icon-label:hover,
-[data-theme="dark"] .tutorial-sidebar-footer button.icon-label:hover {
+[data-theme="dark"] .tutorial-sidebar-footer button.icon-label:hover,
+[data-theme="dark"] .tutorial-sidebar-footer a.icon-label:hover {
   background: rgba(48, 54, 61, 0.5);
   color: #e6edf3;
+  text-decoration: none;
+}
+
+[data-theme="dark"] .tutorial-sidebar-footer .icon-label i,
+[data-theme="dark"] .tutorial-sidebar-footer button.icon-label i,
+[data-theme="dark"] .tutorial-sidebar-footer a.icon-label i {
+  font-size: 1rem;
+}
+
+/* 夜间模式切换按钮图标不受过渡影响 */
+[data-theme="dark"] .tutorial-sidebar-footer .dark-mode-toggle i {
+  transition: none !important;
+  transform: none !important;
 }
 

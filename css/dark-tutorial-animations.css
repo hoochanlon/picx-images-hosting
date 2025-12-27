@@ -33,6 +33,13 @@
   color: #667eea;
 }
 
+/* 夜间模式切换按钮图标不受过渡影响 */
+[data-theme="dark"] .tutorial-sidebar-footer .dark-mode-toggle i,
+[data-theme="dark"] .tutorial-header .dark-mode-toggle i {
+  transition: none !important;
+  transform: none !important;
+}
+
 [data-theme="dark"] .tutorial-loading::after {
   border-color: rgba(102, 126, 234, 0.3);
   border-top-color: #667eea;

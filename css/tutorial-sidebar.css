@@ -329,7 +329,7 @@
   height: 36px;
   color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
   border-radius: 6px;
   flex-shrink: 0;
   text-decoration: none;
@@ -337,6 +337,12 @@
   border: none;
   padding: 0;
   margin: 0;
+}
+
+/* 夜间模式切换按钮图标不受过渡影响 */
+.tutorial-sidebar-footer .dark-mode-toggle i {
+  transition: none !important;
+  transform: none !important;
 }
 
 .tutorial-sidebar-footer .icon-label:hover,
