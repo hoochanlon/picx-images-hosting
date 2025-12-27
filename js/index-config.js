@@ -32,6 +32,9 @@ const API_BASE = isLocalhost && !isVercelDev
   : window.location.origin;
 const API_ENDPOINT = `${API_BASE}/api/github`;
 
+// 将 API_BASE 暴露到全局作用域，供其他脚本使用（如 status.js）
+window.API_BASE = API_BASE;
+
 // 默认上传目录，从配置文件读取，如果没有则使用默认值
 const DEFAULT_DIR = config.DEFAULT_UPLOAD_DIR || 'imgs/uploads/kate/';
 

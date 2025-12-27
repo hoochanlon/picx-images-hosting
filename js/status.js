@@ -2,21 +2,35 @@
 (function() {
   'use strict';
 
-  // 在加载 index-config.js 之前，先计算 API_BASE
-  // 避免重复声明 config 变量
-  (function() {
-    const appConfig = window.APP_CONFIG || {
-      VERCEL_API_BASE: 'https://picx-images-hosting-brown.vercel.app',
-    };
+  // 使用 index-config.js 中已经计算好的 API_BASE
+  // 如果 index-config.js 还未加载，则使用 config.js 中的配置计算
+  function getApiBase() {
+    // 优先使用 index-config.js 中已计算的 API_BASE
+    if (window.API_BASE) {
+      return window.API_BASE;
+    }
+
+    // 如果 index-config.js 还未加载，使用 config.js 中的配置计算
+    const config = window.APP_CONFIG || {};
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const isVercelDev = isLocalhost && window.location.port === '3000';
-    window.HEALTH_API_BASE = isLocalhost && !isVercelDev
-      ? appConfig.VERCEL_API_BASE
+    const isGitHubPages = config.GITHUB_PAGES_PATTERN && config.GITHUB_PAGES_PATTERN.test(window.location.hostname);
+    const isCustomDomain = config.CUSTOM_DOMAINS && config.CUSTOM_DOMAINS.includes(window.location.hostname);
+    const VERCEL_API_BASE = config.VERCEL_API_BASE || 'https://picx-images-hosting-brown.vercel.app';
+    
+    // 与 index-config.js 保持一致的逻辑：
+    // - localhost（非 Vercel dev）使用 VERCEL_API_BASE
+    // - GitHub Pages 或自定义域名使用 VERCEL_API_BASE
+    // - Vercel 部署使用当前域名
+    return isLocalhost && !isVercelDev
+      ? VERCEL_API_BASE
+      : (isGitHubPages || isCustomDomain)
+      ? VERCEL_API_BASE
       : window.location.origin;
-  })();
+  }
 
-  // 等待 index-config.js 加载完成
-  const API_BASE = window.HEALTH_API_BASE || window.location.origin;
+  // 等待 DOM 和配置加载完成
+  const API_BASE = getApiBase();
 
   async function checkHealth() {
     const refreshBtn = document.getElementById('refresh-btn');
@@ -24,13 +38,37 @@
     refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 检查中...';
 
     try {
-      const response = await fetch(`${API_BASE}/api/health`);
+      const apiUrl = `${API_BASE}/api/health`;
+      console.log('健康检查 API 地址:', apiUrl);
+      
+      const response = await fetch(apiUrl);
+      
+      // 检查响应状态
+      if (!response.ok) {
+        // 如果返回 404，说明 API 路由不存在
+        if (response.status === 404) {
+          const errorText = await response.text();
+          console.error('API 路由不存在 (404):', errorText.substring(0, 100));
+          throw new Error(`API 路由不存在 (404)。请确保 ${API_BASE} 已正确部署 Serverless Functions。`);
+        }
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      // 检查响应内容类型
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const errorText = await response.text();
+        console.error('响应不是 JSON 格式:', errorText.substring(0, 200));
+        throw new Error(`API 返回了非 JSON 格式的响应。可能是 HTML 错误页面。`);
+      }
+      
       const data = await response.json();
 
       renderStatus(data);
       updateLastUpdate();
     } catch (error) {
       console.error('健康检查失败:', error);
+      console.error('使用的 API 地址:', API_BASE);
       renderError(error);
     } finally {
       refreshBtn.disabled = false;
