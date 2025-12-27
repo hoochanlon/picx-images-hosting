@@ -30,12 +30,14 @@ flowchart TB
         H -->|POST /api/github| L3[认证验证]
         L3 -->|Token有效| L4[调用GitHub API]
         D -->|GET /api/tree| L5[获取文件树API]
+        B -->|GET /api/health| L6[健康检查API]
     end
     
     subgraph "GitHub API"
         L4 -->|PUT/DELETE| M1[Contents API]
         L5 -->|GET| M2[Git Trees API]
         L1 -->|OAuth| M3[User API]
+        L6 -->|GET| M4[Repos API / Trees API]
     end
     
     style A fill:#e1f5ff

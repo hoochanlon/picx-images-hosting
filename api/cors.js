@@ -24,13 +24,12 @@ const getAllowedOrigins = () => {
     console.warn('无法读取 api-config.json，使用默认配置:', error.message);
   }
   
-  // 优先级3: 默认允许的域名
+  // 优先级3: 默认允许的域名（仅在配置文件读取失败时使用）
+  // 注意：正常情况下应该使用 api-config.json 中的配置
   return [
-    'https://hoochanlon.github.io',
-    'https://blog.hoochanlon.moe',
-    'https://picx-images-hosting-brown.vercel.app',
     'http://localhost:3000',
-    'http://localhost:8000'
+    'http://localhost:8000',
+    'https://*.vercel.app'  // 支持所有 Vercel 部署域名
   ];
 };
 

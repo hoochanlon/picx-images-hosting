@@ -1,0 +1,178 @@
+/* Status 页面样式 */
+.status-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  margin-top: 80px; /* 为导航栏留出空间 */
+}
+
+/* 导航栏当前页面高亮 */
+.topbar .controls a[href="status.html"] {
+  color: #0969da;
+  opacity: 1;
+}
+
+.status-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.status-header h1 {
+  margin: 0 0 10px 0;
+  font-size: 2em;
+}
+
+.status-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.status-card {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border-color, #e1e4e8);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.status-card.healthy {
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+
+.status-card.unhealthy {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.status-card.degraded {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.status-icon {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.status-card.healthy .status-icon {
+  color: #22c55e;
+}
+
+.status-card.unhealthy .status-icon {
+  color: #ef4444;
+}
+
+.status-card.degraded .status-icon {
+  color: #f59e0b;
+}
+
+.status-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.status-value {
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+.checks-list {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border-color, #e1e4e8);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.check-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color, #e1e4e8);
+}
+
+.check-item:last-child {
+  border-bottom: none;
+}
+
+.check-name {
+  font-weight: 600;
+  flex: 1;
+}
+
+.check-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.status-badge.healthy {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.unhealthy {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.error {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.check-time {
+  color: var(--text-secondary, #6b7280);
+  font-size: 0.9em;
+}
+
+.check-error {
+  color: #ef4444;
+  font-size: 0.85em;
+  margin-top: 5px;
+}
+
+.refresh-btn {
+  background: #0969da;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  margin: 20px auto;
+  display: block;
+}
+
+.refresh-btn:hover {
+  background: #0860ca;
+}
+
+.refresh-btn:disabled {
+  background: #6b7280;
+  cursor: not-allowed;
+}
+
+.last-update {
+  text-align: center;
+  color: var(--text-secondary, #6b7280);
+  font-size: 0.9em;
+  margin-top: 20px;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary, #6b7280);
+}
+

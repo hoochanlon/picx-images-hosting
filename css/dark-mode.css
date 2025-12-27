@@ -43,5 +43,8 @@
 /* 教程动画样式 */
 @import url('dark-tutorial-animations.css');
 
+/* 状态页面样式 */
+@import url('dark-status.css');
+
 /* 切换按钮样式 */
 @import url('dark-toggle.css');

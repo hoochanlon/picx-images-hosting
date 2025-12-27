@@ -6,6 +6,17 @@
 
 [picx-images-hosting](http://hoochanlon.github.io/picx-images-hosting) 一款基于 GitHub Pages 构建的 Web 图床管理系统，搭配 [PicX](https://picx.xpoet.cn/#/upload) 达成无缝衔接高度定制化的个人公共图片上传及管理。
 
+### 主要功能
+
+* 📤 **图片上传管理**: 支持批量上传、目录管理、文件重命名
+* 🔐 **多种认证方式**: 支持 GitHub OAuth 和密码认证
+* 🗜️ **图片压缩**: 集成 TinyJPG/TinyPNG API，自动压缩图片
+* 📊 **API 健康监控**: 实时监控 API 状态，快速定位问题
+* 🌙 **深色模式**: 支持浅色/深色主题切换
+* 📱 **响应式设计**: 适配桌面和移动设备
+
+### 注意事项
+
 * GitHub 存储限制最多 5G
 * 部署到 GitHub Pages 后才能使用 GitHub Pages 规则的图片链接
 * 国内访问建议使用 [jsdelivr](https://www.jsdelivr.com)、[statically.io](https://statically.io/) 等 CDN 加速

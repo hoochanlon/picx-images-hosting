@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>健康状态指示器预览</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f6f8fa;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      padding: 40px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: #24292f;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      margin-bottom: 40px;
+    }
+
+    .preview-section {
+      margin-bottom: 50px;
+    }
+
+    .preview-section h2 {
+      margin-bottom: 20px;
+      color: #24292f;
+      font-size: 1.5em;
+      border-bottom: 2px solid #e1e4e8;
+      padding-bottom: 10px;
+    }
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .icon-card {
+      background: #f6f8fa;
+      border: 1px solid #e1e4e8;
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .icon-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-preview {
+      font-size: 3em;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .icon-card.healthy .icon-preview {
+      color: #22c55e;
+    }
+
+    .icon-card.degraded .icon-preview {
+      color: #f59e0b;
+    }
+
+    .icon-card.unhealthy .icon-preview,
+    .icon-card.error .icon-preview {
+      color: #ef4444;
+    }
+
+    .icon-card.unknown .icon-preview {
+      color: #6b7280;
+    }
+
+    .icon-name {
+      font-weight: 600;
+      font-size: 1.1em;
+      margin-bottom: 8px;
+      color: #24292f;
+    }
+
+    .icon-class {
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      color: #6b7280;
+      margin-bottom: 8px;
+      word-break: break-all;
+    }
+
+    .icon-label {
+      font-size: 0.85em;
+      color: #6b7280;
+    }
+
+    .navbar-preview {
+      background: #24292f;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+
+    .navbar-preview .controls {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .icon-label {
+      color: #8b949e;
+      font-size: 1.2em;
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    .icon-label:hover {
+      color: #c9d1d9;
+    }
+
+    .health-indicator.healthy {
+      color: #22c55e;
+    }
+
+    .health-indicator.degraded {
+      color: #f59e0b;
+    }
+
+    .health-indicator.unhealthy,
+    .health-indicator.error {
+      color: #ef4444;
+    }
+
+    .health-indicator.unknown {
+      color: #6b7280;
+    }
+
+    .code-block {
+      background: #f6f8fa;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      overflow-x: auto;
+    }
+
+    .code-block code {
+      color: #24292f;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🖼️ 健康状态指示器预览</h1>
+    <p class="subtitle">预览不同状态下的图标效果和样式</p>
+
+    <!-- 导航栏预览 -->
+    <div class="preview-section">
+      <h2>导航栏中的效果</h2>
+      <div class="navbar-preview">
+        <div class="controls">
+          <a href="#" class="icon-label" aria-label="返回首页">
+            <i class="fas fa-home"></i>
+          </a>
+          <a href="#" class="icon-label health-indicator healthy" aria-label="API 状态正常">
+            <i class="fas fa-circle-check"></i>
+          </a>
+          <a href="#" class="icon-label health-indicator degraded" aria-label="API 状态降级">
+            <i class="fas fa-circle-exclamation"></i>
+          </a>
+          <a href="#" class="icon-label health-indicator unhealthy" aria-label="API 状态异常">
+            <i class="fas fa-circle-xmark"></i>
+          </a>
+          <a href="#" class="icon-label health-indicator unknown" aria-label="API 状态未知">
+            <i class="fas fa-circle-question"></i>
+          </a>
+          <a href="#" class="icon-label" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 图标详细预览 -->
+    <div class="preview-section">
+      <h2>所有状态图标</h2>
+      <div class="icon-grid">
+        <!-- 正常状态 -->
+        <div class="icon-card healthy">
+          <i class="fas fa-circle-check icon-preview"></i>
+          <div class="icon-name">正常 (Healthy)</div>
+          <div class="icon-class">fas fa-circle-check</div>
+          <div class="icon-label">颜色: #22c55e (绿色)</div>
+          <div class="icon-label">aria-label: API 状态正常</div>
+        </div>
+
+        <!-- 降级状态 -->
+        <div class="icon-card degraded">
+          <i class="fas fa-circle-exclamation icon-preview"></i>
+          <div class="icon-name">降级 (Degraded)</div>
+          <div class="icon-class">fas fa-circle-exclamation</div>
+          <div class="icon-label">颜色: #f59e0b (橙色)</div>
+          <div class="icon-label">aria-label: API 状态降级 - 部分功能可能受影响</div>
+        </div>
+
+        <!-- 异常状态 -->
+        <div class="icon-card unhealthy">
+          <i class="fas fa-circle-xmark icon-preview"></i>
+          <div class="icon-name">异常 (Unhealthy/Error)</div>
+          <div class="icon-class">fas fa-circle-xmark</div>
+          <div class="icon-label">颜色: #ef4444 (红色)</div>
+          <div class="icon-label">aria-label: API 状态异常 - 请检查服务</div>
+        </div>
+
+        <!-- 未知状态 -->
+        <div class="icon-card unknown">
+          <i class="fas fa-circle-question icon-preview"></i>
+          <div class="icon-name">未知 (Unknown)</div>
+          <div class="icon-class">fas fa-circle-question</div>
+          <div class="icon-label">颜色: #6b7280 (灰色)</div>
+          <div class="icon-label">aria-label: API 状态未知</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 代码示例 -->
+    <div class="preview-section">
+      <h2>代码实现</h2>
+      <div class="code-block">
+        <code>
+switch (healthStatus) {<br>
+&nbsp;&nbsp;case 'healthy':<br>
+&nbsp;&nbsp;&nbsp;&nbsp;icon.className = 'fas fa-circle-check';<br>
+&nbsp;&nbsp;&nbsp;&nbsp;indicator.setAttribute('aria-label', 'API 状态正常');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+&nbsp;&nbsp;case 'degraded':<br>
+&nbsp;&nbsp;&nbsp;&nbsp;icon.className = 'fas fa-circle-exclamation';<br>
+&nbsp;&nbsp;&nbsp;&nbsp;indicator.setAttribute('aria-label', 'API 状态降级 - 部分功能可能受影响');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+&nbsp;&nbsp;case 'error':<br>
+&nbsp;&nbsp;case 'unhealthy':<br>
+&nbsp;&nbsp;&nbsp;&nbsp;icon.className = 'fas fa-circle-xmark';<br>
+&nbsp;&nbsp;&nbsp;&nbsp;indicator.setAttribute('aria-label', 'API 状态异常 - 请检查服务');<br>
+&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+&nbsp;&nbsp;default:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;icon.className = 'fas fa-circle-question';<br>
+&nbsp;&nbsp;&nbsp;&nbsp;indicator.setAttribute('aria-label', 'API 状态未知');<br>
+}
+        </code>
+      </div>
+    </div>
+
+    <!-- CSS 样式 -->
+    <div class="preview-section">
+      <h2>CSS 样式</h2>
+      <div class="code-block">
+        <code>
+.health-indicator.healthy { color: #22c55e; }<br>
+.health-indicator.degraded { color: #f59e0b; }<br>
+.health-indicator.unhealthy,<br>
+.health-indicator.error { color: #ef4444; }<br>
+.health-indicator.unknown { color: #6b7280; }<br>
+.health-indicator:hover { opacity: 0.8; }
+        </code>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
