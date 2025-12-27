@@ -4,7 +4,7 @@
 
 ## 项目简介
 
-基于 GitHub Pages 托管的 Web 图床管理系统，搭配 [PicX](https://github.com/XPoet/picx) 实现图片上传、管理和 CDN 加速。
+[picx-images-hosting](http://hoochanlon.github.io/picx-images-hosting) 一款基于 GitHub Pages 构建的 Web 图床管理系统，搭配 [PicX](https://picx.xpoet.cn/#/upload) 达成无缝衔接高度定制化的个人公共图片上传及管理。
 
 > [!important]
 > * GitHub 存储限制最多 5G
@@ -17,3 +17,6 @@
 详情见部署教程：https://hoochanlon.github.io/picx-images-hosting/tutorial.html
 
 ![](https://cdn.jsdelivr.net/gh/hoochanlon/picx-images-hosting@refs/heads/master/example/PixPin_2025-12-27_00-29-26.png)
+
+## 高级自定义
+

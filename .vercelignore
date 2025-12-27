@@ -1,0 +1,25 @@
+# 排除图片目录（图片通过 GitHub + CDN 访问）
+imgs/
+
+# 排除示例图片
+example/
+
+# 排除测试文件
+test/
+
+# 排除备份文件
+*.BAK
+*.bak
+README.BAK.md
+
+# 排除环境变量示例文件（实际配置在 Vercel 环境变量中）
+env.example
+config.example.js
+
+# 排除 Git 相关
+.git/
+.gitignore
+
+# 排除文档（可选，如果不需要在部署中包含）
+# docs/
+
