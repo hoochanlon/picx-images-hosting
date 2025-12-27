@@ -405,6 +405,13 @@ async function loadMarkdownContent(stepIndex) {
       
       contentDiv.dataset.loaded = 'true';
       
+      // 处理图片懒加载
+      if (window.tutorialLazyLoad && window.tutorialLazyLoad.observeNewImages) {
+        setTimeout(() => {
+          window.tutorialLazyLoad.observeNewImages();
+        }, 50);
+      }
+      
       // 如果当前步骤是激活的，更新目录
       // 使用 setTimeout 确保 DOM 完全渲染后再生成目录
       if (contentDiv.classList.contains('active')) {

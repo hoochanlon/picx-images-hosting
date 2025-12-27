@@ -414,6 +414,30 @@
   background: rgba(13, 17, 23, 0.9);
 }
 
+/* 暗色模式懒加载图片样式 */
+[data-theme="dark"] .tutorial-content img,
+[data-theme="dark"] .tutorial-step-content img {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .tutorial-content img.lazy-load,
+[data-theme="dark"] .tutorial-step-content img.lazy-load {
+  opacity: 0.5;
+  background: rgba(22, 27, 34, 0.8);
+}
+
+[data-theme="dark"] .tutorial-content img.lazy-loaded,
+[data-theme="dark"] .tutorial-step-content img.lazy-loaded {
+  opacity: 1;
+}
+
+[data-theme="dark"] .tutorial-content img.lazy-load-error,
+[data-theme="dark"] .tutorial-step-content img.lazy-load-error {
+  opacity: 0.4;
+  border: 2px dashed rgba(48, 54, 61, 0.8);
+  background: rgba(22, 27, 34, 0.5);
+}
+
 [data-theme="dark"] .tutorial-btn {
   background: rgba(33, 38, 45, 0.8);
   border: 1px solid rgba(48, 54, 61, 0.8);

@@ -235,6 +235,38 @@
   margin: 20px 0;
 }
 
+/* 懒加载图片样式 */
+.tutorial-content img,
+.tutorial-step-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tutorial-content img.lazy-load,
+.tutorial-step-content img.lazy-load {
+  opacity: 0.6;
+  transition: opacity 0.3s ease-in-out;
+  background: #f6f8fa;
+  min-height: 200px;
+  object-fit: contain;
+}
+
+.tutorial-content img.lazy-loaded,
+.tutorial-step-content img.lazy-loaded {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.tutorial-content img.lazy-load-error,
+.tutorial-step-content img.lazy-load-error {
+  opacity: 0.5;
+  border: 2px dashed #d0d7de;
+}
+
 /* 表格样式 */
 .tutorial-step-content table {
   border-collapse: collapse;
