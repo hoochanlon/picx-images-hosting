@@ -133,6 +133,146 @@ function updateTOC(stepIndex) {
       }
     });
   });
+
+  // 实现优化的滚动跟随功能
+  setupScrollTracking(headings, tocNav);
+}
+
+// 设置滚动跟踪功能
+function setupScrollTracking(headings, tocNav) {
+  // 清理之前的 observer
+  if (window.tocObserver) {
+    window.tocObserver.disconnect();
+  }
+
+  // 防抖函数，避免频繁切换
+  let activeHeadingId = null;
+  let updateTimeout = null;
+  let lastUpdateTime = 0;
+  const HEADER_OFFSET = 120; // 固定头部高度
+  const THRESHOLD_DISTANCE = 100; // 标题之间的最小距离阈值，避免过近时反向跳转
+  const MIN_UPDATE_INTERVAL = 300; // 最小更新间隔（毫秒），避免过于频繁的切换
+
+  // 更新活动标题的函数
+  function updateActiveHeading() {
+    if (updateTimeout) {
+      clearTimeout(updateTimeout);
+    }
+    
+    const now = Date.now();
+    const timeSinceLastUpdate = now - lastUpdateTime;
+    
+    // 如果距离上次更新时间太短，延迟执行
+    const delay = timeSinceLastUpdate < MIN_UPDATE_INTERVAL 
+      ? MIN_UPDATE_INTERVAL - timeSinceLastUpdate 
+      : 150; // 基础防抖延迟
+    
+    updateTimeout = setTimeout(() => {
+      lastUpdateTime = Date.now();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      let bestHeading = null;
+      let bestDistance = Infinity;
+      let bestPosition = -Infinity;
+
+      // 遍历所有标题，找到最合适的活动标题
+      headings.forEach(heading => {
+        const rect = heading.getBoundingClientRect();
+        const headingTop = rect.top + scrollTop;
+        const distanceFromTop = rect.top - HEADER_OFFSET;
+        
+        // 标题在视口内或刚刚经过
+        if (rect.top <= HEADER_OFFSET + 50 && rect.bottom >= 0) {
+          // 如果标题在固定头部下方，优先选择
+          if (rect.top >= HEADER_OFFSET - 20) {
+            const distance = Math.abs(rect.top - HEADER_OFFSET);
+            // 选择最接近固定头部下方的标题
+            if (distance < bestDistance) {
+              bestDistance = distance;
+              bestHeading = heading;
+            }
+          } else {
+            // 标题在固定头部上方，检查是否是最新的可见标题
+            if (headingTop > bestPosition) {
+              bestPosition = headingTop;
+              // 只有当没有找到更好的标题时才使用这个
+              if (!bestHeading || bestDistance > THRESHOLD_DISTANCE) {
+                bestHeading = heading;
+                bestDistance = Math.abs(rect.top - HEADER_OFFSET);
+              }
+            }
+          }
+        }
+      });
+
+      // 如果没有找到合适的标题，选择最接近视口顶部的标题
+      if (!bestHeading && headings.length > 0) {
+        headings.forEach(heading => {
+          const rect = heading.getBoundingClientRect();
+          if (rect.top >= 0 && rect.top < bestDistance) {
+            bestDistance = rect.top;
+            bestHeading = heading;
+          }
+        });
+      }
+
+      // 更新活动状态
+      if (bestHeading && bestHeading.id !== activeHeadingId) {
+        activeHeadingId = bestHeading.id;
+        const activeLink = tocNav.querySelector(`a[href="#${bestHeading.id}"]`);
+        
+        if (activeLink) {
+          // 移除所有活动状态
+          tocNav.querySelectorAll('a').forEach(a => {
+            a.classList.remove('active');
+          });
+          
+          // 添加活动状态（使用平滑过渡）
+          activeLink.classList.add('active');
+          
+          // 确保活动链接在目录中可见
+          const linkRect = activeLink.getBoundingClientRect();
+          const tocRect = document.querySelector('.tutorial-toc').getBoundingClientRect();
+          const navRect = tocNav.getBoundingClientRect();
+          
+          // 如果链接不在目录视口内，平滑滚动到可见位置
+          if (linkRect.top < navRect.top || linkRect.bottom > navRect.bottom) {
+            activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }
+      }
+    }, delay);
+  }
+
+  // 使用 IntersectionObserver 监听标题可见性
+  window.tocObserver = new IntersectionObserver((entries) => {
+    // 触发更新
+    updateActiveHeading();
+  }, {
+    root: null, // 使用 viewport
+    rootMargin: `-${HEADER_OFFSET}px 0px -50% 0px`, // 顶部偏移，底部偏移50%
+    threshold: [0, 0.1, 0.25, 0.5, 0.75, 1] // 多个阈值，更精确地检测
+  });
+
+  // 观察所有标题
+  headings.forEach(heading => {
+    window.tocObserver.observe(heading);
+  });
+
+  // 监听滚动事件（作为 IntersectionObserver 的补充）
+  let scrollTimeout = null;
+  window.addEventListener('scroll', () => {
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
+    }
+    scrollTimeout = setTimeout(() => {
+      updateActiveHeading();
+    }, 200); // 滚动时使用更长的防抖时间，减少更新频率
+  }, { passive: true });
+
+  // 初始检查
+  setTimeout(() => {
+    updateActiveHeading();
+  }, 300);
 }
 
 // 导出到全局作用域
