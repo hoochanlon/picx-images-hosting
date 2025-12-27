@@ -10,83 +10,53 @@
   background: #f6f8fa;
 }
 
-.upload-header {
-  background: #fff;
-  border-bottom: 1px solid #d0d7de;
-  padding: 16px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.upload-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.upload-header h1 #upload-title {
+/* 上传页面导航栏使用与首页一致的 topbar 样式 */
+/* 上传页面标题样式 */
+#upload-title {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
   user-select: none;
 }
 
-.upload-header h1 #upload-title:hover {
+#upload-title:hover {
   opacity: 0.8;
+  transform: scale(1.05);
 }
 
-/* 上传页面图标按钮使用与主页面一致的样式 */
-.upload-header .icon-label,
-.upload-header button.icon-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
+#upload-title:active {
+  transform: scale(0.98);
+}
+
+/* 导航栏当前页面保持与其他图标一致的颜色 */
+.topbar .controls a[href="upload.html"] {
   color: #57606a;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 6px;
-  flex-shrink: 0;
-  text-decoration: none;
-  background: transparent;
-  border: none;
-  padding: 0;
+  opacity: 1;
 }
 
-.upload-header .icon-label:hover,
-.upload-header button.icon-label:hover {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
-  text-decoration: none;
-}
-
-.upload-header .icon-label.auth-authenticated {
+/* 认证状态图标样式 */
+.topbar .controls .icon-label.auth-authenticated,
+.topbar .controls button.icon-label.auth-authenticated {
   color: #238636;
 }
 
-[data-theme="dark"] .upload-header .icon-label.auth-authenticated {
+[data-theme="dark"] .topbar .controls .icon-label.auth-authenticated,
+[data-theme="dark"] .topbar .controls button.icon-label.auth-authenticated {
   color: #3fb950;
 }
 
-.upload-header .icon-label.auth-authenticated:hover {
+.topbar .controls .icon-label.auth-authenticated:hover,
+.topbar .controls button.icon-label.auth-authenticated:hover {
   color: #238636;
   background: rgba(35, 134, 54, 0.1);
 }
 
-[data-theme="dark"] .upload-header .icon-label.auth-authenticated:hover {
+[data-theme="dark"] .topbar .controls .icon-label.auth-authenticated:hover,
+[data-theme="dark"] .topbar .controls button.icon-label.auth-authenticated:hover {
   color: #3fb950;
   background: rgba(63, 185, 80, 0.1);
-}
-
-.upload-header .icon-label i,
-.upload-header button.icon-label i {
-  font-size: 1rem;
 }
 
 .upload-container {

@@ -1,34 +1,10 @@
 /* Dark Mode Upload Page Styles */
 /* 夜间模式上传页面样式 */
 
-[data-theme="dark"] .upload-header {
-  background: rgba(13, 17, 23, 0.95);
-  border-bottom: 1px solid rgba(48, 54, 61, 0.8);
-}
-
-[data-theme="dark"] .upload-header h1 {
-  color: #f0f6fc;
-}
-
-/* 上传页面图标按钮的夜间模式样式 */
-[data-theme="dark"] .upload-header .icon-label,
-[data-theme="dark"] .upload-header button.icon-label {
+/* 导航栏当前页面在夜间模式下保持与其他图标一致的颜色 */
+[data-theme="dark"] .topbar .controls a[href="upload.html"] {
   color: #8b949e;
-}
-
-[data-theme="dark"] .upload-header .icon-label:hover,
-[data-theme="dark"] .upload-header button.icon-label:hover {
-  background: rgba(48, 54, 61, 0.5);
-  color: #e6edf3;
-}
-
-[data-theme="dark"] .upload-header .icon-label.auth-authenticated {
-  color: #3fb950;
-}
-
-[data-theme="dark"] .upload-header .icon-label.auth-authenticated:hover {
-  color: #3fb950;
-  background: rgba(63, 185, 80, 0.1);
+  opacity: 1;
 }
 
 [data-theme="dark"] .upload-container {

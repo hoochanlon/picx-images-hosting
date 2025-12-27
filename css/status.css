@@ -6,9 +6,9 @@
   margin-top: 80px; /* 为导航栏留出空间 */
 }
 
-/* 导航栏当前页面高亮 */
+/* 导航栏当前页面保持与其他图标一致的颜色 */
 .topbar .controls a[href="status.html"] {
-  color: #0969da;
+  color: #57606a;
   opacity: 1;
 }
 

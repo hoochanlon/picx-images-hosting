@@ -35,28 +35,31 @@
   <script src="./js/upload-init.js"></script>
 </head>
 <body class="upload-page">
-  <header class="upload-header">
-    <h1>
-      <span>🖼️</span>
-      <span id="upload-title" style="cursor: pointer;">上传管理</span>
-    </h1>
-    <div style="display: flex; align-items: center; gap: 12px;">
+  <header class="topbar">
+    <div class="brand">
+      <span class="emoji">🖼️</span>
+      <span class="title" id="upload-title" style="cursor: pointer;">上传管理</span>
+    </div>
+    <div class="controls">
       <button id="auth-login-btn" class="icon-label" type="button" aria-label="登录/授权">
         <i class="fas fa-user-shield" id="auth-login-icon"></i>
       </button>
       <a href="index.html" class="icon-label" aria-label="返回首页">
         <i class="fas fa-home"></i>
       </a>
-      <a href="tutorial.html" class="icon-label" aria-label="教程">
-        <i class="fas fa-book"></i>
+      <a href="upload.html" class="icon-label" aria-label="上传管理">
+        <i class="fas fa-tasks"></i>
       </a>
       <a href="status.html" class="icon-label" aria-label="API 状态">
         <i class="fas fa-heartbeat"></i>
       </a>
+      <a href="tutorial.html" class="icon-label" aria-label="教程">
+        <i class="fas fa-book"></i>
+      </a>
       <a id="github-link" href="#" target="_blank" rel="noopener noreferrer" class="icon-label" aria-label="GitHub">
         <i class="fab fa-github"></i>
       </a>
-      <button class="dark-mode-toggle icon-label" aria-label="切换到夜间模式">
+      <button class="dark-mode-toggle icon-label" aria-label="切换夜间模式">
         <i class="fas fa-moon"></i>
       </button>
     </div>
