@@ -24,6 +24,10 @@
 3. 勾选 `repo` 权限
 4. 复制 Token（只显示一次）
 
+权限如图配置
+
+![](https://cdn.jsdelivr.net/gh/hoochanlon/picx-images-hosting@master/imgs/example/PixPin_2025-12-27_07-26-25.png)
+
 ### 配置步骤
 
 1. 登录 [Vercel](https://vercel.com)
@@ -34,6 +38,8 @@
 
 > [!important]
 > 修改环境变量后**必须重新部署**才能生效！
+
+![](https://cdn.jsdelivr.net/gh/hoochanlon/picx-images-hosting@master/imgs/example/PixPin_2025-12-27_23-08-54.png)
 
 ## CORS 配置
 
