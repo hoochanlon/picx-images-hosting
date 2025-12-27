@@ -34,4 +34,4 @@
 
 ![](https://cdn.jsdelivr.net/gh/hoochanlon/picx-images-hosting@refs/heads/master/example/PixPin_2025-12-27_17-10-00.png)
 
-picx-images-hosting 可基于该项目进行二次开发，以支持七牛云、B2、R2 等兼容 S3 的对象存储。以及通过 [CF-Proxy-B2](https://github.com/hoochanlon/CF-Proxy-B2) 来实现 100% 免流的目的。
+picx-images-hosting 可基于该项目进行二次开发，以支持七牛云、又拍云、B2、R2 等兼容 S3 的对象存储。以及通过 [CF-Proxy-B2](https://github.com/hoochanlon/CF-Proxy-B2) 来实现 100% 免流的目的。

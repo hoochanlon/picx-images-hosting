@@ -32,7 +32,7 @@ function updateTOC(stepIndex) {
       clearInterval(checkInterval);
       // 如果仍然没有内容，显示空状态
       if (activeContent.dataset.loaded !== 'true') {
-        const headings = activeContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        const headings = activeContent.querySelectorAll('h2, h3');
         if (headings.length === 0) {
           tocNav.innerHTML = '<div class="tutorial-toc-loading">暂无目录</div>';
         }
@@ -41,7 +41,8 @@ function updateTOC(stepIndex) {
     return;
   }
 
-  const headings = activeContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  // 只显示 h2 和 h3 标题，减少目录长度
+  const headings = activeContent.querySelectorAll('h2, h3');
   
   if (headings.length === 0) {
     // 清除之前的加载提示
@@ -132,55 +133,6 @@ function updateTOC(stepIndex) {
       }
     });
   });
-
-  // 监听滚动，高亮当前章节
-  const tutorialMain = document.querySelector('.tutorial-main');
-  if (tutorialMain) {
-    // 清理之前的 observer
-    if (window.tocObserver) {
-      window.tocObserver.disconnect();
-    }
-    
-    // 使用更合理的 rootMargin，确保定位准确
-    // -120px 顶部偏移（考虑固定头部）
-    // -50% 底部偏移（当标题滚动到视口下半部分时高亮）
-    window.tocObserver = new IntersectionObserver((entries) => {
-      // 找到最接近顶部的可见标题
-      const visibleHeadings = entries
-        .filter(entry => entry.isIntersecting)
-        .map(entry => ({
-          element: entry.target,
-          id: entry.target.id,
-          top: entry.boundingClientRect.top
-        }))
-        .sort((a, b) => a.top - b.top);
-      
-      if (visibleHeadings.length > 0) {
-        // 高亮最接近顶部的标题
-        const activeId = visibleHeadings[0].id;
-        tocNav.querySelectorAll('a').forEach(a => {
-          a.classList.remove('active');
-          if (a.getAttribute('href') === '#' + activeId) {
-            a.classList.add('active');
-            // 滚动到活动链接（如果不在视口中）
-            const linkRect = a.getBoundingClientRect();
-            const navRect = tocNav.getBoundingClientRect();
-            if (linkRect.top < navRect.top || linkRect.bottom > navRect.bottom) {
-              a.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-          }
-        });
-      }
-    }, {
-      root: tutorialMain,
-      rootMargin: '-120px 0px -50% 0px',
-      threshold: [0, 0.1, 0.5, 1]
-    });
-
-    headings.forEach(heading => {
-      window.tocObserver.observe(heading);
-    });
-  }
 }
 
 // 导出到全局作用域
