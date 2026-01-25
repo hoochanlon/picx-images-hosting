@@ -10,6 +10,15 @@ function buildCard(item) {
   const delBtn = node.querySelector('.delete-btn');
   const copyButtons = node.querySelectorAll('[data-copy]');
 
+  // 检查登录状态，未登录时隐藏删除按钮
+  const isAuthenticated = window.uploadAuth && typeof window.uploadAuth.isAuthenticated === 'function' 
+    ? window.uploadAuth.isAuthenticated() 
+    : false;
+  
+  if (!isAuthenticated && delBtn) {
+    delBtn.style.display = 'none';
+  }
+
   // 懒加载：使用 data-src 存储真实图片地址，先用 loading.gif 作为占位符
   const loadingGif = `${CDN_BASE}/imgs/special/loading.gif`;
   imgEl.src = loadingGif;
@@ -39,7 +48,9 @@ function buildCard(item) {
     });
   });
 
-  delBtn.addEventListener('click', async (e) => {
+  // 只有在已登录时才绑定删除按钮事件
+  if (isAuthenticated && delBtn) {
+    delBtn.addEventListener('click', async (e) => {
     e.stopPropagation();
     
     // 检查认证状态，如果未认证则弹出登录窗口
@@ -86,7 +97,8 @@ function buildCard(item) {
         }
       });
     }
-  });
+    });
+  }
 
   return node;
 }

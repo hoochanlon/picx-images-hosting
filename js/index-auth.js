@@ -47,6 +47,16 @@
       authBtn.style.cssText = '';
       authBtn.classList.remove('auth-authenticated');
     }
+    
+    // 登录状态变化时，更新所有删除按钮的显示状态
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(btn => {
+      if (isAuthenticated) {
+        btn.style.display = '';
+      } else {
+        btn.style.display = 'none';
+      }
+    });
   }
 
   // 处理登录按钮点击

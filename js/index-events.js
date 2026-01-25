@@ -155,6 +155,40 @@ function initEvents() {
     githubLink.href = config.GITHUB_REPO_URL || 'https://github.com/hoochanlon/picx-images-hosting';
   }
 
+  // 上传管理链接点击事件：检查登录状态
+  const uploadManageLink = document.querySelector('a[href="upload.html"]');
+  if (uploadManageLink) {
+    uploadManageLink.addEventListener('click', (e) => {
+      // 检查登录状态
+      const isAuthenticated = window.uploadAuth && typeof window.uploadAuth.isAuthenticated === 'function' 
+        ? window.uploadAuth.isAuthenticated() 
+        : false;
+      
+      if (!isAuthenticated) {
+        e.preventDefault();
+        // 未登录，提示用户登录
+        if (window.uploadAuth && window.uploadAuth.requireAuth) {
+          window.uploadAuth.requireAuth((authenticated) => {
+            if (authenticated) {
+              // 认证成功，更新认证图标状态
+              if (typeof window.updateAuthIcon === 'function') {
+                window.updateAuthIcon();
+              }
+              // 跳转到上传管理页面
+              window.location.href = 'upload.html';
+            } else {
+              setStatus('上传管理需要登录，请先点击右上角的用户图标登录', true);
+            }
+          });
+        } else {
+          alert('上传管理需要登录，请先点击右上角的用户图标登录');
+          setStatus('上传管理需要登录，请先登录', true);
+        }
+      }
+      // 如果已登录，允许正常跳转
+    });
+  }
+
   // 标题点击完全刷新
   const brandTitle = document.getElementById('brand-title');
   if (brandTitle) {

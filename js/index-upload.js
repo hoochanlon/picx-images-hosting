@@ -21,7 +21,7 @@ async function uploadSelectedFiles() {
         });
         return;
       } else {
-        alert('上传需要认证，请先点击右上角的锁图标登录');
+        alert('上传需要认证，请先点击右上角的用户图标登录');
         setStatus('上传需要认证，请先登录', true);
         return;
       }
@@ -251,6 +251,32 @@ async function uploadSelectedFiles() {
 }
 
 function openUploadModal() {
+  // 检查登录状态，未登录时阻止打开并提示
+  if (window.uploadAuth && typeof window.uploadAuth.isAuthenticated === 'function') {
+    if (!window.uploadAuth.isAuthenticated()) {
+      // 未登录，提示用户登录
+      if (window.uploadAuth.requireAuth) {
+        window.uploadAuth.requireAuth((authenticated) => {
+          if (authenticated) {
+            // 认证成功，更新认证图标状态
+            if (typeof window.updateAuthIcon === 'function') {
+              window.updateAuthIcon();
+            }
+            // 重新打开上传模态框
+            openUploadModal();
+          } else {
+            setStatus('快速上传需要登录，请先点击右上角的用户图标登录', true);
+          }
+        });
+        return;
+      } else {
+        alert('快速上传需要登录，请先点击右上角的用户图标登录');
+        setStatus('快速上传需要登录，请先登录', true);
+        return;
+      }
+    }
+  }
+  
   const savedPath = getDefaultUploadPath();
   if (defaultUploadPathInput) {
     defaultUploadPathInput.value = savedPath;
